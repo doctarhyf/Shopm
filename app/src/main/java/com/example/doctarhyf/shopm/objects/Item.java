@@ -14,12 +14,18 @@ public class Item {
 
     //public static final String ITEM_CATEGORY_TREND = "catTrend";
     private static final String TAG = Utils.TAG;
-    private String itemID = "0";
-    private String itemDesc = "The Description";
-    private String itemName = "Item Name";
-    private String itemPrice = "$00.00";
-    private String itemUniqueName = "";
-    private int itemStockCount = 0;
+
+    //{"item_id":"3","item_name":"myitem","item_desc":"thedesc","item_price":"2000","item_unique_name":"abd3b9d1c3cfb968eda57808034072f167b181c8294375283bf8237d81cc30eb","item_stock_count":"100","item_last_stock_upd":"0000-00-00 00:00:00","item_added_date":"0000-00-00 00:00:00"}
+
+    private String item_id = "0";
+    private String item_name = "Item Name";
+    private String item_desc = "The Description";
+
+    private String item_price = "$00.00";
+    private String item_unique_name = "";
+    private String item_stock_count = "";
+    private String item_last_stock_upd = "";
+    private String item_added_date ="";
     //private String itemCategory;
 
     //public static final String ITEM_CATEGORY_ELEC = "catElec";
@@ -29,15 +35,17 @@ public class Item {
 
     }
 
-    public Item(String itemID, String itemName, String itemPrice, String itemDesc, String itemUniqueName, int itemStockCount){
-        this.setItemID(itemID);
-        this.setItemName(itemName);
-        this.setItemPrice(itemPrice);
-        this.setItemDesc(itemDesc);
-        this.setItemUniqueName(itemUniqueName);
-        this.setItemStockCount(itemStockCount);
+    public Item(String item_id, String item_name, String item_price, String item_desc, String item_unique_name, String item_stock_count,
+                String item_last_stock_upd, String item_added_date){
+        this.setItem_id(item_id);
+        this.setItem_name(item_name);
+        this.setItem_price(item_price);
+        this.setItem_desc(item_desc);
+        this.setItem_unique_name(item_unique_name);
+        this.setItem_stock_count(item_stock_count);
         //this.setItemCategory(itemCategory);
     }
+
 
 
 
@@ -49,36 +57,36 @@ public class Item {
     }
 
 
-    public String getItemID() {
-        return itemID;
+    public String getItem_id() {
+        return item_id;
     }
 
-    public void setItemID(String itemID) {
-        this.itemID = itemID;
+    public void setItem_id(String item_id) {
+        this.item_id = item_id;
     }
 
-    public String getItemDesc() {
-        return itemDesc;
+    public String getItem_desc() {
+        return item_desc;
     }
 
-    public void setItemDesc(String itemDesc) {
-        this.itemDesc = itemDesc;
+    public void setItem_desc(String item_desc) {
+        this.item_desc = item_desc;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getItem_name() {
+        return item_name;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setItem_name(String item_name) {
+        this.item_name = item_name;
     }
 
-    public String getItemPrice() {
-        return itemPrice;
+    public String getItem_price() {
+        return item_price;
     }
 
-    public void setItemPrice(String itemPrice) {
-        this.itemPrice = itemPrice;
+    public void setItem_price(String item_price) {
+        this.item_price = item_price;
     }
 
 
@@ -90,19 +98,35 @@ public class Item {
         return new GsonBuilder().create().toJson(this, Item.class);
     }
 
-    public String getItemUniqueName() {
-        return itemUniqueName;
+    public String getItem_unique_name() {
+        return item_unique_name;
     }
 
-    public void setItemUniqueName(String itemUniqueName) {
-        this.itemUniqueName = itemUniqueName;
+    public void setItem_unique_name(String item_unique_name) {
+        this.item_unique_name = item_unique_name;
     }
 
-    public int getItemStockCount() {
-        return itemStockCount;
+    public String getItem_stock_count() {
+        return item_stock_count;
     }
 
-    public void setItemStockCount(int itemStockCount) {
-        this.itemStockCount = itemStockCount;
+    public void setItem_stock_count(String item_stock_count) {
+        this.item_stock_count = item_stock_count;
+    }
+
+    public String getItem_last_stock_upd() {
+        return item_last_stock_upd;
+    }
+
+    public void setItem_last_stock_upd(String item_last_stock_upd) {
+        this.item_last_stock_upd = item_last_stock_upd;
+    }
+
+    public String getItem_added_date() {
+        return item_added_date;
+    }
+
+    public void setItem_added_date(String item_added_date) {
+        this.item_added_date = item_added_date;
     }
 }

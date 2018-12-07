@@ -5,10 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
+import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.utils.Utils;
 
 import org.json.JSONArray;
@@ -76,6 +79,7 @@ public class ShopMApi {
     }
 
     public interface CallbacksItems {
+        void onItemsLoaded(List<Item> items);
         //void onItemPublishResult(int code, String data);
 
         //void onLoadAllItemsResult(int code, List<ProductMyProducts> products);
@@ -87,23 +91,51 @@ public class ShopMApi {
 
         String url = GSA() + API_URL + "act=" + ShopMApi.ACTION_LOAD_ALL_ITEMS ;
 
+        Log.e(TAG, "loadAllItems: url -> "  + url );
 
-        StringRequest request = new StringRequest(
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
                 url,
-                new Response.Listener<String>() {
+                null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String s) {
+                    public void onResponse(JSONObject jsonObject) {
 
-                        Log.e(TAG, "onResponse: tha res -> " + s );
+                        //Log.e(TAG, "onResponse: DAOBJ -> " + jsonObject.toString() );
+
+                        try {
+                            JSONArray data = jsonObject.getJSONArray("data");
+
+                            List<Item> items = new ArrayList<>();
+
+                            for(int i = 0; i < data.length(); i++){
+
+                                JSONObject jo = data.getJSONObject(i);
+
+                                Item item = Item.FromJSON(jo.toString());
+
+                                items.add(item);
+
+                                callbacks.onItemsLoaded(items);
+
+                                //Log.e(TAG, "onResponse: da item json -> " + item.toJSON() );
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Log.e(TAG, "onErrorResponse: tha err -> " + volleyError.getMessage() );
+                        Log.e(TAG, "onErrorResponse: err -> " + volleyError.getMessage() );
                     }
-                });
+                }
+
+        );
 
 
 

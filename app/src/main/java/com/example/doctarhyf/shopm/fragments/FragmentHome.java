@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
+import com.example.doctarhyf.shopm.api.ShopMApi;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.R;
@@ -103,17 +104,27 @@ public class FragmentHome extends Fragment {
 
     private void getItemsData() {
 
-        ShopmApplication.getInstance().getApi().loadAllItems(null);
+        ShopmApplication.getInstance().getApi().loadAllItems(new ShopMApi.CallbacksItems() {
+            @Override
+            public void onItemsLoaded(List<Item> newItems) {
 
-        for (int i = 0; i < 10; i ++){
+                items.clear();
+                items.addAll(newItems);
+
+                adapterHomeItems.notifyDataSetChanged();
+
+            }
+        });
+
+        /*for (int i = 0; i < 10; i ++){
             items.add(new Item("" + i, "Item " + i, (i * 1324) + " $", "Tha desc goes here " + i, "UN",
-            2000) );
+            2000 + "", "0000-00-00 00:00:00", "0000-00-00 00:00:00") );
             //itemsListClothing.add(new Item(i+"", "Item " + i, "$" + (i*100) + ".00", "http://", Item.ITEM_CATEGORY_CLOTH) );
             //itemsListTrends.add(new Item(i+"", "Item " + i, "$" + (i*100) + ".00", "http://", Item.ITEM_CATEGORY_TREND) );
 
-        }
+        }*/
 
-        adapterHomeItems.notifyDataSetChanged();
+
 
     }
 

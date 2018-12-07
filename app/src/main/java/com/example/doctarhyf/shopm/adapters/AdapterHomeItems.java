@@ -66,8 +66,8 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Item item = list.get(position);
 
-        holder.tvItemName.setText(item.getItemName());
-        holder.tvItemPrice.setText(item.getItemPrice());
+        holder.tvItemName.setText(item.getItem_name());
+        holder.tvItemPrice.setText(item.getItem_price());
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
