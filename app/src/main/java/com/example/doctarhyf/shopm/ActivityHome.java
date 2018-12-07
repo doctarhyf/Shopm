@@ -1,7 +1,10 @@
 package com.example.doctarhyf.shopm;
 
+import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -17,14 +20,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
+import com.example.doctarhyf.shopm.barcode.BarcodeCaptureActivity;
 import com.example.doctarhyf.shopm.fragments.FragmentHome;
 import com.example.doctarhyf.shopm.fragments.FragmentSellItem;
 import com.example.doctarhyf.shopm.fragments.FragmentSettings;
 import com.example.doctarhyf.shopm.fragments.FragmentViewItem;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.utils.Utils;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 
 public class ActivityHome extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -59,8 +66,11 @@ public class ActivityHome extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        //.setAction("Action", null).show();
+
+                scanItemToSell();
+
             }
         });
 
@@ -74,7 +84,58 @@ public class ActivityHome extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
+            private void scanItemToSell() {
+                Log.e(TAG, "scanItemToSell: " );
+
+                Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+                startActivityForResult(intent, Utils.BARCODE_READER_REQUEST_CODE);
+            }
+
+            @Override
+            protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+                String barcodeMessage = "No message";
+
+                if (requestCode == Utils.BARCODE_READER_REQUEST_CODE) {
+                    if (resultCode == CommonStatusCodes.SUCCESS) {
+                        if (data != null) {
+
+
+
+
+
+                            //Bundle extra = data.getExtras();
+
+                            Barcode barcode = data.getParcelableExtra("Barcode");//Barcode>(BarcodeCaptureActivity.BarcodeObject)
+                            Point p[] = barcode.cornerPoints;
+
+                            //mResultTextView.setText(barcode.displayValue);
+                            barcodeMessage = barcode.displayValue;
+                            showItemFromBarcode(barcodeMessage);
+
+                        } else
+                            //mResultTextView.setText(R.string.no_barcode_captured);
+                        barcodeMessage = getString(R.string.no_barcode_captured);
+                        showBarcodeErrorMessage(barcodeMessage);
+                    } else
+
+                        barcodeMessage = String.format(getString(R.string.barcode_error_format));
+                        Log.e(Utils.TAG, barcodeMessage);
+                    //CommonStatusCodes.getStatusCodeString(resultCode)))
+                    showBarcodeErrorMessage(barcodeMessage);
+                } else
+                    super.onActivityResult(requestCode, resultCode, data);
+            }
+
+            private void showItemFromBarcode(String barcodeMessage) {
+                Log.e(TAG, "showItemFromBarcode: showing -> " + barcodeMessage );
+            }
+
+            private void showBarcodeErrorMessage(String barcodeMessage) {
+                Toast.makeText(this, barcodeMessage, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -165,6 +226,7 @@ public class ActivityHome extends AppCompatActivity implements
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                //fragmentTransaction.setCustomAnimations(R.animator.anim_in, R.animator.anim_out);
                 fragmentTransaction.replace(fragCont, frag);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

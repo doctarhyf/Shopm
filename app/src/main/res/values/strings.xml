@@ -11,4 +11,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="low_storage_error">Low storage error</string>
+    <string name="no_camera_permission">No camera permission</string>
+    <string name="ok">OK</string>
+    <string name="no_barcode_captured">No barcode captured</string>
+    <string name="barcode_error_format">Barcode error format</string>
 </resources>
