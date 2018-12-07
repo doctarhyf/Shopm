@@ -145,10 +145,12 @@ public class ActivityHome extends AppCompatActivity implements
 
                 ShopmApplication.GI().getApi().loadItemByUniqueID(new ShopmApi.CallbackLoadItem() {
                     @Override
-                    public void onItemLoaded() {
+                    public void onItemLoaded(String itemJson) {
                         Intent intent = new Intent(ActivityHome.this, ActivitySellItem.class);
-                        intent.putExtra(Utils.ITEM_UNIQUE_NAME, barcodeMessage);
+                        intent.putExtra(Utils.ITEM_JSON, itemJson);
                         startActivity(intent);
+
+                        //Log.e(TAG, "onItemLoaded: DA JEYZ -> " + itemJson );
                     }
 
                     @Override

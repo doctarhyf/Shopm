@@ -35,6 +35,11 @@ public class Item {
 
     }
 
+    @Override
+    public String toString() {
+        return "ITEM TOSTRING -> " + toJSON();
+    }
+
     public Item(String item_id, String item_name, String item_price, String item_desc, String item_unique_name, String item_stock_count,
                 String item_last_stock_upd, String item_added_date){
         this.setItem_id(item_id);

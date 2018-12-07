@@ -7,7 +7,9 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.utils.Utils;
@@ -94,32 +96,51 @@ public class ShopmApi {
 
     public interface CallbackLoadItem{
 
-        void onItemLoaded();
+        void onItemLoaded(String itemJson);
         void onItemNotFound();
     }
 
-    public void loadItemByUniqueID(CallbackLoadItem callback, String barcodeMessage) {
+    public void loadItemByUniqueID(final CallbackLoadItem callback, String barcodeMessage) {
 
-        String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_LOAD_ITEM ;
+        String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_LOAD_ITEM + "&item_unique_name=" + barcodeMessage ;
 
        // Log.e(TAG, "loadAllItems: url -> "  + url );
+        Log.e(TAG, "loadItemByUniqueID: url -> " + url );
 
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET,
+        JsonArrayRequest request = new JsonArrayRequest(
+
                 url,
-                null,
-                new Response.Listener<JSONObject>() {
+
+                new Response.Listener<JSONArray>(){
+
                     @Override
-                    public void onResponse(JSONObject jsonObject) {
-                        Log.e(TAG, "onResponse: item data -> " + jsonObject);
+                    public void onResponse(JSONArray jsonArray) {
+
+                        //Log.e(TAG, "onResponse: DALEN -> " + jsonArray.length() );
+
+                        if(jsonArray.length() == 1){
+
+                            try {
+                                callback.onItemLoaded(jsonArray.get(0).toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }else {
+                            callback.onItemNotFound();
+                        }
+
                     }
                 },
-                new Response.ErrorListener() {
+                new Response.ErrorListener(){
+
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Log.e(TAG, "onErrorResponse: msg -> " + volleyError.getMessage() );
+
                     }
-                });
+                }
+
+        );
 
 
         ShopmApplication.GI().addToRequestQueue(request);
