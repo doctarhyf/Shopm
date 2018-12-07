@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
-import com.example.doctarhyf.shopm.api.ShopMApi;
+import com.example.doctarhyf.shopm.api.api;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.R;
@@ -104,7 +104,7 @@ public class FragmentHome extends Fragment {
 
     private void getItemsData() {
 
-        ShopmApplication.getInstance().getApi().loadAllItems(new ShopMApi.CallbacksItems() {
+        ShopmApplication.getInstance().getApi().loadAllItems(new api.CallbacksItems() {
             @Override
             public void onItemsLoaded(List<Item> newItems) {
 

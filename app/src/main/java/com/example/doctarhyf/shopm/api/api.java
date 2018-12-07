@@ -2,14 +2,12 @@ package com.example.doctarhyf.shopm.api;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.utils.Utils;
@@ -21,7 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopMApi {
+public class api {
 
     private static final String TAG = Utils.TAG;
     public static final String SERVER_ADD = "serverAdd";
@@ -35,7 +33,7 @@ public class ShopMApi {
     //private BitmapCacheManager bitmapCacheManager;
 
     //AlertDialog alertDialog;
-    public ShopMApi(Context context) {
+    public api(Context context) {
         this.context = context;
         //setBitmapCacheManager(new BitmapCacheManager(context));
         preferences = context.getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -89,7 +87,7 @@ public class ShopMApi {
 
     public void loadAllItems(final CallbacksItems callbacks) {
 
-        String url = GSA() + API_URL + "act=" + ShopMApi.ACTION_LOAD_ALL_ITEMS ;
+        String url = GSA() + API_URL + "act=" + api.ACTION_LOAD_ALL_ITEMS ;
 
         Log.e(TAG, "loadAllItems: url -> "  + url );
 

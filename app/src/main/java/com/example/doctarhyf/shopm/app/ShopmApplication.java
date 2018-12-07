@@ -7,7 +7,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.doctarhyf.shopm.api.ShopMApi;
+import com.example.doctarhyf.shopm.api.api;
 
 public class ShopmApplication extends Application {
 
@@ -19,7 +19,7 @@ public class ShopmApplication extends Application {
 
     private static ShopmApplication mInstance;
 
-    private ShopMApi sosApi;
+    private api sosApi;
 
     private Context lastProgressDialogContext = null;
 
@@ -52,9 +52,9 @@ public class ShopmApplication extends Application {
         return mInstance;
     }
 
-    public ShopMApi getApi(){
+    public api getApi(){
         if(sosApi == null){
-            sosApi = new ShopMApi(getApplicationContext());
+            sosApi = new api(getApplicationContext());
         }
 
         return sosApi;

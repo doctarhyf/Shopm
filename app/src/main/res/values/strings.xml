@@ -16,4 +16,6 @@
     <string name="ok">OK</string>
     <string name="no_barcode_captured">No barcode captured</string>
     <string name="barcode_error_format">Barcode error format</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Recherche</string>
 </resources>

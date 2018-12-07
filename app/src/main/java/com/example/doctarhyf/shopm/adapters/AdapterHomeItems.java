@@ -5,12 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.doctarhyf.shopm.R;
 import com.example.doctarhyf.shopm.objects.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,7 +21,8 @@ import java.util.List;
  * Created by Franvanna on 12/22/2017.
  */
 
-public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.ViewHolder> {
+public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.ViewHolder> implements
+        Filterable{
 
 
     private static final String TAG = "DASH";
@@ -40,14 +44,17 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
         }
     }
 
-    private List<Item> list;
+    private List<Item> items;
+    private List<Item> itemsFiltered;
     private Callbacks callbacks;
     //private SOS_API sosApi;
 
-    public AdapterHomeItems(Context context, List<Item> list, Callbacks callbacks){
+
+
+    public AdapterHomeItems(Context context, List<Item> items, Callbacks callbacks){
 
         this.context = context;
-        this.list = list;
+        this.items = items;
         this.callbacks = callbacks;
         //this.sosApi = SOSApplication.getInstance().getSosApi();
     }
@@ -64,7 +71,7 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Item item = list.get(position);
+        final Item item = items.get(position);
 
         holder.tvItemName.setText(item.getItem_name());
         holder.tvItemPrice.setText(item.getItem_price());
@@ -161,8 +168,45 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
     }
 
     @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    itemsFiltered = items;
+                } else {
+                    List<Item> filteredList = new ArrayList<>();
+                    for (Item item : items) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (item.getItem_name().toLowerCase().contains(charString.toLowerCase()) || item.getItem_desc().contains(charSequence)) {
+                            filteredList.add(item);
+                        }
+                    }
+
+                    itemsFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = itemsFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                itemsFiltered = (ArrayList<Item>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+
+
+    @Override
     public int getItemCount() {
-        return list.size();
+        return items.size();
     }
 
     public  interface Callbacks {
