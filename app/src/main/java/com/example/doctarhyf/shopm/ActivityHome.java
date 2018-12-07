@@ -96,6 +96,8 @@ public class ActivityHome extends AppCompatActivity implements
 
                 String barcodeMessage = "No message";
 
+
+
                 if (requestCode == Utils.BARCODE_READER_REQUEST_CODE) {
                     if (resultCode == CommonStatusCodes.SUCCESS) {
                         if (data != null) {

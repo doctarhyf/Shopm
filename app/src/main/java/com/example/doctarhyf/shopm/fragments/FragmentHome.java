@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
+import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.R;
 
@@ -101,6 +102,8 @@ public class FragmentHome extends Fragment {
     }
 
     private void getItemsData() {
+
+        ShopmApplication.getInstance().getApi().loadAllItems(null);
 
         for (int i = 0; i < 10; i ++){
             items.add(new Item("" + i, "Item " + i, (i * 1324) + " $", "Tha desc goes here " + i, "UN",
