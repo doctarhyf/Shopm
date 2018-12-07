@@ -1,0 +1,176 @@
+package com.example.doctarhyf.shopm.adapters;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.doctarhyf.shopm.R;
+import com.example.doctarhyf.shopm.objects.Item;
+
+import java.util.List;
+
+
+/**
+ * Created by Franvanna on 12/22/2017.
+ */
+
+public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.ViewHolder> {
+
+
+    private static final String TAG = "DASH";
+    private Context context;
+
+    public static  class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView tvItemName, tvItemPrice;
+        public ImageView ivItemPic;
+        public View layout;
+
+        public ViewHolder(View view){
+            super(view);
+            layout = view;
+            tvItemName = layout.findViewById(R.id.tvItemName);
+            tvItemPrice = layout.findViewById(R.id.tvItemPrice);
+            ivItemPic = layout.findViewById(R.id.ivItemPic);
+
+        }
+    }
+
+    private List<Item> list;
+    private Callbacks callbacks;
+    //private SOS_API sosApi;
+
+    public AdapterHomeItems(Context context, List<Item> list, Callbacks callbacks){
+
+        this.context = context;
+        this.list = list;
+        this.callbacks = callbacks;
+        //this.sosApi = SOSApplication.getInstance().getSosApi();
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.layout_adapter_item_home, parent,false);
+        //ViewHolder viewHolder = new ViewHolder(view);
+
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final Item item = list.get(position);
+
+        holder.tvItemName.setText(item.getItemName());
+        holder.tvItemPrice.setText(item.getItemPrice());
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Log.e(TAG, "onClick: " + item.getItemCategory() );
+                callbacks.onHomeItemClicked(item);
+            }
+        });
+
+        //holder.tvCatTitle.setText(homeCategoryItem.getTitle());
+
+
+        /*
+        String url = homeCategoryItem.getImageUrl();
+
+        //final String pixPath = SOS_API.DIR_PATH_PRODUCTS_PIX + pd.getPdImg();
+        Uri uri = Uri.parse(url);
+
+
+        String picName = url.split("/")[url.split("/").length-1];
+        String cachePath = BitmapCacheManager.GetImageCachePath(BitmapCacheManager.PIC_CACHE_ROOT_PATH_ID_ITEMS_CATEGORIES, picName);
+        if(BitmapCacheManager.FileExists(cachePath)){
+            uri = Uri.fromFile(new File(cachePath));
+
+
+            Log.e(TAG, "PIC_PATH : -> " + uri.toString() );
+
+            //Toast.makeText(context, "Loade from cache", Toast.LENGTH_SHORT).show();
+
+        }else{
+            Log.e(TAG, "NO_CACHE -> " + uri.toString() );
+            //Toast.makeText(context, "Loade from network", Toast.LENGTH_SHORT).show();
+        }
+
+        Glide.with(holder.ivCatBg.getContext())
+                .load(uri)
+                .asBitmap()
+                .error(R.drawable.ic_error)
+                .placeholder(R.drawable.progress_animation)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .fitCenter()
+                .into(new SimpleTarget<Bitmap>(300,300) {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation)  {
+
+
+                        //callbacks.onBitmapShouldBeSaved(resource, homeCategoryItem.getImageUrl());
+                        sosApi.getBitmapCacheManager().saveBitmapToCache(resource, homeCategoryItem.getImageUrl(), SOS_API.DIR_NAME_PIX_CACHE_HOME_CATS );
+
+
+                        holder.ivCatBg.setImageBitmap(resource);
+
+                        //callbacks.onItemClicked(homeCategoryItem);
+                    }
+                });
+
+        //callbacks.onItemClicked(homeCategoryItem);
+
+        holder.ivCatBg.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+
+                if(event.getAction() == 0){
+                    holder.ivCatBg.setAlpha(0.5f);
+
+                }
+
+                if(event.getAction() == 1 || event.getAction() == 3) {
+                    holder.ivCatBg.setAlpha(1f);
+
+
+                }
+
+                if(event.getAction() == 1){
+                    callbacks.onItemClicked(homeCategoryItem);
+                }
+
+
+
+
+                return true;
+
+
+
+
+
+            }
+        });*/
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    public  interface Callbacks {
+        void onHomeItemClicked(Item item);
+
+
+
+    }
+
+
+}

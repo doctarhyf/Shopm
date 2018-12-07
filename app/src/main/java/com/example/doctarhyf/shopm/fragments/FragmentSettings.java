@@ -1,4 +1,4 @@
-package com.example.doctarhyf.shopm;
+package com.example.doctarhyf.shopm.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,16 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.doctarhyf.shopm.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnFragmentSellInteractionListener} interface
+ * {@link OnFragmentSettingsInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentSellItem#newInstance} factory method to
+ * Use the {@link FragmentSettings#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentSellItem extends Fragment {
+public class FragmentSettings extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,9 +29,9 @@ public class FragmentSellItem extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentSellInteractionListener mListener;
+    private OnFragmentSettingsInteractionListener mListener;
 
-    public FragmentSellItem() {
+    public FragmentSettings() {
         // Required empty public constructor
     }
 
@@ -39,11 +41,11 @@ public class FragmentSellItem extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentSellItem.
+     * @return A new instance of fragment FragmentSettings.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentSellItem newInstance(String param1, String param2) {
-        FragmentSellItem fragment = new FragmentSellItem();
+    public static FragmentSettings newInstance(String param1, String param2) {
+        FragmentSettings fragment = new FragmentSettings();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,21 +66,21 @@ public class FragmentSellItem extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sell_item, container, false);
+        return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentSellInteraction(uri);
+            mListener.onFragmentSettingsInteraction(uri);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentSellInteractionListener) {
-            mListener = (OnFragmentSellInteractionListener) context;
+        if (context instanceof OnFragmentSettingsInteractionListener) {
+            mListener = (OnFragmentSettingsInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentSettingsInteractionListener");
@@ -101,8 +103,8 @@ public class FragmentSellItem extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentSellInteractionListener {
+    public interface OnFragmentSettingsInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentSellInteraction(Uri uri);
+        void onFragmentSettingsInteraction(Uri uri);
     }
 }

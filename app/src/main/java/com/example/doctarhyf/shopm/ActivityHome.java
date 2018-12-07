@@ -4,7 +4,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,15 +18,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
+import com.example.doctarhyf.shopm.fragments.FragmentHome;
+import com.example.doctarhyf.shopm.fragments.FragmentSellItem;
+import com.example.doctarhyf.shopm.fragments.FragmentSettings;
+import com.example.doctarhyf.shopm.fragments.FragmentViewItem;
+import com.example.doctarhyf.shopm.objects.Item;
+import com.example.doctarhyf.shopm.utils.Utils;
+
 public class ActivityHome extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         FragmentHome.OnFragmentHomeInteractionListener,
         FragmentSettings.OnFragmentSettingsInteractionListener,
-        FragmentSellItem.OnFragmentSellInteractionListener
+        FragmentSellItem.OnFragmentSellInteractionListener,
+        AdapterHomeItems.Callbacks,
+        FragmentViewItem.OnFragmentViewItemInteractionListener
         {
 
 
-    //private View fragCont;
+            private static final String TAG = Utils.TAG;
+            //private View fragCont;
     private FragmentManager fragmentManager;
 
     @Override
@@ -101,13 +114,17 @@ public class ActivityHome extends AppCompatActivity implements
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentHome.newInstance("","")).commit();
+            //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentHome.newInstance("","")).commit();
+
+            replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
         } else if (id == R.id.nav_sell_item) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSellItem.newInstance("","")).commit();
+            //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSellItem.newInstance("","")).commit();
 
+            replaceFragWithBackstack(R.id.fragCont, FragmentSellItem.newInstance("",""));
         } else if (id == R.id.nav_settings) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSettings.newInstance("","")).commit();
+            //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSettings.newInstance("","")).commit();
 
+            replaceFragWithBackstack(R.id.fragCont, FragmentSettings.newInstance("",""));
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -126,11 +143,30 @@ public class ActivityHome extends AppCompatActivity implements
 
             @Override
             public void onFragmentSellInteraction(Uri uri) {
-                
+
             }
 
             @Override
             public void onFragmentSettingsInteraction(Uri uri) {
 
+            }
+
+
+            @Override
+            public void onHomeItemClicked(Item item) {
+                Log.e(TAG, "onHomeItemClicked: " );
+
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentViewItem.newInstance("","")).commit();
+                replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance("",""));
+
+            }
+
+            private void replaceFragWithBackstack(int fragCont, Fragment frag) {
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(fragCont, frag);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         }

@@ -1,4 +1,4 @@
-package com.example.doctarhyf.shopm;
+package com.example.doctarhyf.shopm.utils;
 
 public class Utils {
 

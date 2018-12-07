@@ -1,12 +1,22 @@
-package com.example.doctarhyf.shopm;
+package com.example.doctarhyf.shopm.fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
+import com.example.doctarhyf.shopm.objects.Item;
+import com.example.doctarhyf.shopm.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,6 +36,10 @@ public class FragmentHome extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private List<Item> items = new ArrayList<>();
+    private AdapterHomeItems adapterHomeItems;
+    private CallbacksFragmentHome callbacksFragmentHome;
 
     private OnFragmentHomeInteractionListener mListener;
 
@@ -64,7 +78,51 @@ public class FragmentHome extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        //TextView tvSearch = rootView.findViewById(R.id.tvSearch);
+
+        /*tvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.startSearching();
+            }
+        });*/
+
+        setupHomeItems(rootView);
+        //setupHomeClothes(rootView);
+        //setupHomeTrendz(rootView);
+
+        getItemsData();
+
+
+
+        return rootView;
+    }
+
+    private void getItemsData() {
+
+        for (int i = 0; i < 10; i ++){
+            items.add(new Item("" + i, "Item " + i, (i * 1324) + " $", "Tha desc goes here " + i, "UN",
+            2000) );
+            //itemsListClothing.add(new Item(i+"", "Item " + i, "$" + (i*100) + ".00", "http://", Item.ITEM_CATEGORY_CLOTH) );
+            //itemsListTrends.add(new Item(i+"", "Item " + i, "$" + (i*100) + ".00", "http://", Item.ITEM_CATEGORY_TREND) );
+
+        }
+
+        adapterHomeItems.notifyDataSetChanged();
+
+    }
+
+    private void setupHomeItems(View rootView) {
+        RecyclerView rv = rootView.findViewById(R.id.rvHome);
+        adapterHomeItems = new AdapterHomeItems(getActivity(), items, (AdapterHomeItems.Callbacks) getActivity());
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setLayoutManager(layoutManager);
+        rv.setAdapter(adapterHomeItems);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -104,5 +162,10 @@ public class FragmentHome extends Fragment {
     public interface OnFragmentHomeInteractionListener {
         // TODO: Update argument type and name
         void onFragmentHomeInteraction(Uri uri);
+    }
+
+    public interface CallbacksFragmentHome{
+
+        void onHomeItemClicked(Item item);
     }
 }
