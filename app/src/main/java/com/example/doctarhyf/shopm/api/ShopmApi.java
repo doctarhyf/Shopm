@@ -19,28 +19,33 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class api {
+public class ShopmApi {
 
     private static final String TAG = Utils.TAG;
     public static final String SERVER_ADD = "serverAdd";
     private static final String KEY_SESSION_DATA_EMPTY = "no_session_var";
     private static final String ACTION_LOAD_ALL_ITEMS = "loadAllItems";
+    private static final String ACTION_LOAD_ITEM = "loadItem";
     public static String API_URL = "shopm/api.php?";
     private final Context context;
     private final SharedPreferences.Editor editor;
     private SharedPreferences preferences;
-    private final String DEF_IP = "192.168.88.16";
+    private final String DEF_IP = "";
     //private BitmapCacheManager bitmapCacheManager;
 
     //AlertDialog alertDialog;
-    public api(Context context) {
+    public ShopmApi(Context context) {
         this.context = context;
         //setBitmapCacheManager(new BitmapCacheManager(context));
         preferences = context.getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = getPreferences().edit();
 
-        editor.putString(SERVER_ADD, DEF_IP);
-        editor.commit();
+        String ip = GSV(SERVER_ADD);
+
+        if(ip.equals("")) {
+            editor.putString(SERVER_ADD, DEF_IP);
+            editor.commit();
+        }
 
         //setupAlertDialogResponse();
         //SSV(KEY_NEW_ITEM_UNIQUE_ID, null);
@@ -50,6 +55,17 @@ public class api {
         //alertDialog = HelperMethods.getAlertDialogProcessingWithMessage(context, HelperMethods.getStringResource(this, R.string.pbMsgProcessing),false);
 
         //getAllItemCats();
+    }
+
+    public void SSV(String key, String val) {
+        setSessionVar(key, val);
+    }
+
+    public void setSessionVar(String key, String val) {
+
+        editor.putString(key, val);
+        editor.apply();
+        editor.commit();
     }
 
     public String GSA() {
@@ -76,6 +92,42 @@ public class api {
         return preferences;
     }
 
+    public interface CallbackLoadItem{
+
+        void onItemLoaded();
+        void onItemNotFound();
+    }
+
+    public void loadItemByUniqueID(CallbackLoadItem callback, String barcodeMessage) {
+
+        String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_LOAD_ITEM ;
+
+       // Log.e(TAG, "loadAllItems: url -> "  + url );
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        Log.e(TAG, "onResponse: item data -> " + jsonObject);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.e(TAG, "onErrorResponse: msg -> " + volleyError.getMessage() );
+                    }
+                });
+
+
+        ShopmApplication.GI().addToRequestQueue(request);
+
+
+
+    }
+
     public interface CallbacksItems {
         void onItemsLoaded(List<Item> items);
         //void onItemPublishResult(int code, String data);
@@ -87,9 +139,9 @@ public class api {
 
     public void loadAllItems(final CallbacksItems callbacks) {
 
-        String url = GSA() + API_URL + "act=" + api.ACTION_LOAD_ALL_ITEMS ;
+        String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_LOAD_ALL_ITEMS ;
 
-        Log.e(TAG, "loadAllItems: url -> "  + url );
+        //Log.e(TAG, "loadAllItems: url -> "  + url );
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,

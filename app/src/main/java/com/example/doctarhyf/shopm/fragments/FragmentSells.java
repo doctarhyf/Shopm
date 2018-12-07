@@ -4,24 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.doctarhyf.shopm.R;
-import com.example.doctarhyf.shopm.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnFragmentViewItemInteractionListener} interface
+ * {@link OnFragmentSellsInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentViewItem#newInstance} factory method to
+ * Use the {@link FragmentSells#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentViewItem extends Fragment {
+public class FragmentSells extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,9 +28,9 @@ public class FragmentViewItem extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentViewItemInteractionListener mListener;
+    private OnFragmentSellsInteractionListener mListener;
 
-    public FragmentViewItem() {
+    public FragmentSells() {
         // Required empty public constructor
     }
 
@@ -43,11 +40,11 @@ public class FragmentViewItem extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentViewItem.
+     * @return A new instance of fragment FragmentSells.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentViewItem newInstance(String param1, String param2) {
-        FragmentViewItem fragment = new FragmentViewItem();
+    public static FragmentSells newInstance(String param1, String param2) {
+        FragmentSells fragment = new FragmentSells();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,36 +65,24 @@ public class FragmentViewItem extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_view_item, container, false);
-
-        if(!mParam1.equals("")){
-
-
-            TextView tv = rootView.findViewById(R.id.tvItemName);
-            tv.setText(mParam1);
-
-
-        }
-
-        return rootView;
+        return inflater.inflate(R.layout.fragment_sells, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            //mListener.onFragmentViewIteInteraction(uri);
-            Log.e(Utils.TAG, "onButtonPressed: " );
+            mListener.onFragmentSellsInteraction(uri);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentViewItemInteractionListener) {
-            mListener = (OnFragmentViewItemInteractionListener) context;
+        if (context instanceof OnFragmentSellsInteractionListener) {
+            mListener = (OnFragmentSellsInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentViewItemInteractionListener");
+                    + " must implement OnFragmentSellsInteractionListener");
         }
     }
 
@@ -117,8 +102,8 @@ public class FragmentViewItem extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentViewItemInteractionListener {
+    public interface OnFragmentSellsInteractionListener {
         // TODO: Update argument type and name
-       // void onFragmentViewIteInteraction(Uri uri);
+        void onFragmentSellsInteraction(Uri uri);
     }
 }

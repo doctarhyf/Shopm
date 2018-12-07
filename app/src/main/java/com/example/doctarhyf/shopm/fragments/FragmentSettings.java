@@ -4,11 +4,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.doctarhyf.shopm.R;
+import com.example.doctarhyf.shopm.api.ShopmApi;
+import com.example.doctarhyf.shopm.app.ShopmApplication;
+import com.example.doctarhyf.shopm.utils.Utils;
 
 
 /**
@@ -24,6 +32,7 @@ public class FragmentSettings extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = Utils.TAG;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -66,7 +75,32 @@ public class FragmentSettings extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        final EditText etServerIP = rootView.findViewById(R.id.etServerIP);
+
+        etServerIP.setText(ShopmApplication.getInstance().getApi().GSV(ShopmApi.SERVER_ADD));
+
+        etServerIP.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String newIp = editable.toString();
+
+                ShopmApplication.GI().getApi().SSV(ShopmApi.SERVER_ADD,newIp);
+            }
+        });
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

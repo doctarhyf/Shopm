@@ -1,12 +1,12 @@
 package com.example.doctarhyf.shopm;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,9 +23,12 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
+import com.example.doctarhyf.shopm.api.ShopmApi;
+import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.barcode.BarcodeCaptureActivity;
 import com.example.doctarhyf.shopm.fragments.FragmentHome;
 import com.example.doctarhyf.shopm.fragments.FragmentSellItem;
+import com.example.doctarhyf.shopm.fragments.FragmentSells;
 import com.example.doctarhyf.shopm.fragments.FragmentSettings;
 import com.example.doctarhyf.shopm.fragments.FragmentViewItem;
 import com.example.doctarhyf.shopm.objects.Item;
@@ -39,7 +42,8 @@ public class ActivityHome extends AppCompatActivity implements
         FragmentSettings.OnFragmentSettingsInteractionListener,
         FragmentSellItem.OnFragmentSellInteractionListener,
         AdapterHomeItems.Callbacks,
-        FragmentViewItem.OnFragmentViewItemInteractionListener
+        FragmentViewItem.OnFragmentViewItemInteractionListener,
+        FragmentSells.OnFragmentSellsInteractionListener
         {
 
 
@@ -96,7 +100,7 @@ public class ActivityHome extends AppCompatActivity implements
 
                 String barcodeMessage = "No message";
 
-
+                Log.e(TAG, "onActivityResult: DA RESCODE -> " + resultCode );
 
                 if (requestCode == Utils.BARCODE_READER_REQUEST_CODE) {
                     if (resultCode == CommonStatusCodes.SUCCESS) {
@@ -115,22 +119,47 @@ public class ActivityHome extends AppCompatActivity implements
                             barcodeMessage = barcode.displayValue;
                             showItemFromBarcode(barcodeMessage);
 
-                        } else
+                        } else {
                             //mResultTextView.setText(R.string.no_barcode_captured);
-                        barcodeMessage = getString(R.string.no_barcode_captured);
-                        showBarcodeErrorMessage(barcodeMessage);
-                    } else
+                            barcodeMessage = getString(R.string.no_barcode_captured);
+                            showBarcodeErrorMessage(barcodeMessage);
+
+                        }
+                    } else {
 
                         barcodeMessage = String.format(getString(R.string.barcode_error_format));
-                        Log.e(Utils.TAG, barcodeMessage);
-                    //CommonStatusCodes.getStatusCodeString(resultCode)))
-                    showBarcodeErrorMessage(barcodeMessage);
-                } else
+                        //Log.e(Utils.TAG, barcodeMessage);
+                        Log.e(TAG, "onActivityResult: NO SUCCESS -> " + barcodeMessage );
+                        //CommonStatusCodes.getStatusCodeString(resultCode)))
+                        showBarcodeErrorMessage(barcodeMessage);
+                    }
+                } else {
                     super.onActivityResult(requestCode, resultCode, data);
+                }
             }
 
-            private void showItemFromBarcode(String barcodeMessage) {
+            private void showItemFromBarcode(final String barcodeMessage) {
                 Log.e(TAG, "showItemFromBarcode: showing -> " + barcodeMessage );
+
+                //replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance(barcodeMessage,""));
+
+                ShopmApplication.GI().getApi().loadItemByUniqueID(new ShopmApi.CallbackLoadItem() {
+                    @Override
+                    public void onItemLoaded() {
+                        Intent intent = new Intent(ActivityHome.this, ActivitySellItem.class);
+                        intent.putExtra(Utils.ITEM_UNIQUE_NAME, barcodeMessage);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onItemNotFound() {
+
+                        Toast.makeText(ActivityHome.this,"This item : " + barcodeMessage + " doesn't exist", Toast.LENGTH_SHORT).show();
+
+                    }
+                }, barcodeMessage);
+
+
             }
 
             private void showBarcodeErrorMessage(String barcodeMessage) {
@@ -165,6 +194,8 @@ public class ActivityHome extends AppCompatActivity implements
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            replaceFragWithBackstack(R.id.fragCont, FragmentSettings.newInstance("",""));
             return true;
         }
 
@@ -184,10 +215,10 @@ public class ActivityHome extends AppCompatActivity implements
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentHome.newInstance("","")).commit();
 
             replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
-        } else if (id == R.id.nav_sell_item) {
+        } else if (id == R.id.nav_sells) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSellItem.newInstance("","")).commit();
-
-            replaceFragWithBackstack(R.id.fragCont, FragmentSellItem.newInstance("",""));
+            //scanItemToSell();
+            replaceFragWithBackstack(R.id.fragCont, FragmentSells.newInstance("",""));
         } else if (id == R.id.nav_settings) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSettings.newInstance("","")).commit();
 
@@ -236,5 +267,11 @@ public class ActivityHome extends AppCompatActivity implements
                 fragmentTransaction.replace(fragCont, frag);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
+            }
+
+            @Override
+            public void onFragmentSellsInteraction(Uri uri) {
+
             }
         }

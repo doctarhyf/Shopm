@@ -18,4 +18,7 @@
     <string name="barcode_error_format">Barcode error format</string>
     <string name="action_search">Search</string>
     <string name="search_hint">Recherche</string>
+    <string name="setTitleServerIP">Server IP</string>
+    <string name="strSellItem">Sell Item</string>
+    <string name="strSells">Sells</string>
 </resources>

@@ -7,4 +7,5 @@ public class Utils {
     public static final String SHARED_PREF_NAME = "sharedPrefs";
     public static final String JSON_RESP_CODE = "code";
     public static final int JSON_RESP_CODE_SUCCESS = 1;
+    public static final String ITEM_UNIQUE_NAME = "item_unique_name";
 }

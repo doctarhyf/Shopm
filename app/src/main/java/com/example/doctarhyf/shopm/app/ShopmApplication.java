@@ -7,7 +7,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.doctarhyf.shopm.api.api;
+import com.example.doctarhyf.shopm.api.ShopmApi;
 
 public class ShopmApplication extends Application {
 
@@ -19,7 +19,7 @@ public class ShopmApplication extends Application {
 
     private static ShopmApplication mInstance;
 
-    private api sosApi;
+    private ShopmApi sosShopmApi;
 
     private Context lastProgressDialogContext = null;
 
@@ -52,12 +52,12 @@ public class ShopmApplication extends Application {
         return mInstance;
     }
 
-    public api getApi(){
-        if(sosApi == null){
-            sosApi = new api(getApplicationContext());
+    public ShopmApi getApi(){
+        if(sosShopmApi == null){
+            sosShopmApi = new ShopmApi(getApplicationContext());
         }
 
-        return sosApi;
+        return sosShopmApi;
     }
 
     public ProgressDialog GUPD(Context context, String title, String message){
