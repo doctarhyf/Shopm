@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,10 +76,17 @@ public class FragmentSettings extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
         final EditText etServerIP = rootView.findViewById(R.id.etServerIP);
+        final EditText etExchRate = rootView.findViewById(R.id.etExchRate);
+        final EditText etMaxSellableItems = rootView.findViewById(R.id.etMaxSellableItems);
 
-        etServerIP.setText(ShopmApplication.getInstance().getApi().GSV(ShopmApi.SERVER_ADD));
+        initSettingsEditText(etServerIP, ShopmApi.SV_SERVER_ADD, ShopmApi.SV_DEF_SERVER_ADD);
+        initSettingsEditText(etExchRate, ShopmApi.SV_EXCH_RATE, ShopmApi.SV_DEF_EXCH_RATE);
+        initSettingsEditText(etMaxSellableItems, ShopmApi.SV_MAX_SELLABLE_NUM, ShopmApi.SV_DEF_MAX_SELLABLE_NUM);
 
-        etServerIP.addTextChangedListener(new TextWatcher() {
+
+        //etServerIP.setText(ShopmApplication.getInstance().getApi().GSV(ShopmApi.SV_SERVER_ADD));
+
+        /*etServerIP.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -96,11 +101,36 @@ public class FragmentSettings extends Fragment {
             public void afterTextChanged(Editable editable) {
                 String newIp = editable.toString();
 
-                ShopmApplication.GI().getApi().SSV(ShopmApi.SERVER_ADD,newIp);
+                ShopmApplication.GI().getApi().SSV(ShopmApi.SV_SERVER_ADD,newIp);
+            }
+        });*/
+
+        return rootView;
+    }
+
+    public void initSettingsEditText(EditText editText, final String keySessionVarName, String defVal){
+
+        editText.setText(ShopmApplication.getInstance().getApi().GSV(keySessionVarName, defVal));//ShopmApi.SV_SERVER_ADD));
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String data = editable.toString();
+
+                ShopmApplication.GI().getApi().SSV(keySessionVarName, data);//ShopmApi.SV_SERVER_ADD,newIp);
             }
         });
 
-        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

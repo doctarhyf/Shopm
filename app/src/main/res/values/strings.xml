@@ -22,4 +22,7 @@
     <string name="strSellItem">Sell Item</string>
     <string name="strSells">Sells</string>
     <string name="setTitleExchRate">1 USD in CDF</string>
+    <string name="action_scan_item">Scan Item</string>
+    <string name="btn_confirm_sell">SELL ITEM!</string>
+    <string name="setTitleMaxSellableItem">Nombre d\'achat max.</string>
 </resources>

@@ -9,7 +9,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.utils.Utils;
@@ -24,15 +23,20 @@ import java.util.List;
 public class ShopmApi {
 
     private static final String TAG = Utils.TAG;
-    public static final String SERVER_ADD = "serverAdd";
+    public static final String SV_SERVER_ADD = "serverAdd";
     private static final String KEY_SESSION_DATA_EMPTY = "no_session_var";
     private static final String ACTION_LOAD_ALL_ITEMS = "loadAllItems";
     private static final String ACTION_LOAD_ITEM = "loadItem";
+    public static final String SV_EXCH_RATE = "exchRate";
+    public static final String SV_DEF_EXCH_RATE = "1600";
+    public static final String SV_MAX_SELLABLE_NUM = "maxSellableItemNum";
+    public static final String SV_DEF_MAX_SELLABLE_NUM = "30";
+    public static final String SV_DEF_SERVER_ADD = "192.168.1.3";
     public static String API_URL = "shopm/api.php?";
     private final Context context;
     private final SharedPreferences.Editor editor;
     private SharedPreferences preferences;
-    private final String DEF_IP = "";
+    //public final String SV_DEF_SERVER_ADD = "";
     //private BitmapCacheManager bitmapCacheManager;
 
     //AlertDialog alertDialog;
@@ -42,12 +46,9 @@ public class ShopmApi {
         preferences = context.getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = getPreferences().edit();
 
-        String ip = GSV(SERVER_ADD);
-
-        if(ip.equals("")) {
-            editor.putString(SERVER_ADD, DEF_IP);
-            editor.commit();
-        }
+        initSessionVar(SV_SERVER_ADD, SV_DEF_SERVER_ADD);
+        initSessionVar(SV_EXCH_RATE, SV_DEF_EXCH_RATE);
+        initSessionVar(SV_MAX_SELLABLE_NUM, SV_DEF_MAX_SELLABLE_NUM);
 
         //setupAlertDialogResponse();
         //SSV(KEY_NEW_ITEM_UNIQUE_ID, null);
@@ -57,6 +58,16 @@ public class ShopmApi {
         //alertDialog = HelperMethods.getAlertDialogProcessingWithMessage(context, HelperMethods.getStringResource(this, R.string.pbMsgProcessing),false);
 
         //getAllItemCats();
+    }
+
+    private void initSessionVar(String kVarName, String defVal) {
+        String data = GSV(kVarName, defVal);
+        //String exchRate = GSV(SV_EXCH_RATE);
+
+        if(data.equals("")) {
+            editor.putString(kVarName, defVal);
+            editor.commit();
+        }
     }
 
     public void SSV(String key, String val) {
@@ -78,16 +89,16 @@ public class ShopmApi {
 
 
 
-        return "http://" + GSV(SERVER_ADD) + "/";
+        return "http://" + GSV(SV_SERVER_ADD, SV_DEF_SERVER_ADD) + "/";
     }
 
-    public String GSV(String key) {
-        return getSessionVar(key);
+    public String GSV(String key, String defVal) {
+        return getSessionVar(key, defVal);
     }
 
-    public String getSessionVar(String key) {
+    public String getSessionVar(String key, String defVal) {
 
-        return getPreferences().getString(key, KEY_SESSION_DATA_EMPTY);
+        return getPreferences().getString(key, defVal);
     }
 
     public SharedPreferences getPreferences() {

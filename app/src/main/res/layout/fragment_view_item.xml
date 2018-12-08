@@ -39,11 +39,7 @@
         <TextView
             android:id="@+id/tvItemPrice"
             android:text="3000 FC"
-            android:textSize="24sp"
-            android:textColor="@color/colorBlack"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            style="@style/styleTvPriceLarge" />
 
             <TextView
                 android:text="In stock : 20"
