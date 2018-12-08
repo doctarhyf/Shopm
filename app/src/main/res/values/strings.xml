@@ -25,4 +25,6 @@
     <string name="action_scan_item">Scan Item</string>
     <string name="btn_confirm_sell">SELL ITEM!</string>
     <string name="setTitleMaxSellableItem">Nombre d\'achat max.</string>
+    <string name="msgItemSoldOutText">Sorry this item has been sold out. Please update the stock amount!</string>
+    <string name="msgItemSoldOutTitle">ITEM OUT SOLD OUT</string>
 </resources>

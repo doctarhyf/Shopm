@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +63,7 @@ public class ActivitySellItem extends AppCompatActivity {
         tvItemName.setText(item.getItem_name());
         tvItemPrice.setText(item.getItem_price() + " FC");
 
-        int maxSellable = Integer.parseInt(ShopmApplication.GI().getApi().GSV(ShopmApi.SV_MAX_SELLABLE_NUM, ShopmApi.SV_DEF_MAX_SELLABLE_NUM));
+        int maxSellable = Integer.parseInt(item.getItem_stock_count());//Integer.parseInt(ShopmApplication.GI().getApi().GSV(ShopmApi.SV_MAX_SELLABLE_NUM, ShopmApi.SV_DEF_MAX_SELLABLE_NUM));
         Spinner spQty = findViewById(R.id.spQty);
 
         List<String> numbers = new ArrayList<>();
@@ -98,7 +99,14 @@ public class ActivitySellItem extends AppCompatActivity {
 
 
 
+        if(maxSellable == 0){
+            Button btnSell = findViewById(R.id.btnSellItem);
+            btnSell.setVisibility(View.GONE);
 
+            View llItemSoldOut = findViewById(R.id.llItemSoldOut);
+
+            llItemSoldOut.setVisibility(View.VISIBLE);
+        }
 
     }
 
