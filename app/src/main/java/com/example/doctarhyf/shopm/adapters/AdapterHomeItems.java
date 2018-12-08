@@ -30,7 +30,7 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
 
     public static  class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvItemName, tvItemPrice;
+        public TextView tvItemName, tvItemPrice, tvItemStockCount;
         public ImageView ivItemPic;
         public View layout;
 
@@ -40,6 +40,8 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
             tvItemName = layout.findViewById(R.id.tvItemName);
             tvItemPrice = layout.findViewById(R.id.tvItemPrice);
             ivItemPic = layout.findViewById(R.id.ivItemPic);
+            tvItemStockCount = layout.findViewById(R.id.tvItemStockCount);
+
 
         }
     }
@@ -74,7 +76,8 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
         final Item item = items.get(position);
 
         holder.tvItemName.setText(item.getItem_name());
-        holder.tvItemPrice.setText(item.getItem_price());
+        holder.tvItemPrice.setText("Prix : " + item.getItem_price() + " FC");
+        holder.tvItemStockCount.setText("En stock : " + item.getItem_stock_count());
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override

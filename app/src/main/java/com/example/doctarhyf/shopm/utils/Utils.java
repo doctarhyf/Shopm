@@ -10,4 +10,5 @@ public class Utils {
     public static final String ITEM_UNIQUE_NAME = "item_unique_name";
     public static final String ITEM_JSON = "itemJson";
     public static final String STR_STOCK_PREFIX = "En stock : ";
+    public static final String ITEM_SOLD = "itemSold";
 }

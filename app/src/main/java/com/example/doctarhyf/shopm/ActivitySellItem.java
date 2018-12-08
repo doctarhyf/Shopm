@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.api.ShopmApi;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
@@ -28,6 +29,7 @@ public class ActivitySellItem extends AppCompatActivity {
     private static final String TAG = Utils.TAG;
     //private String itemJson;
     private Item item;
+    private int mQty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +84,10 @@ public class ActivitySellItem extends AppCompatActivity {
         spQty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                tvItemTotalPrice.setText(((int)(itemPrice * (i+1)) + " FC"));
+
+                int qty = i+1;
+                updateItemQty(qty);
+                tvItemTotalPrice.setText(((int)(itemPrice * qty) + " FC"));
             }
 
             @Override
@@ -97,6 +102,10 @@ public class ActivitySellItem extends AppCompatActivity {
 
     }
 
+    private void updateItemQty(int qty) {
+        mQty = qty;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -107,7 +116,33 @@ public class ActivitySellItem extends AppCompatActivity {
     }
 
     public void sellItem(View view){
-        Log.e(TAG, "sellItem: " );
+        //Log.e(TAG, "sellItem: " );
+
+        ShopmApi api = ShopmApplication.GI().getApi();
+
+        String item_id = item.getItem_id();
+        String item_qty = "" + mQty;
+        String exch_rate = api.GSV(ShopmApi.SV_EXCH_RATE, ShopmApi.SV_DEF_EXCH_RATE);
+        String rem_stock = (Integer.parseInt(item.getItem_stock_count()) - mQty) + "";
+
+        api.sellItem(new ShopmApi.CallbacksSellItem() {
+            @Override
+            public void onItemSellError(String errorMessage) {
+                Toast.makeText(ActivitySellItem.this, "Error selling item.\nError : " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItemSellSuccess(String itemJson) {
+
+                Intent intent = new Intent(ActivitySellItem.this, ActivityHome.class);
+                intent.putExtra(Utils.ITEM_JSON, itemJson);
+                intent.putExtra(Utils.ITEM_SOLD, true);
+                startActivity(intent);
+
+            }
+        },item_id, item_qty, exch_rate, rem_stock);
+
+
     }
 
 

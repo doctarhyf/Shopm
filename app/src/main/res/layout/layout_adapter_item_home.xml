@@ -38,6 +38,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:text="20.00$"
+            android:textSize="16sp"
+            android:id="@+id/tvItemStockCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
     </LinearLayout>
 
 

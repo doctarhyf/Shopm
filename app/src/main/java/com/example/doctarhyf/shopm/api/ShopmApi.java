@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.utils.Utils;
@@ -32,6 +33,7 @@ public class ShopmApi {
     public static final String SV_MAX_SELLABLE_NUM = "maxSellableItemNum";
     public static final String SV_DEF_MAX_SELLABLE_NUM = "30";
     public static final String SV_DEF_SERVER_ADD = "192.168.1.3";
+    private static final String ACTION_SELL_ITEM = "sellItem";
     public static String API_URL = "shopm/api.php?";
     private final Context context;
     private final SharedPreferences.Editor editor;
@@ -105,6 +107,46 @@ public class ShopmApi {
         return preferences;
     }
 
+    public interface CallbacksSellItem{
+
+        void onItemSellError(String errorMessage);
+
+        void onItemSellSuccess(String itemJson);
+    }
+
+    public void sellItem(final CallbacksSellItem callbacksSellItem, String item_id, String item_qty, String exch_rate, String rem_stock) {
+
+        String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_SELL_ITEM + "&item_id=" + item_id +
+                "&item_qty=" + item_qty + "&exch_rate=" + exch_rate + "&rem_stock=" + rem_stock;
+
+        Log.e(TAG, "sellItem: url -> " + url );
+
+        StringRequest request = new StringRequest(
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Log.e(TAG, "onResponse: FAKREZ -> " + s );
+                        if(s.equals("false")){
+                            //Log.e(TAG, "onResponse: FAAKK" );
+                            callbacksSellItem.onItemSellError(s);
+                        }else{
+                            callbacksSellItem.onItemSellSuccess(s);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.e(TAG, "onErrorResponse: -> " + volleyError.getMessage() );
+                        callbacksSellItem.onItemSellError(volleyError.getMessage());
+                    }
+                }
+        );
+
+        ShopmApplication.GI().addToRequestQueue(request);
+    }
+
     public interface CallbackLoadItem{
 
         void onItemLoaded(String itemJson);
@@ -116,7 +158,7 @@ public class ShopmApi {
         String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_LOAD_ITEM + "&item_unique_name=" + barcodeMessage ;
 
        // Log.e(TAG, "loadAllItems: url -> "  + url );
-        Log.e(TAG, "loadItemByUniqueID: url -> " + url );
+        //Log.e(TAG, "loadItemByUniqueID: url -> " + url );
 
         JsonArrayRequest request = new JsonArrayRequest(
 

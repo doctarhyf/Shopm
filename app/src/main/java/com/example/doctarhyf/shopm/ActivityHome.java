@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -93,17 +94,29 @@ public class ActivityHome extends AppCompatActivity implements
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        boolean itemSold = getIntent().getBooleanExtra(Utils.ITEM_SOLD, false);
+
+        if(itemSold){
+            String itemJson = getIntent().getStringExtra(Utils.ITEM_JSON);
+            Item item = Item.FromJSON(itemJson);
+            //Toast.makeText(this, "Item : " + item.getItem_name() + ", sold!", Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.fab),  "Item : " + item.getItem_name() + ", sold! Remaining in stock : " + item.getItem_stock_count(), Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show();
+        }
     }
 
-            private void scanItemToSell() {
+    private void scanItemToSell() {
                 Log.e(TAG, "scanItemToSell: " );
 
                 Intent intent = new Intent(this, BarcodeCaptureActivity.class);
                 startActivityForResult(intent, Utils.BARCODE_READER_REQUEST_CODE);
             }
 
-            @Override
-            protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
                 String barcodeMessage = "No message";
 
@@ -145,7 +158,7 @@ public class ActivityHome extends AppCompatActivity implements
                 }
             }
 
-            private void showItemFromBarcode(final String barcodeMessage) {
+    private void showItemFromBarcode(final String barcodeMessage) {
                 Log.e(TAG, "showItemFromBarcode: showing -> " + barcodeMessage );
 
                 //replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance(barcodeMessage,""));
@@ -171,11 +184,11 @@ public class ActivityHome extends AppCompatActivity implements
 
             }
 
-            private void showBarcodeErrorMessage(String barcodeMessage) {
+    private void showBarcodeErrorMessage(String barcodeMessage) {
                 Toast.makeText(this, barcodeMessage, Toast.LENGTH_SHORT).show();
             }
 
-            @Override
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -240,8 +253,6 @@ public class ActivityHome extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -276,24 +287,24 @@ public class ActivityHome extends AppCompatActivity implements
         return true;
     }
 
-            @Override
-            public void onFragmentHomeInteraction(Uri uri) {
+    @Override
+    public void onFragmentHomeInteraction(Uri uri) {
                 Log.e(Utils.TAG, "onFragmentHomeInteraction: " );
             }
 
-            @Override
-            public void onFragmentSellInteraction(Uri uri) {
+    @Override
+    public void onFragmentSellInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onFragmentSettingsInteraction(Uri uri) {
 
             }
 
-            @Override
-            public void onFragmentSettingsInteraction(Uri uri) {
 
-            }
-
-
-            @Override
-            public void onHomeItemClicked(Item item) {
+    @Override
+    public void onHomeItemClicked(Item item) {
                 Log.e(TAG, "onHomeItemClicked: " );
 
                 //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentViewItem.newInstance("","")).commit();
@@ -301,7 +312,7 @@ public class ActivityHome extends AppCompatActivity implements
 
             }
 
-            private void replaceFragWithBackstack(int fragCont, Fragment frag) {
+    private void replaceFragWithBackstack(int fragCont, Fragment frag) {
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -312,8 +323,9 @@ public class ActivityHome extends AppCompatActivity implements
 
             }
 
-            @Override
-            public void onFragmentSellsInteraction(Uri uri) {
+     @Override
+     public void onFragmentSellsInteraction(Uri uri) {
 
             }
-        }
+
+            }
