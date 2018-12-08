@@ -12,13 +12,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+
+
+        <com.example.doctarhyf.shopm.helpers.TouchImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dip"
+            android:layout_weight="5"
             android:src="@drawable/tmt"
             android:id="@+id/ivItemPic"
+            android:layout_margin="@dimen/genPad"
+            android:scaleType="center"
+            />
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="@dimen/genPad"
             android:layout_width="match_parent"
-            android:layout_height="230dp" />
-
-
+            android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tvItemName"
             android:text="Item Name"
@@ -26,14 +37,31 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:text="Item Price"
+            android:id="@+id/tvItemPrice"
+            android:text="3000 FC"
+            android:textSize="24sp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+            <TextView
+                android:text="In stock : 20"
+                android:id="@+id/tvStockCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         <TextView
-            android:text="In stocks : 20"
+            android:text="This is the description ..."
+            android:id="@+id/tvItemDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+            <com.jjoe64.graphview.GraphView
+                android:layout_width="match_parent"
+                android:layout_height="240dip"
+                android:id="@+id/graphItemView" />
+        </LinearLayout>
 
 
 

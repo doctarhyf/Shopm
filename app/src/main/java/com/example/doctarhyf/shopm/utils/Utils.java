@@ -9,4 +9,5 @@ public class Utils {
     public static final int JSON_RESP_CODE_SUCCESS = 1;
     public static final String ITEM_UNIQUE_NAME = "item_unique_name";
     public static final String ITEM_JSON = "itemJson";
+    public static final String STR_STOCK_PREFIX = "En stock : ";
 }

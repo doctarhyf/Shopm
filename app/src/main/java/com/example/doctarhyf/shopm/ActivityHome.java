@@ -1,6 +1,7 @@
 package com.example.doctarhyf.shopm;
 
-import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
@@ -50,8 +53,12 @@ public class ActivityHome extends AppCompatActivity implements
             private static final String TAG = Utils.TAG;
             //private View fragCont;
     private FragmentManager fragmentManager;
+            private SearchView searchView;
+            private MenuItem menuItemSearch;
+            //private MenuItem searchView;
 
-    @Override
+
+            @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -181,10 +188,39 @@ public class ActivityHome extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_home, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
 
 
+        // Associate searchable configuration with the SearchView
+        menuItemSearch = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        // listening to search query text change
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // filter recycler view when query submitted
+                //mAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                // filter recycler view when text is changed
+                //mAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
         return true;
+
+
+
     }
 
     @Override
@@ -210,12 +246,16 @@ public class ActivityHome extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        //searchView.setVisible(false);
         int id = item.getItemId();
 
+        menuItemSearch.setVisible(false);
         if (id == R.id.nav_home) {
             // Handle the camera action
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentHome.newInstance("","")).commit();
 
+            //searchView.setVisible(true);
+            menuItemSearch.setVisible(true);
             replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
         } else if (id == R.id.nav_sells) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSellItem.newInstance("","")).commit();
@@ -257,7 +297,7 @@ public class ActivityHome extends AppCompatActivity implements
                 Log.e(TAG, "onHomeItemClicked: " );
 
                 //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentViewItem.newInstance("","")).commit();
-                replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance("",""));
+                replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance(item.toJSON()));
 
             }
 

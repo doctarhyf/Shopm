@@ -9,9 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.R;
+import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.utils.Utils;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,11 +28,11 @@ import com.example.doctarhyf.shopm.utils.Utils;
 public class FragmentViewItem extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_ITEM_JSON = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String mItemJson;
     private String mParam2;
 
     private OnFragmentViewItemInteractionListener mListener;
@@ -37,20 +41,12 @@ public class FragmentViewItem extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentViewItem.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentViewItem newInstance(String param1, String param2) {
+
+    public static FragmentViewItem newInstance(String itemJson) {
         FragmentViewItem fragment = new FragmentViewItem();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_ITEM_JSON, itemJson);
+        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,8 +55,8 @@ public class FragmentViewItem extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mItemJson = getArguments().getString(ARG_ITEM_JSON);
+            //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -70,13 +66,24 @@ public class FragmentViewItem extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_view_item, container, false);
 
-        if(!mParam1.equals("")){
+        if(!mItemJson.equals("")){
+
+            Item item = Item.FromJSON(mItemJson);
+
+            TextView tvItemName = rootView.findViewById(R.id.tvItemName);
+            TextView tvItemPrice = rootView.findViewById(R.id.tvItemPrice);
+            TextView tvStockCount = rootView.findViewById(R.id.tvStockCount);
+            TextView tvItemDesc = rootView.findViewById(R.id.tvItemDesc);
+
+            tvItemName.setText(item.getItem_name());
+            tvItemPrice.setText(item.getItem_price() + " FC");
+            tvStockCount.setText(Utils.STR_STOCK_PREFIX  + item.getItem_stock_count());
+            tvItemDesc.setText(item.getItem_desc());
 
 
-            TextView tv = rootView.findViewById(R.id.tvItemName);
-            tv.setText(mParam1);
 
-
+        }else{
+            Toast.makeText(getActivity(), "Item data missing!", Toast.LENGTH_SHORT).show();
         }
 
         return rootView;

@@ -21,4 +21,5 @@
     <string name="setTitleServerIP">Server IP</string>
     <string name="strSellItem">Sell Item</string>
     <string name="strSells">Sells</string>
+    <string name="setTitleExchRate">1 USD in CDF</string>
 </resources>
