@@ -74,7 +74,7 @@
             android:id="@+id/ivItemPicCont"
             android:background="#5c5cc6"
             android:layout_width="match_parent"
-            android:layout_height="240dp">
+            android:layout_height="280dp">
 
             <TextView
                 app:layout_constraintTop_toTopOf="parent"

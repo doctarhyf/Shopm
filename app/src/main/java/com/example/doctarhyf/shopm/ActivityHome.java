@@ -3,10 +3,12 @@ package com.example.doctarhyf.shopm;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -60,6 +62,7 @@ public class ActivityHome extends AppCompatActivity implements
 
 
             private static final String TAG = Utils.TAG;
+            private static final int REQUEST_IMAGE_CAPTURE = 100;
             private View fragCont;
     private FragmentManager fragmentManager;
             private SearchView searchView;
@@ -169,11 +172,22 @@ public class ActivityHome extends AppCompatActivity implements
 
                 String barcodeMessage = "No message";
 
-                mIvItemPic.setBackgroundColor(Color.RED);
+                //mIvItemPic.setBackgroundColor(Color.RED);
 
-                Log.e(TAG, "onActivityResult: DA RESCODE -> " + resultCode );
+                //Log.e(TAG, "onActivityResult: DA RESCODE -> " + resultCode );
 
-                if (requestCode == Utils.BARCODE_READER_REQUEST_CODE) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE ) {
+
+            if(resultCode == RESULT_OK) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                mIvItemPic.setImageBitmap(imageBitmap);
+            }else{
+
+                Log.e(TAG, "onActivityResult: CAPTURE FAILED" );
+
+            }
+        }else if (requestCode == Utils.BARCODE_READER_REQUEST_CODE) {
                     if (resultCode == CommonStatusCodes.SUCCESS) {
                         if (data != null) {
 
@@ -425,6 +439,9 @@ public class ActivityHome extends AppCompatActivity implements
             public void takeItemPic(ImageView ivItemPic) {
                 mIvItemPic = ivItemPic;
 
-
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
             }
         }
