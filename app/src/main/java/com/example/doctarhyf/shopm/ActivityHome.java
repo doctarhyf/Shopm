@@ -158,9 +158,12 @@ public class ActivityHome extends AppCompatActivity implements
 
             private void initHome() {
 
-                setItemsListVisible(false);
+                //setItemsListVisible(false);
                 if(ShopmApplication.GI().getApi().IsOnline(this)) {
-                    fragmentManager.beginTransaction().add(R.id.fragCont, FragmentHome.newInstance("", "")).commit();
+                    //fragmentManager.beginTransaction().add(R.id.fragCont, FragmentHome.newInstance("", "")).commit();
+                    setItemsListVisible(false);
+                    menuItemSearch.setVisible(true);
+                    replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
                 }else{
                     String msg = getResources().getString(R.string.msgNoConnection);
                     fragmentManager.beginTransaction().add(R.id.fragCont, FragnentErrorMessage.newInstance(msg,"")).commit();
