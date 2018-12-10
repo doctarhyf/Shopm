@@ -1,5 +1,8 @@
 package com.example.doctarhyf.shopm.utils;
 
+import android.content.Context;
+import android.widget.EditText;
+
 public class Utils {
 
     public static final String TAG = "SHOPM";
@@ -11,4 +14,12 @@ public class Utils {
     public static final String ITEM_JSON = "itemJson";
     public static final String STR_STOCK_PREFIX = "En stock : ";
     public static final String ITEM_SOLD = "itemSold";
+    public static final String ROOT_FOLDER = "shopm";
+    public static final String IMG_FOLDER_NAME = "img";
+
+    public static String GetEditTextValue(Context context, EditText et){
+        return et.getText().toString();
+    }
+
+
 }

@@ -27,4 +27,14 @@
     <string name="setTitleMaxSellableItem">Nombre d\'achat max.</string>
     <string name="msgItemSoldOutText">Sorry this item has been sold out. Please update the stock amount!</string>
     <string name="msgItemSoldOutTitle">ITEM OUT SOLD OUT</string>
+    <string name="msgNoConnection">Please check make sure your WIFI is turned on, and you are connected to the server.</string>
+    <string name="errorLoadingItems">Error loading items : \"%1$s\".\nPlease check :\n\n1. Your connection to the server, deactivate mobile and turn on WiFi.\n2. Check for correct server IP address in your settings, current IP : %2$s, is it the same with the server IP?</string>
+    <string name="addItem">Add Item</string>
+    <string name="strItemName">Nom de l\'article</string>
+    <string name="strItemPrice">Prix (FC)</string>
+    <string name="strItemInitStock">Stock Initial</string>
+    <string name="strItemDesc">Description</string>
+    <string name="strItemPic">Photo</string>
+    <string name="btnAddItem">Ajouter Article</string>
+    <string name="chosePick">Choisir photo</string>
 </resources>

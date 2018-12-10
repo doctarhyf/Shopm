@@ -1,7 +1,9 @@
 package com.example.doctarhyf.shopm.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,12 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.example.doctarhyf.shopm.R;
+import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
+import com.example.doctarhyf.shopm.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +93,23 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
             }
         });
 
+        String url = ShopmApplication.GI().getApi().GetServerAddress() + Utils.ROOT_FOLDER + "/" + Utils.IMG_FOLDER_NAME +
+                "/" + item.getItem_unique_name() + ".jpg";
+
+        //Log.e(TAG, "onBindViewHolder: url -> " + url );
+
+        Uri uri = Uri.parse(url);
+
+        Glide.with(holder.ivItemPic.getContext())
+                .load(uri)
+                .asBitmap()
+                //.error(R.drawable.ic_error)
+                //.placeholder(R.drawable.progress_animation)
+                //.diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .fitCenter()
+                .into(holder.ivItemPic);
+
         //holder.tvCatTitle.setText(homeCategoryItem.getTitle());
 
 
@@ -112,28 +135,7 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
             //Toast.makeText(context, "Loade from network", Toast.LENGTH_SHORT).show();
         }
 
-        Glide.with(holder.ivCatBg.getContext())
-                .load(uri)
-                .asBitmap()
-                .error(R.drawable.ic_error)
-                .placeholder(R.drawable.progress_animation)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .fitCenter()
-                .into(new SimpleTarget<Bitmap>(300,300) {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation)  {
 
-
-                        //callbacks.onBitmapShouldBeSaved(resource, homeCategoryItem.getImageUrl());
-                        sosApi.getBitmapCacheManager().saveBitmapToCache(resource, homeCategoryItem.getImageUrl(), SOS_API.DIR_NAME_PIX_CACHE_HOME_CATS );
-
-
-                        holder.ivCatBg.setImageBitmap(resource);
-
-                        //callbacks.onItemClicked(homeCategoryItem);
-                    }
-                });
 
         //callbacks.onItemClicked(homeCategoryItem);
 

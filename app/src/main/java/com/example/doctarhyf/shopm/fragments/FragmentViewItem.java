@@ -8,10 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.doctarhyf.shopm.R;
+import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.utils.Utils;
 
@@ -70,6 +73,7 @@ public class FragmentViewItem extends Fragment {
 
             Item item = Item.FromJSON(mItemJson);
 
+            ImageView ivItemPic = rootView.findViewById(R.id.ivItemPic);
             TextView tvItemName = rootView.findViewById(R.id.tvItemName);
             TextView tvItemPrice = rootView.findViewById(R.id.tvItemPrice);
             TextView tvStockCount = rootView.findViewById(R.id.tvStockCount);
@@ -79,6 +83,24 @@ public class FragmentViewItem extends Fragment {
             tvItemPrice.setText(item.getItem_price() + " FC");
             tvStockCount.setText(Utils.STR_STOCK_PREFIX  + item.getItem_stock_count());
             tvItemDesc.setText(item.getItem_desc());
+
+
+            String url = ShopmApplication.GI().getApi().GetServerAddress() + Utils.ROOT_FOLDER + "/" + Utils.IMG_FOLDER_NAME +
+                    "/" + item.getItem_unique_name() + ".jpg";
+
+            Log.e("COOL", "onBindViewHolder: da url -> " + url );
+
+            Uri uri = Uri.parse(url);
+
+            Glide.with(getContext())
+                    .load(uri)
+                    .asBitmap()
+                    //.error(R.drawable.ic_error)
+                    //.placeholder(R.drawable.progress_animation)
+                    //.diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .into(ivItemPic);
 
 
 

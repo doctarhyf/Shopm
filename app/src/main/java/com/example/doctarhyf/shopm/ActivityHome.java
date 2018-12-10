@@ -24,17 +24,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
 import com.example.doctarhyf.shopm.api.ShopmApi;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.barcode.BarcodeCaptureActivity;
+import com.example.doctarhyf.shopm.fragments.FragmentAddItem;
 import com.example.doctarhyf.shopm.fragments.FragmentHome;
 import com.example.doctarhyf.shopm.fragments.FragmentSellItem;
 import com.example.doctarhyf.shopm.fragments.FragmentSells;
 import com.example.doctarhyf.shopm.fragments.FragmentSettings;
 import com.example.doctarhyf.shopm.fragments.FragmentViewItem;
+import com.example.doctarhyf.shopm.fragments.FragnentErrorMessage;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.utils.Utils;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -47,15 +51,19 @@ public class ActivityHome extends AppCompatActivity implements
         FragmentSellItem.OnFragmentSellInteractionListener,
         AdapterHomeItems.Callbacks,
         FragmentViewItem.OnFragmentViewItemInteractionListener,
-        FragmentSells.OnFragmentSellsInteractionListener
+        FragmentSells.OnFragmentSellsInteractionListener,
+        FragnentErrorMessage.OnFragmentInteractionListener,
+        FragmentAddItem.OnFragmentAddItemInteractionListener
         {
 
 
             private static final String TAG = Utils.TAG;
-            //private View fragCont;
+            private View fragCont;
     private FragmentManager fragmentManager;
             private SearchView searchView;
             private MenuItem menuItemSearch;
+            private View pbCont;
+            //private Button btnAddItem;
             //private MenuItem searchView;
 
 
@@ -67,12 +75,14 @@ public class ActivityHome extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
 
+        //btnAddItem = findViewById(R.id.btnAddItem);
         fragmentManager = getSupportFragmentManager();
 
-        //fragCont = findViewById(R.id.fragCont);
+        fragCont = findViewById(R.id.fragCont);
+        pbCont = findViewById(R.id.pbCont);
 
 
-        fragmentManager.beginTransaction().add(R.id.fragCont, FragmentHome.newInstance("","")).commit();
+        initHome();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -105,9 +115,45 @@ public class ActivityHome extends AppCompatActivity implements
             Snackbar.make(findViewById(R.id.fab),  "Item : " + item.getItem_name() + ", sold! Remaining in stock : " + item.getItem_stock_count(), Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
         }
+
+        /*btnAddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addItem();
+            }
+        });*/
     }
 
-    private void scanItemToSell() {
+            /*private void addItem() {
+
+
+                String itemName = GetEditTextValue((EditText)findViewById(R.id.etItemName));
+                String itemPrice = GetEditTextValue((EditText)findViewById(R.id.etItemPrice));
+                String itemInitStock = GetEditTextValue((EditText)findViewById(R.id.etItemInitStock));
+                String itemDesc = GetEditTextValue((EditText)findViewById(R.id.etItemDesc));
+
+
+                Log.e(TAG, "addItem: \nItem Name : " + itemName + "\nItem Price : " + itemPrice +
+                "\nStock : " + itemInitStock + "\nItem Desc : " + itemDesc);
+
+
+
+            }*/
+
+
+
+            private void initHome() {
+
+                setItemsListVisible(false);
+                if(ShopmApplication.GI().getApi().IsOnline(this)) {
+                    fragmentManager.beginTransaction().add(R.id.fragCont, FragmentHome.newInstance("", "")).commit();
+                }else{
+                    String msg = getResources().getString(R.string.msgNoConnection);
+                    fragmentManager.beginTransaction().add(R.id.fragCont, FragnentErrorMessage.newInstance(msg,"")).commit();
+                }
+            }
+
+            private void scanItemToSell() {
                 Log.e(TAG, "scanItemToSell: " );
 
                 Intent intent = new Intent(this, BarcodeCaptureActivity.class);
@@ -159,7 +205,7 @@ public class ActivityHome extends AppCompatActivity implements
             }
 
     private void showItemFromBarcode(final String barcodeMessage) {
-                Log.e(TAG, "showItemFromBarcode: showing -> " + barcodeMessage );
+                //Log.e(TAG, "showItemFromBarcode: showing -> " + barcodeMessage );
 
                 //replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance(barcodeMessage,""));
 
@@ -170,12 +216,16 @@ public class ActivityHome extends AppCompatActivity implements
                         intent.putExtra(Utils.ITEM_JSON, itemJson);
                         startActivity(intent);
 
-                        //Log.e(TAG, "onItemLoaded: DA JEYZ -> " + itemJson );
+                        Log.e(TAG, "onItemLoaded: " );
+                        setItemsListVisible(true);
+
                     }
 
                     @Override
                     public void onItemNotFound() {
 
+                        Log.e(TAG, "onItemNotFound: " );
+                        setItemsListVisible(false);
                         Toast.makeText(ActivityHome.this,"This item : " + barcodeMessage + " doesn't exist", Toast.LENGTH_SHORT).show();
 
                     }
@@ -184,7 +234,19 @@ public class ActivityHome extends AppCompatActivity implements
 
             }
 
-    private void showBarcodeErrorMessage(String barcodeMessage) {
+            private void setItemsListVisible(boolean show) {
+                if(show){
+
+                    fragCont.setVisibility(View.VISIBLE);
+                    pbCont.setVisibility(View.GONE);
+
+                }else{
+                    fragCont.setVisibility(View.GONE);
+                    pbCont.setVisibility(View.VISIBLE);
+                }
+            }
+
+            private void showBarcodeErrorMessage(String barcodeMessage) {
                 Toast.makeText(this, barcodeMessage, Toast.LENGTH_SHORT).show();
             }
 
@@ -250,6 +312,11 @@ public class ActivityHome extends AppCompatActivity implements
             return true;
         }
 
+        if(id == R.id.action_add_item){
+            replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance("",""));
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -292,7 +359,21 @@ public class ActivityHome extends AppCompatActivity implements
                 Log.e(Utils.TAG, "onFragmentHomeInteraction: " );
             }
 
-    @Override
+            @Override
+            public void onFragmentHomeItemsLoadError(String errorMessage) {
+                String currentIP = ShopmApplication.GI().getApi().GSV(ShopmApi.SV_SERVER_ADD, ShopmApi.SV_DEF_SERVER_ADD);
+                String msg = String.format(getResources().getString(R.string.errorLoadingItems), errorMessage, currentIP);
+                replaceFragWithBackstack(R.id.fragCont, FragnentErrorMessage.newInstance(msg,""));
+
+                setItemsListVisible(true);
+            }
+
+            @Override
+            public void onFragmentHomeItemsLoadSuccess() {
+                setItemsListVisible(true);
+            }
+
+            @Override
     public void onFragmentSellInteraction(Uri uri) {
 
     }
@@ -328,4 +409,9 @@ public class ActivityHome extends AppCompatActivity implements
 
             }
 
+
+            @Override
+            public void onAddItemListener(Bundle itemData) {
+                Log.e(TAG, "onAddItemListener: DA NITEM -> " + itemData.toString() );
             }
+        }

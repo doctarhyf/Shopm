@@ -14,7 +14,8 @@
 
 
 
-        <com.example.doctarhyf.shopm.helpers.TouchImageView
+        <!--<com.example.doctarhyf.shopm.helpers.TouchImageView-->
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="300dip"
             android:layout_weight="5"

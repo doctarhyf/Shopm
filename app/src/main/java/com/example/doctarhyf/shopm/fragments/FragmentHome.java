@@ -114,7 +114,13 @@ public class FragmentHome extends Fragment {
                 items.addAll(newItems);
 
                 adapterHomeItems.notifyDataSetChanged();
+                mListener.onFragmentHomeItemsLoadSuccess();
 
+            }
+
+            @Override
+            public void onItemsLoadeError(String errorMessage) {
+                mListener.onFragmentHomeItemsLoadError(errorMessage);
             }
         });
 
@@ -180,6 +186,10 @@ public class FragmentHome extends Fragment {
     public interface OnFragmentHomeInteractionListener {
         // TODO: Update argument type and name
         void onFragmentHomeInteraction(Uri uri);
+
+        void onFragmentHomeItemsLoadError(String errorMessage);
+
+        void onFragmentHomeItemsLoadSuccess();
     }
 
     public interface CallbacksFragmentHome{

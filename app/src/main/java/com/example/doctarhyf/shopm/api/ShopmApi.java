@@ -2,6 +2,8 @@ package com.example.doctarhyf.shopm.api;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -153,6 +155,12 @@ public class ShopmApi {
         void onItemNotFound();
     }
 
+    public static boolean IsOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
+
     public void loadItemByUniqueID(final CallbackLoadItem callback, String barcodeMessage) {
 
         String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_LOAD_ITEM + "&item_unique_name=" + barcodeMessage ;
@@ -204,6 +212,8 @@ public class ShopmApi {
 
     public interface CallbacksItems {
         void onItemsLoaded(List<Item> items);
+
+        void onItemsLoadeError(String errorMessage);
         //void onItemPublishResult(int code, String data);
 
         //void onLoadAllItemsResult(int code, List<ProductMyProducts> products);
@@ -255,7 +265,10 @@ public class ShopmApi {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Log.e(TAG, "onErrorResponse: err -> " + volleyError.getMessage() );
+                        Log.e(TAG, "onErrorResponse: err -> \"" + volleyError.getMessage() + "\"" );
+
+                        callbacks.onItemsLoadeError(volleyError.getMessage());
+
                     }
                 }
 

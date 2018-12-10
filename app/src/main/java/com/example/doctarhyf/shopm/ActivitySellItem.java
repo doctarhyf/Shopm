@@ -1,6 +1,7 @@
 package com.example.doctarhyf.shopm;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,10 +11,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.doctarhyf.shopm.api.ShopmApi;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.barcode.BarcodeCaptureActivity;
@@ -56,6 +59,25 @@ public class ActivitySellItem extends AppCompatActivity {
         final double itemPrice = Double.parseDouble(item.getItem_price());
         //final double itemTotalPrice = 0.0;
 
+        ImageView imageView = findViewById(R.id.ivItemPic);
+
+        String url = ShopmApplication.GI().getApi().GetServerAddress() + Utils.ROOT_FOLDER + "/" + Utils.IMG_FOLDER_NAME +
+                "/" + item.getItem_unique_name() + ".jpg";
+
+        Log.e("COOL", "onBindViewHolder: da url -> " + url );
+
+        Uri uri = Uri.parse(url);
+
+        Glide.with(this)
+                .load(uri)
+                .asBitmap()
+                //.error(R.drawable.ic_error)
+                //.placeholder(R.drawable.progress_animation)
+                //.diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .fitCenter()
+                .into(imageView);
+
         final TextView tvItemName = findViewById(R.id.tvItemName);
         TextView tvItemPrice = findViewById(R.id.tvItemPrice);
         final TextView tvItemTotalPrice = findViewById(R.id.tvItemTotalPrice);
@@ -93,7 +115,7 @@ public class ActivitySellItem extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                //Log.e(TAG, "onNothingSelected: " );
             }
         });
 
