@@ -3,6 +3,7 @@ package com.example.doctarhyf.shopm;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.view.MenuItem;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
@@ -63,6 +65,7 @@ public class ActivityHome extends AppCompatActivity implements
             private SearchView searchView;
             private MenuItem menuItemSearch;
             private View pbCont;
+            private ImageView mIvItemPic;
             //private Button btnAddItem;
             //private MenuItem searchView;
 
@@ -165,6 +168,8 @@ public class ActivityHome extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
                 String barcodeMessage = "No message";
+
+                mIvItemPic.setBackgroundColor(Color.RED);
 
                 Log.e(TAG, "onActivityResult: DA RESCODE -> " + resultCode );
 
@@ -328,11 +333,12 @@ public class ActivityHome extends AppCompatActivity implements
         int id = item.getItemId();
 
         menuItemSearch.setVisible(false);
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_stock) {
             // Handle the camera action
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentHome.newInstance("","")).commit();
 
             //searchView.setVisible(true);
+            setItemsListVisible(false);
             menuItemSearch.setVisible(true);
             replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
         } else if (id == R.id.nav_sells) {
@@ -413,5 +419,12 @@ public class ActivityHome extends AppCompatActivity implements
             @Override
             public void onAddItemListener(Bundle itemData) {
                 Log.e(TAG, "onAddItemListener: DA NITEM -> " + itemData.toString() );
+            }
+
+            @Override
+            public void takeItemPic(ImageView ivItemPic) {
+                mIvItemPic = ivItemPic;
+
+
             }
         }

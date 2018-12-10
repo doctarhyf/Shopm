@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.doctarhyf.shopm.R;
 import com.example.doctarhyf.shopm.objects.Item;
@@ -85,8 +86,6 @@ public class FragmentAddItem extends Fragment {
         itemData.putString(Item.KEY_ITEM_INIT_STOCK, itemInitStock);
         itemData.putString(Item.KEY_ITEM_DESC, itemDesc);
 
-        Log.e(Utils.TAG, "addItem: \nItem Name : " + itemName + "\nItem Price : " + itemPrice +
-                "\nStock : " + itemInitStock + "\nItem Desc : " + itemDesc);
 
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +93,18 @@ public class FragmentAddItem extends Fragment {
                 mListener.onAddItemListener(itemData);
             }
         });
+
+        View ivItemPicCont = rootView.findViewById(R.id.ivItemPicCont);
+        final ImageView ivItemPic = rootView.findViewById(R.id.ivItemPic);
+
+        ivItemPicCont.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Log.e(Utils.TAG, "onClick: " );
+                mListener.takeItemPic(ivItemPic);
+            }
+        });
+
 
         return rootView;
     }
@@ -134,6 +145,8 @@ public class FragmentAddItem extends Fragment {
      */
     public interface OnFragmentAddItemInteractionListener {
         void onAddItemListener(Bundle itemData);
+
+        void takeItemPic(ImageView ivItemPic);
         // TODO: Update argument type and name
         //void onFragmentInteraction(Uri uri);
     }

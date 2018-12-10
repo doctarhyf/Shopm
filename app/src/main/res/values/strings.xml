@@ -37,4 +37,5 @@
     <string name="strItemPic">Photo</string>
     <string name="btnAddItem">Ajouter Article</string>
     <string name="chosePick">Choisir photo</string>
+    <string name="strStock">Stock</string>
 </resources>

@@ -70,7 +70,7 @@
 
 
         <android.support.constraint.ConstraintLayout
-
+            android:clickable="true"
             android:id="@+id/ivItemPicCont"
             android:background="#5c5cc6"
             android:layout_width="match_parent"
