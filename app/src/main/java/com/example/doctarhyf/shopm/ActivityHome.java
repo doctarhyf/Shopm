@@ -73,7 +73,7 @@ public class ActivityHome extends AppCompatActivity implements
             private View fragCont;
     private FragmentManager fragmentManager;
             private SearchView searchView;
-            private MenuItem menuItemSearch;
+            //private MenuItem menuItemSearch;
             private View pbCont;
             private ImageView mImageView;
             private String mCurrentPhotoPath;
@@ -162,7 +162,7 @@ public class ActivityHome extends AppCompatActivity implements
                 if(ShopmApplication.GI().getApi().IsOnline(this)) {
                     //fragmentManager.beginTransaction().add(R.id.fragCont, FragmentHome.newInstance("", "")).commit();
                     setItemsListVisible(false);
-                    menuItemSearch.setVisible(true);
+                    //menuItemSearch.setVisible(true);
                     replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
                 }else{
                     String msg = getResources().getString(R.string.msgNoConnection);
@@ -341,7 +341,7 @@ public class ActivityHome extends AppCompatActivity implements
 
 
         // Associate searchable configuration with the SearchView
-        menuItemSearch = menu.findItem(R.id.action_search);
+        //menuItemSearch = menu.findItem(R.id.action_search);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search)
@@ -401,14 +401,14 @@ public class ActivityHome extends AppCompatActivity implements
         //searchView.setVisible(false);
         int id = item.getItemId();
 
-        menuItemSearch.setVisible(false);
+        //menuItemSearch.setVisible(false);
         if (id == R.id.nav_stock) {
             // Handle the camera action
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentHome.newInstance("","")).commit();
 
             //searchView.setVisible(true);
             setItemsListVisible(false);
-            menuItemSearch.setVisible(true);
+            //menuItemSearch.setVisible(true);
             replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
         } else if (id == R.id.nav_sells) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSellItem.newInstance("","")).commit();

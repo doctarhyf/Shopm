@@ -1,6 +1,7 @@
 package com.example.doctarhyf.shopm.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,6 +34,8 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
 
     private static final String TAG = "DASH";
     private Context context;
+    private int row_index = -1;
+    private List<View> itemViewList = new ArrayList<>();
 
     public static  class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -68,30 +71,58 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.layout_adapter_item_home, parent,false);
-        //ViewHolder viewHolder = new ViewHolder(view);
+        final ViewHolder viewHolder = new ViewHolder(view);
 
-        return new ViewHolder(view);
+        itemViewList.add(view);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(View tempItemView : itemViewList){
+                    if(itemViewList.get(viewHolder.getAdapterPosition()) == tempItemView){
+                        tempItemView.setBackgroundResource(R.color.colorSelected);
+                    }else{
+                        tempItemView.setBackgroundResource(R.color.colorDefault);
+                    }
+                }
+            }
+        });
+
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Item item = items.get(position);
 
+
+
         holder.tvItemName.setText(item.getItem_name());
-        holder.tvItemPrice.setText("Prix : " + item.getItem_price() + " FC");
+        holder.tvItemPrice.setText(item.getItem_price() + " FC");
         holder.tvItemStockCount.setText("En stock : " + item.getItem_stock_count());
+
+
+
+
+        if(Integer.parseInt(item.getItem_stock_count()) == 0){
+            holder.tvItemStockCount.setTextColor(Color.WHITE);
+            holder.tvItemStockCount.setBackgroundColor(Color.RED);
+        }
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Log.e(TAG, "onClick: " + item.getItemCategory() );
                 callbacks.onHomeItemClicked(item);
+
             }
         });
+
+
 
         String url = ShopmApplication.GI().getApi().GetServerAddress() + Utils.ROOT_FOLDER + "/" + Utils.IMG_FOLDER_NAME +
                 "/" + item.getItem_unique_name() + ".jpg";

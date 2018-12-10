@@ -6,4 +6,6 @@
     <color name="colorBlack">#000</color>
     <color name="white">#fff</color>
     <color name="red">#f00</color>
+    <color name="colorSelected">#f00</color>
+    <color name="colorDefault">#0fff</color>
 </resources>
