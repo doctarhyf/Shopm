@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.doctarhyf.shopm.R;
@@ -14,7 +15,7 @@ import com.example.doctarhyf.shopm.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragnentErrorMessage.OnFragmentInteractionListener} interface
+ * {@link FragnentErrorMessage.OnFragmentErrorMessageInteractionListener} interface
  * to handle interaction events.
  * Use the {@link FragnentErrorMessage#newInstance} factory method to
  * create an instance of this fragment.
@@ -29,7 +30,7 @@ public class FragnentErrorMessage extends Fragment {
     private String mErrorMessage;
     private String mParam2;
 
-    //private OnFragmentAddItemInteractionListener mListener;
+    private OnFragmentErrorMessageInteractionListener mListener;
 
     public FragnentErrorMessage() {
         // Required empty public constructor
@@ -75,21 +76,26 @@ public class FragnentErrorMessage extends Fragment {
         tvErrorMessage.setText(mErrorMessage);
 
 
+        Button btnRetry = rootView.findViewById(R.id.btnRetry);
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.refreshStockList();
+            }
+        });
+
+
         return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        /*if (mListener != null) {
-            //mListener.onFragmentInteraction(uri);
-        }*/
-    }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-           // mListener = (OnFragmentAddItemInteractionListener) context;
+        if (context instanceof OnFragmentErrorMessageInteractionListener) {
+            mListener = (OnFragmentErrorMessageInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentAddItemInteractionListener");
@@ -112,8 +118,8 @@ public class FragnentErrorMessage extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnFragmentErrorMessageInteractionListener {
         // TODO: Update argument type and name
-        //void onFragmentInteraction(Uri uri);
+        void refreshStockList();
     }
 }

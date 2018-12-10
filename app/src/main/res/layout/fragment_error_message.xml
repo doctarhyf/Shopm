@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/red"
     tools:context=".fragments.FragnentErrorMessage">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,12 +13,20 @@
         android:id="@+id/tvErrorMessage"
         android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:gravity="center"
-        android:background="@color/red"
+
         android:textColor="@color/white"
 
         android:text="Error message" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/btnRetry"
+        android:layout_margin="16dp"
+        android:text="@string/btnRetry"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

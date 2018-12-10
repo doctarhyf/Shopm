@@ -62,7 +62,7 @@ public class ActivityHome extends AppCompatActivity implements
         AdapterHomeItems.Callbacks,
         FragmentViewItem.OnFragmentViewItemInteractionListener,
         FragmentSells.OnFragmentSellsInteractionListener,
-        FragnentErrorMessage.OnFragmentInteractionListener,
+        FragnentErrorMessage.OnFragmentErrorMessageInteractionListener,
         FragmentAddItem.OnFragmentAddItemInteractionListener
         {
 
@@ -515,5 +515,10 @@ public class ActivityHome extends AppCompatActivity implements
                         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                     }
                 }
+            }
+
+            @Override
+            public void refreshStockList() {
+                initHome();
             }
         }
