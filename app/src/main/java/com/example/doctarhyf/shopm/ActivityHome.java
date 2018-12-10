@@ -4,10 +4,12 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +17,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
@@ -27,8 +30,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -48,6 +49,11 @@ import com.example.doctarhyf.shopm.utils.Utils;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ActivityHome extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         FragmentHome.OnFragmentHomeInteractionListener,
@@ -63,12 +69,14 @@ public class ActivityHome extends AppCompatActivity implements
 
             private static final String TAG = Utils.TAG;
             private static final int REQUEST_IMAGE_CAPTURE = 100;
+            private static final int REQUEST_TAKE_PHOTO = 101;
             private View fragCont;
     private FragmentManager fragmentManager;
             private SearchView searchView;
             private MenuItem menuItemSearch;
             private View pbCont;
-            private ImageView mIvItemPic;
+            private ImageView mImageView;
+            private String mCurrentPhotoPath;
             //private Button btnAddItem;
             //private MenuItem searchView;
 
@@ -167,21 +175,41 @@ public class ActivityHome extends AppCompatActivity implements
             }
 
 
+            private File createImageFile() throws IOException {
+                // Create an image file name
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                String imageFileName = "JPEG_" + timeStamp + "_";
+                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                File image = File.createTempFile(
+                        imageFileName,  /* prefix */
+                        ".jpg",         /* suffix */
+                        storageDir      /* directory */
+                );
+
+                // Save a file: path for use with ACTION_VIEW intents
+                mCurrentPhotoPath = image.getAbsolutePath();
+                return image;
+            }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
                 String barcodeMessage = "No message";
 
-                //mIvItemPic.setBackgroundColor(Color.RED);
+       // mImageView.setBackgroundColor(Color.RED);
 
                 //Log.e(TAG, "onActivityResult: DA RESCODE -> " + resultCode );
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE ) {
+        if (requestCode == REQUEST_TAKE_PHOTO ) {
 
             if(resultCode == RESULT_OK) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                mIvItemPic.setImageBitmap(imageBitmap);
+                //Bundle extras = data.getExtras();
+                //Bitmap imageBitmap = (Bitmap) extras.get("data");
+                //mImageView.setImageBitmap(imageBitmap);
+
+                setPic();
+
             }else{
 
                 Log.e(TAG, "onActivityResult: CAPTURE FAILED" );
@@ -223,7 +251,31 @@ public class ActivityHome extends AppCompatActivity implements
                 }
             }
 
-    private void showItemFromBarcode(final String barcodeMessage) {
+            private void setPic() {
+                // Get the dimensions of the View
+                int targetW = mImageView.getWidth();
+                int targetH = mImageView.getHeight();
+
+                // Get the dimensions of the bitmap
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                bmOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+                int photoW = bmOptions.outWidth;
+                int photoH = bmOptions.outHeight;
+
+                // Determine how much to scale down the image
+                int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+                // Decode the image file into a Bitmap sized to fill the View
+                bmOptions.inJustDecodeBounds = false;
+                bmOptions.inSampleSize = scaleFactor;
+                bmOptions.inPurgeable = true;
+
+                Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+                mImageView.setImageBitmap(bitmap);
+            }
+
+            private void showItemFromBarcode(final String barcodeMessage) {
                 //Log.e(TAG, "showItemFromBarcode: showing -> " + barcodeMessage );
 
                 //replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance(barcodeMessage,""));
@@ -437,11 +489,31 @@ public class ActivityHome extends AppCompatActivity implements
 
             @Override
             public void takeItemPic(ImageView ivItemPic) {
-                mIvItemPic = ivItemPic;
+                mImageView = ivItemPic;
 
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }*/
+
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Ensure that there's a camera activity to handle the intent
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        Log.e(TAG, "createImageFile : File Create Exception -> " + ex.getMessage() );
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(this,
+                                "com.example.doctarhyf.shopm",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                    }
                 }
             }
         }
