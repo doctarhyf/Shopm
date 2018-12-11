@@ -79,6 +79,7 @@ public class ActivityHome extends AppCompatActivity implements
             private View pbCont;
             private ImageView mImageView;
             private String mCurrentPhotoPath;
+            private Menu mMenu;
             //private Button btnAddItem;
             //private MenuItem searchView;
 
@@ -160,12 +161,13 @@ public class ActivityHome extends AppCompatActivity implements
 
             private void initHome() {
 
+                showAllMenuItems();
                 //setItemsListVisible(false);
                 if(ShopmApplication.GI().getApi().IsOnline(this)) {
                     //fragmentManager.beginTransaction().add(R.id.fragCont, FragmentHome.newInstance("", "")).commit();
                     setItemsListVisible(false);
                     //menuItemSearch.setVisible(true);
-                    replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
+                    replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""), null, null);
                 }else{
                     String msg = getResources().getString(R.string.msgNoConnection);
                     fragmentManager.beginTransaction().add(R.id.fragCont, FragnentErrorMessage.newInstance(msg,"")).commit();
@@ -334,6 +336,8 @@ public class ActivityHome extends AppCompatActivity implements
         } else {
             super.onBackPressed();
         }
+
+        showAllMenuItems();
     }
 
     @Override
@@ -342,6 +346,7 @@ public class ActivityHome extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.menu_home, menu);
 
 
+        mMenu = menu;
         // Associate searchable configuration with the SearchView
         //menuItemSearch = menu.findItem(R.id.action_search);
 
@@ -384,12 +389,16 @@ public class ActivityHome extends AppCompatActivity implements
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            replaceFragWithBackstack(R.id.fragCont, FragmentSettings.newInstance("",""));
+            replaceFragWithBackstack(R.id.fragCont, FragmentSettings.newInstance("",""),
+                    new boolean[]{false,false},
+                    new int[]{R.id.action_settings, R.id.action_search});
             return true;
         }
 
         if(id == R.id.action_add_item){
-            replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance(null));
+            replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance(null),
+                    new boolean[]{false},
+                    new int[]{R.id.action_search});
             return true;
         }
 
@@ -417,15 +426,19 @@ public class ActivityHome extends AppCompatActivity implements
             //searchView.setVisible(true);
             setItemsListVisible(false);
             //menuItemSearch.setVisible(true);
-            replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
+            replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""), null, null);
         } else if (id == R.id.nav_sells) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSellItem.newInstance("","")).commit();
             //scanBarCode();
-            replaceFragWithBackstack(R.id.fragCont, FragmentSells.newInstance("",""));
+            replaceFragWithBackstack(R.id.fragCont, FragmentSells.newInstance("",""),
+                    new boolean[]{false},
+                    new int[]{R.id.action_search});
         } else if (id == R.id.nav_settings) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSettings.newInstance("","")).commit();
 
-            replaceFragWithBackstack(R.id.fragCont, FragmentSettings.newInstance("",""));
+            replaceFragWithBackstack(R.id.fragCont, FragmentSettings.newInstance("",""),
+                    new boolean[]{false, false},
+                    new int[]{R.id.action_settings, R.id.action_search});
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -446,7 +459,7 @@ public class ActivityHome extends AppCompatActivity implements
             public void onFragmentHomeItemsLoadError(String errorMessage) {
                 String currentIP = ShopmApplication.GI().getApi().GSV(ShopmApi.SV_SERVER_ADD, ShopmApi.SV_DEF_SERVER_ADD);
                 String msg = String.format(getResources().getString(R.string.errorLoadingItems), errorMessage, currentIP);
-                replaceFragWithBackstack(R.id.fragCont, FragnentErrorMessage.newInstance(msg,""));
+                replaceFragWithBackstack(R.id.fragCont, FragnentErrorMessage.newInstance(msg,""), null, null);
 
                 setItemsListVisible(true);
             }
@@ -472,11 +485,18 @@ public class ActivityHome extends AppCompatActivity implements
                 Log.e(TAG, "onHomeItemClicked: " );
 
                 //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentViewItem.newInstance("","")).commit();
-                replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance(item.toJSON()));
+
+
+                boolean[] show = {false};
+
+                int[] ids = {R.id.action_search};
+                replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance(item.toJSON()), show, ids);
 
             }
 
-    private void replaceFragWithBackstack(int fragCont, Fragment frag) {
+    private void replaceFragWithBackstack(int fragCont, Fragment frag, boolean showMenusItems[], int menuIds[]) {
+
+                showAllMenuItems();
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -485,9 +505,32 @@ public class ActivityHome extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
+                if(mMenu != null && showMenusItems != null && menuIds != null) {
+                    //mMenu.findItem(R.id.action_search).setVisible(false);
+                    for(int i = 0 ; i < showMenusItems.length; i++ ){
+                        MenuItem menuItem = mMenu.findItem(menuIds[i]);
+                        menuItem.setVisible(showMenusItems[i]);
+                    }
+                }
+
+
+
+
             }
 
-     @Override
+            private void showAllMenuItems() {
+
+
+                    if(mMenu != null) {
+                        for (int i = 0; i < mMenu.size(); i++) {
+                            MenuItem menuItem = mMenu.getItem(i);
+                            menuItem.setVisible(true);
+                        }
+                    }
+
+            }
+
+            @Override
      public void onFragmentSellsInteraction(Uri uri) {
 
             }
@@ -585,6 +628,8 @@ public class ActivityHome extends AppCompatActivity implements
             @Override
             public void editItem(Item item) {
                 Log.e(TAG, "editItem: id -> " + item.getItem_id() );
-                replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance(item));
+                replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance(item),
+                        new boolean[]{false},
+                        new int[]{R.id.action_search});
             }
         }
