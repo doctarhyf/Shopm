@@ -433,8 +433,8 @@ public class ActivityHome extends AppCompatActivity implements
 
         if(id == R.id.action_add_item){
             replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance(null),
-                    new boolean[]{false},
-                    new int[]{R.id.action_search});
+                    new boolean[]{false, false},
+                    new int[]{R.id.action_search, R.id.action_add_item});
             return true;
         }
 
