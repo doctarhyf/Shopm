@@ -18,6 +18,13 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/action_connect_via_qr"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="@string/connectToServerViaQR"
+        android:orderInCategory="98"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

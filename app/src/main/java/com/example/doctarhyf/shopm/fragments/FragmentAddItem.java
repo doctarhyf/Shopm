@@ -81,19 +81,25 @@ public class FragmentAddItem extends Fragment {
 
         Button btnAddItem = rootView.findViewById(R.id.btnAddItem);
 
-        if(editing) btnAddItem.setText(getResources().getString(R.string.btnUpdateItem));
+       // if(editing)
 
-        final Item item = Item.FromJSON(mItemToEdit);
-        Utils.SetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemName), item.getItem_name());
-        Utils.SetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemPrice), item.getItem_price());
-        Utils.SetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemInitStock), item.getItem_stock_count());
-        Utils.SetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemDesc), item.getItem_desc());
+        //Item item = null;
+
+        if(editing) {
+            btnAddItem.setText(getResources().getString(R.string.btnUpdateItem));
+            Item item = Item.FromJSON(mItemToEdit);
+            Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemName), item.getItem_name());
+            Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemPrice), item.getItem_price());
+            Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemInitStock), item.getItem_stock_count());
+            Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemDesc), item.getItem_desc());
+        }
 
 
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                //adding new
                 final String itemName = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemName));
                 final String itemPrice = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemPrice));
                 final String itemInitStock = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemInitStock));
@@ -107,17 +113,21 @@ public class FragmentAddItem extends Fragment {
 
                 //Log.e(Utils.TAG, "onClick: data to add -> " + itemData.toString() );
 
-                item.setItem_name(itemName);
-                item.setItem_price(itemPrice);
-                item.setItem_stock_count(itemInitStock);
-                item.setItem_desc(itemDesc);
+                Item curItem = null;
+                if(editing) {
+                    curItem = Item.FromJSON(mItemToEdit);
+                    curItem.setItem_name(itemName);
+                    curItem.setItem_price(itemPrice);
+                    curItem.setItem_stock_count(itemInitStock);
+                    curItem.setItem_desc(itemDesc);
+                }
 
                 if(itemName.equals("") || itemPrice.equals("") || itemInitStock.equals("") || itemDesc.equals("")){
                     mListener.onItemAddNoEmptyFieldsAllowed();
                 }else {
 
                     if(editing){
-                        mListener.updateItem(item);
+                        mListener.updateItem(curItem);
                     }else {
                         mListener.addItemToStock(itemData);
                     }

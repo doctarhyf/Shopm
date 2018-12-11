@@ -1,8 +1,11 @@
 package com.example.doctarhyf.shopm;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -390,6 +393,12 @@ public class ActivityHome extends AppCompatActivity implements
             return true;
         }
 
+
+        if(id == R.id.action_connect_via_qr){
+            Log.e(TAG, "onOptionsItemSelected: connect via qr" );
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -550,6 +559,27 @@ public class ActivityHome extends AppCompatActivity implements
             @Override
             public void deleteItem(Item item) {
                 Log.e(TAG, "deleteItem: id -> " + item.getItem_id() );
+                String title = getString(R.string.strSureDeleteTitle) + " " + item.getItem_name() + " ?";
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle(title)
+                        .setMessage(getResources().getString(R.string.strSureDeleteMessage))
+                        .setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Log.e(TAG, "onClick: " );
+                            }
+                        })
+                        .setNegativeButton("ANULLER", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+
+                AlertDialog alertDialog = builder.show();
+
+
             }
 
             @Override
