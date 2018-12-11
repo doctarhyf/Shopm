@@ -541,4 +541,15 @@ public class ActivityHome extends AppCompatActivity implements
             public void refreshStockList() {
                 initHome();
             }
+
+            @Override
+            public void deleteItem(Item item) {
+                Log.e(TAG, "deleteItem: id -> " + item.getItem_id() );
+            }
+
+            @Override
+            public void editItem(Item item) {
+                Log.e(TAG, "editItem: id -> " + item.getItem_id() );
+                replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance("", ""));
+            }
         }

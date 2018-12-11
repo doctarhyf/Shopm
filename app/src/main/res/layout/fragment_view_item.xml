@@ -61,6 +61,32 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <Button
+
+                android:layout_marginRight="4dp"
+                android:id="@+id/btnEditItem"
+                android:text="@string/btnEditItem"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:layout_marginLeft="4dp"
+                android:id="@+id/btnDeleteItem"
+                android:text="@string/btnDeleteItem"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

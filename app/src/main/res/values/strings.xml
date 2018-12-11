@@ -40,4 +40,6 @@
     <string name="strStock">Stock</string>
     <string name="btnRetry">REESSAYER</string>
     <string name="strAllFieldsMedatory">Tous les champs sont obligatoires apart la photo.</string>
+    <string name="btnEditItem">MODIFIEr ARTICLE</string>
+    <string name="btnDeleteItem">SUPPRIMER ARTICLE</string>
 </resources>

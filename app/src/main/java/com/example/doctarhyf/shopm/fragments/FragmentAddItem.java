@@ -75,16 +75,7 @@ public class FragmentAddItem extends Fragment {
 
         Button btnAddItem = rootView.findViewById(R.id.btnAddItem);
 
-        final String itemName = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemName));
-        final String itemPrice = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemPrice));
-        final String itemInitStock = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemInitStock));
-        final String itemDesc = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemDesc));
 
-        final Bundle itemData = new Bundle();
-        itemData.putString(Item.KEY_ITEM_NAME, itemName);
-        itemData.putString(Item.KEY_ITEM_PRICE, itemPrice);
-        itemData.putString(Item.KEY_ITEM_INIT_STOCK, itemInitStock);
-        itemData.putString(Item.KEY_ITEM_DESC, itemDesc);
 
 
 
@@ -92,7 +83,18 @@ public class FragmentAddItem extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Log.e(Utils.TAG, "onClick: data to add -> " + itemData.toString() );
+                final String itemName = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemName));
+                final String itemPrice = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemPrice));
+                final String itemInitStock = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemInitStock));
+                final String itemDesc = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemDesc));
+
+                final Bundle itemData = new Bundle();
+                itemData.putString(Item.KEY_ITEM_NAME, itemName);
+                itemData.putString(Item.KEY_ITEM_PRICE, itemPrice);
+                itemData.putString(Item.KEY_ITEM_INIT_STOCK, itemInitStock);
+                itemData.putString(Item.KEY_ITEM_DESC, itemDesc);
+
+                //Log.e(Utils.TAG, "onClick: data to add -> " + itemData.toString() );
 
                 if(itemName.equals("") || itemPrice.equals("") || itemInitStock.equals("") || itemDesc.equals("")){
                     mListener.onItemAddNoEmptyFieldsAllowed();

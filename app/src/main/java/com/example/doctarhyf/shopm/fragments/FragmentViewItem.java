@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,7 +72,7 @@ public class FragmentViewItem extends Fragment {
 
         if(!mItemJson.equals("")){
 
-            Item item = Item.FromJSON(mItemJson);
+            final Item item = Item.FromJSON(mItemJson);
 
             ImageView ivItemPic = rootView.findViewById(R.id.ivItemPic);
             TextView tvItemName = rootView.findViewById(R.id.tvItemName);
@@ -101,6 +102,25 @@ public class FragmentViewItem extends Fragment {
                     .skipMemoryCache(true)
                     .fitCenter()
                     .into(ivItemPic);
+
+
+            Button btnDelete = rootView.findViewById(R.id.btnDeleteItem);
+            Button btnEdit = rootView.findViewById(R.id.btnEditItem);
+
+            btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.editItem(item);
+                }
+            });
+
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Log.e(Utils.TAG, "onClick: delete id : " + item.getItem_id() );
+                    mListener.deleteItem(item);
+                }
+            });
 
 
 
@@ -147,6 +167,9 @@ public class FragmentViewItem extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentViewItemInteractionListener {
+        void deleteItem(Item item);
+
+        void editItem(Item item);
         // TODO: Update argument type and name
        // void onFragmentViewIteInteraction(Uri uri);
     }

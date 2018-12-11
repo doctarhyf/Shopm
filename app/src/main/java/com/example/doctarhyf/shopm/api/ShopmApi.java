@@ -124,9 +124,9 @@ public class ShopmApi {
         String item_desc = itemData.getString(Item.KEY_ITEM_DESC);
 
         String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_ADD_ITEM_TO_STOCK + "&item_name=" + item_name +
-                "&item_price=" + item_price + "&exch_stock_count=" + item_stock_count + "&item_desc=" + item_desc;
+                "&item_price=" + item_price + "&item_stock_count=" + item_stock_count + "&item_desc=" + item_desc;
 
-        Log.e(TAG, "sellItem: url -> " + url );
+        //Log.e(TAG, "sellItem: url -> " + url );
 
         StringRequest request = new StringRequest(
                 url,
