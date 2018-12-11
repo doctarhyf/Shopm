@@ -96,7 +96,7 @@ public class FragmentViewItem extends Fragment {
             Glide.with(getContext())
                     .load(uri)
                     .asBitmap()
-                    //.error(R.drawable.ic_error)
+                    .error(R.drawable.no_img_found)
                     //.placeholder(R.drawable.progress_animation)
                     //.diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)

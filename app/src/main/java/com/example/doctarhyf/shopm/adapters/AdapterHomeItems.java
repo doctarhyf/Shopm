@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
 import com.example.doctarhyf.shopm.R;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
@@ -134,11 +132,11 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
         Glide.with(holder.ivItemPic.getContext())
                 .load(uri)
                 .asBitmap()
-                //.error(R.drawable.ic_error)
+                .error(R.drawable.no_img_found)
                 //.placeholder(R.drawable.progress_animation)
                 //.diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
-                .fitCenter()
+                .centerCrop()
                 .into(holder.ivItemPic);
 
         //holder.tvCatTitle.setText(homeCategoryItem.getTitle());

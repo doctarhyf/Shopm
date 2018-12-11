@@ -38,6 +38,8 @@ public class ShopmApi {
     public static final String SV_DEF_SERVER_ADD = "192.168.1.3";
     private static final String ACTION_SELL_ITEM = "sellItem";
     private static final String ACTION_ADD_ITEM_TO_STOCK = "addItemToStock";
+    private static final String ACTION_DEL_ITEM = "delItem";
+    private static final String ACTION_UPDATE_ITEM = "updItem";
     public static String API_URL = "shopm/api.php?";
     private final Context context;
     private final SharedPreferences.Editor editor;
@@ -109,6 +111,87 @@ public class ShopmApi {
 
     public SharedPreferences getPreferences() {
         return preferences;
+    }
+
+    public void updateItem(final CallbackAPIActionConfirmation callback, Item newItem) {
+        final String actName = ShopmApi.ACTION_UPDATE_ITEM;
+        //String url = GSA() + API_URL + "act=" + actName + "&item_id=" + item_id;
+
+        String item_id = newItem.getItem_id();
+        String item_name = newItem.getItem_name();
+        String item_price = newItem.getItem_price();
+        String item_stock_count = newItem.getItem_stock_count();
+        String item_desc = newItem.getItem_desc();
+
+        String url = GSA() + API_URL + "act=" + actName + "&item_name=" + item_name + "&item_id=" + item_id +
+                "&item_price=" + item_price + "&item_stock_count=" + item_stock_count + "&item_desc=" + item_desc;
+
+        //Log.e(TAG, "sellItem: url -> " + url );
+
+        StringRequest request = new StringRequest(
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Log.e(TAG, "onResponse: FAKREZ -> " + s );
+                        if(s.equals("false")){
+                            //Log.e(TAG, "onResponse: FAAKK" );
+                            callback.onActionFailure(actName, s);
+                        }else{
+                            callback.onActionSuccess(actName, s);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.e(TAG, "onErrorResponse: -> " + volleyError.getMessage() );
+                        callback.onActionFailure(actName,volleyError.getMessage());
+                    }
+                }
+        );
+
+        ShopmApplication.GI().addToRequestQueue(request);
+    }
+
+    public interface CallbackAPIActionConfirmation {
+        void onActionSuccess(String actionName, String data);
+        void onActionFailure(String actionName, String data);
+    }
+
+    public void deleteItem(final CallbackAPIActionConfirmation callback, String item_id) {
+
+
+        final String actName = ShopmApi.ACTION_DEL_ITEM;
+        String url = GSA() + API_URL + "act=" + actName + "&item_id=" + item_id;
+
+        //Log.e(TAG, "sellItem: url -> " + url );
+
+        StringRequest request = new StringRequest(
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        //Log.e(TAG, "onResponse: FAKREZ -> " + s );
+                        if(s.equals("false")){
+                            //Log.e(TAG, "onResponse: FAAKK" );
+                            callback.onActionFailure(actName, s);
+                        }else{
+                            callback.onActionSuccess(actName, s);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.e(TAG, "onErrorResponse: -> " + volleyError.getMessage() );
+                        callback.onActionFailure(actName, volleyError.getMessage());
+                    }
+                }
+        );
+
+        ShopmApplication.GI().addToRequestQueue(request);
+
     }
 
     public interface CallbackStock {

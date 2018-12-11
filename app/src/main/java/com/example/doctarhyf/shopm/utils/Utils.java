@@ -1,7 +1,12 @@
 package com.example.doctarhyf.shopm.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.widget.EditText;
+
+import com.example.doctarhyf.shopm.R;
 
 public class Utils {
 
@@ -16,6 +21,9 @@ public class Utils {
     public static final String ITEM_SOLD = "itemSold";
     public static final String ROOT_FOLDER = "shopm";
     public static final String IMG_FOLDER_NAME = "img";
+    public static final String ITEM_DELETED = "itemDeleted";
+    public static final String ITEM_ADDED = "itemAdded";
+    public static final String ITEM_UPDATED = "itemUpdated";
 
     public static String GetEditTextValue(Context context, EditText et){
         return et.getText().toString();
@@ -25,5 +33,37 @@ public class Utils {
          et.setText(val);
     }
 
+    public interface ListernerAlertDialogWithTitleMessage{
+        void onPositiveButton();
+        void onNegativeButton();
+    }
 
+
+    public static AlertDialog GetAlertDialogWithTitleAndMessage(Context context, final ListernerAlertDialogWithTitleMessage listener, String title, String message, boolean show) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Log.e(TAG, "onClick: " );
+                        listener.onPositiveButton();
+                    }
+                })
+                .setNegativeButton("NON", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        listener.onNegativeButton();
+                    }
+                });
+
+
+        AlertDialog alertDialog = builder.create();
+
+        if(show) alertDialog.show();
+
+        return alertDialog;
+
+    }
 }

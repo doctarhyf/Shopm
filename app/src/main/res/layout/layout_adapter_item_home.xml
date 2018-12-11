@@ -9,7 +9,7 @@
 
     <ImageView
 
-        android:src="@drawable/tmt"
+        android:src="@drawable/no_img_found"
         android:id="@+id/ivItemPic"
         android:scaleType="centerCrop"
         android:layout_width="0dp"
@@ -42,8 +42,8 @@
         <TextView
             android:padding="4dp"
             android:textSize="10sp"
-            android:background="#126419"
-            android:textColor="@color/white"
+
+            android:textColor="#126419"
             android:id="@+id/tvItemStockCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

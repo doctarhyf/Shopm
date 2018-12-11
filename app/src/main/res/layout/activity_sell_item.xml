@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@drawable/tmt"
+            android:src="@drawable/no_img_found"
             android:id="@+id/ivItemPic"
             android:layout_width="match_parent"
             android:layout_height="230dp" />

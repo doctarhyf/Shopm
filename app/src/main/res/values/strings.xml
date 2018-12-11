@@ -44,6 +44,9 @@
     <string name="btnDeleteItem">SUPPRIMER ARTICLE</string>
     <string name="btnUpdateItem">METTRE A JOUR</string>
     <string name="strSureDeleteTitle">Supprimer </string>
-    <string name="strSureDeleteMessage">Etes-vous sur de vouloir supprimer l\'article ci-dessus.\nL\'operation est irreversible.</string>
+    <string name="strSureDeleteMessage">Etes-vous sur de vouloir supprimer l\'article ci-dessus?\nL\'operation est irreversible.</string>
     <string name="connectToServerViaQR">Connection via QR</string>
+    <string name="strSureUpdateTitle">Mis a jour de</string>
+    <string name="strSureUpdateMessage">Etes-vous sur de vouloir mettre a jour l\'article ci-dessus?\nL\'operation est irreversible.</string>
+    <string name="lblStockNewStock">Nouveau Stock</string>
 </resources>

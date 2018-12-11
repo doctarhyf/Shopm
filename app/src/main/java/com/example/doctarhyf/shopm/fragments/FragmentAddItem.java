@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.doctarhyf.shopm.R;
 import com.example.doctarhyf.shopm.objects.Item;
@@ -80,6 +81,7 @@ public class FragmentAddItem extends Fragment {
         final View rootView =  inflater.inflate(R.layout.fragment_add_item, container, false);
 
         Button btnAddItem = rootView.findViewById(R.id.btnAddItem);
+        TextView tvStockLabel = rootView.findViewById(R.id.tvStockLabel);
 
        // if(editing)
 
@@ -87,6 +89,7 @@ public class FragmentAddItem extends Fragment {
 
         if(editing) {
             btnAddItem.setText(getResources().getString(R.string.btnUpdateItem));
+            tvStockLabel.setText(getResources().getString(R.string.lblStockNewStock));
             Item item = Item.FromJSON(mItemToEdit);
             Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemName), item.getItem_name());
             Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemPrice), item.getItem_price());

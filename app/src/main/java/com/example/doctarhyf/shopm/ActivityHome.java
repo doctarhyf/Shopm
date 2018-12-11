@@ -5,7 +5,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -123,6 +122,8 @@ public class ActivityHome extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
+
         boolean itemSold = getIntent().getBooleanExtra(Utils.ITEM_SOLD, false);
 
         if(itemSold){
@@ -132,6 +133,9 @@ public class ActivityHome extends AppCompatActivity implements
             Snackbar.make(findViewById(R.id.fab),  "Item : " + item.getItem_name() + ", sold! Remaining in stock : " + item.getItem_stock_count(), Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
         }
+
+
+
 
         /*btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +175,38 @@ public class ActivityHome extends AppCompatActivity implements
                 }else{
                     String msg = getResources().getString(R.string.msgNoConnection);
                     fragmentManager.beginTransaction().add(R.id.fragCont, FragnentErrorMessage.newInstance(msg,"")).commit();
+                }
+
+                ShopmApi api = ShopmApplication.GI().getApi();
+                String itemDelete = api.GSV(Utils.ITEM_DELETED, null);
+                String itemAdded = api.GSV(Utils.ITEM_ADDED, null);
+                String itemUpdated = api.GSV(Utils.ITEM_UPDATED, null);
+
+                if(itemUpdated != null){
+                    Snackbar.make(findViewById(R.id.fab),  "Article mis a jour avec succes", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                    api.SSV(Utils.ITEM_UPDATED, null);
+
+
+                }
+
+                if(itemDelete != null){
+                    Snackbar.make(findViewById(R.id.fab),  "Article efface avec succes", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                    api.SSV(Utils.ITEM_DELETED, null);
+
+
+                }
+
+                if(itemAdded != null){
+                    Snackbar.make(findViewById(R.id.fab),  "Article ajoute avec succes", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                    api.SSV(Utils.ITEM_ADDED, null);
+
+
                 }
             }
 
@@ -543,6 +579,9 @@ public class ActivityHome extends AppCompatActivity implements
                 api.addItemToStock(new ShopmApi.CallbackStock() {
                     @Override
                     public void onItemAddToStockSuccess(String itemData) {
+
+                        ShopmApi api = ShopmApplication.GI().getApi();
+                        api.SSV(Utils.ITEM_ADDED, itemData);
                         initHome();
                     }
 
@@ -590,8 +629,40 @@ public class ActivityHome extends AppCompatActivity implements
             }
 
             @Override
-            public void updateItem(Item item) {
-                Log.e(TAG, "updateItem: id -> " + item.getItem_id() );
+            public void updateItem(final Item item) {
+                //Log.e(TAG, "updateItem: id -> " + item.getItem_id() );
+
+                String title = getString(R.string.strSureUpdateTitle) + " " + item.getItem_name() + " ?";
+                String message = getResources().getString(R.string.strSureUpdateMessage);
+
+
+                AlertDialog alertDialog = Utils.GetAlertDialogWithTitleAndMessage(this, new Utils.ListernerAlertDialogWithTitleMessage() {
+                    @Override
+                    public void onPositiveButton() {
+                        ShopmApi api = ShopmApplication.GI().getApi();
+
+                        api.updateItem(new ShopmApi.CallbackAPIActionConfirmation() {
+                            @Override
+                            public void onActionSuccess(String actionName, String data) {
+
+                                ShopmApi api = ShopmApplication.GI().getApi();
+                                api.SSV(Utils.ITEM_UPDATED, data);
+                                initHome();
+                            }
+
+                            @Override
+                            public void onActionFailure(String actionName, String data) {
+                                Toast.makeText(ActivityHome.this, "Erreur -> " + data, Toast.LENGTH_SHORT).show();
+                            }
+                        }, item);
+                        //Log.e(TAG, "onPositiveButton: deleting -> id : " + item.getItem_id() );
+                    }
+
+                    @Override
+                    public void onNegativeButton() {
+
+                    }
+                },title, message, true);
             }
 
             @Override
@@ -600,27 +671,39 @@ public class ActivityHome extends AppCompatActivity implements
             }
 
             @Override
-            public void deleteItem(Item item) {
-                Log.e(TAG, "deleteItem: id -> " + item.getItem_id() );
+            public void deleteItem(final Item item) {
+                //Log.e(TAG, "deleteItem: id -> " + item.getItem_id() );
                 String title = getString(R.string.strSureDeleteTitle) + " " + item.getItem_name() + " ?";
+                String message = getResources().getString(R.string.strSureDeleteMessage);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle(title)
-                        .setMessage(getResources().getString(R.string.strSureDeleteMessage))
-                        .setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+
+                AlertDialog alertDialog = Utils.GetAlertDialogWithTitleAndMessage(this, new Utils.ListernerAlertDialogWithTitleMessage() {
+                    @Override
+                    public void onPositiveButton() {
+                        ShopmApi api = ShopmApplication.GI().getApi();
+
+                        api.deleteItem(new ShopmApi.CallbackAPIActionConfirmation() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Log.e(TAG, "onClick: " );
+                            public void onActionSuccess(String actionName, String data) {
+
+                                ShopmApi api = ShopmApplication.GI().getApi();
+                                api.SSV(Utils.ITEM_DELETED, data);
+                                initHome();
                             }
-                        })
-                        .setNegativeButton("ANULLER", new DialogInterface.OnClickListener() {
+
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
+                            public void onActionFailure(String actionName, String data) {
+                                Toast.makeText(ActivityHome.this, "Erreur -> " + data, Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }, item.getItem_id());
+                        //Log.e(TAG, "onPositiveButton: deleting -> id : " + item.getItem_id() );
+                    }
 
-                AlertDialog alertDialog = builder.show();
+                    @Override
+                    public void onNegativeButton() {
+
+                    }
+                },title, message, true);
 
 
             }
