@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -36,6 +37,7 @@ public class ShopmApi {
     public static final String SV_DEF_MAX_SELLABLE_NUM = "30";
     public static final String SV_DEF_SERVER_ADD = "192.168.1.3";
     private static final String ACTION_SELL_ITEM = "sellItem";
+    private static final String ACTION_ADD_ITEM_TO_STOCK = "addItemToStock";
     public static String API_URL = "shopm/api.php?";
     private final Context context;
     private final SharedPreferences.Editor editor;
@@ -107,6 +109,50 @@ public class ShopmApi {
 
     public SharedPreferences getPreferences() {
         return preferences;
+    }
+
+    public interface CallbackStock {
+        void onItemAddToStockSuccess(String itemData);
+        void onItemAddToStockError(String errorMessage);
+    }
+
+    public void addItemToStock(final CallbackStock callbackStock, Bundle itemData) {
+
+        String item_name = itemData.getString(Item.KEY_ITEM_NAME);
+        String item_price = itemData.getString(Item.KEY_ITEM_PRICE);
+        String item_stock_count = itemData.getString(Item.KEY_ITEM_INIT_STOCK);
+        String item_desc = itemData.getString(Item.KEY_ITEM_DESC);
+
+        String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_ADD_ITEM_TO_STOCK + "&item_name=" + item_name +
+                "&item_price=" + item_price + "&exch_stock_count=" + item_stock_count + "&item_desc=" + item_desc;
+
+        Log.e(TAG, "sellItem: url -> " + url );
+
+        StringRequest request = new StringRequest(
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Log.e(TAG, "onResponse: FAKREZ -> " + s );
+                        if(s.equals("false")){
+                            //Log.e(TAG, "onResponse: FAAKK" );
+                            callbackStock.onItemAddToStockError(s);
+                        }else{
+                            callbackStock.onItemAddToStockSuccess(s);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.e(TAG, "onErrorResponse: -> " + volleyError.getMessage() );
+                        callbackStock.onItemAddToStockError(volleyError.getMessage());
+                    }
+                }
+        );
+
+        ShopmApplication.GI().addToRequestQueue(request);
+
     }
 
     public interface CallbacksSellItem{

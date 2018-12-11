@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -105,7 +104,7 @@ public class ActivityHome extends AppCompatActivity implements
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         //.setAction("Action", null).show();
 
-                scanItemToSell();
+                scanBarCode();
 
             }
         });
@@ -170,8 +169,8 @@ public class ActivityHome extends AppCompatActivity implements
                 }
             }
 
-            private void scanItemToSell() {
-                Log.e(TAG, "scanItemToSell: " );
+            private void scanBarCode() {
+                Log.e(TAG, "scanBarCode: " );
 
                 Intent intent = new Intent(this, BarcodeCaptureActivity.class);
                 startActivityForResult(intent, Utils.BARCODE_READER_REQUEST_CODE);
@@ -412,7 +411,7 @@ public class ActivityHome extends AppCompatActivity implements
             replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""));
         } else if (id == R.id.nav_sells) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSellItem.newInstance("","")).commit();
-            //scanItemToSell();
+            //scanBarCode();
             replaceFragWithBackstack(R.id.fragCont, FragmentSells.newInstance("",""));
         } else if (id == R.id.nav_settings) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSettings.newInstance("","")).commit();
@@ -486,8 +485,21 @@ public class ActivityHome extends AppCompatActivity implements
 
 
             @Override
-            public void onAddItemListener(Bundle itemData) {
-                Log.e(TAG, "onAddItemListener: DA NITEM -> " + itemData.toString() );
+            public void addItemToStock(Bundle itemData) {
+                //Log.e(TAG, "addItemToStock: DA NITEM -> " + itemData.toString() );
+                ShopmApi api = ShopmApplication.getInstance().getApi();
+                api.addItemToStock(new ShopmApi.CallbackStock() {
+                    @Override
+                    public void onItemAddToStockSuccess(String itemData) {
+                        initHome();
+                    }
+
+                    @Override
+                    public void onItemAddToStockError(String errorMessage) {
+                        Toast.makeText(ActivityHome.this, "Error adding item.\nError message : " + errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                }, itemData);
+
             }
 
             @Override
@@ -518,6 +530,11 @@ public class ActivityHome extends AppCompatActivity implements
                         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                     }
                 }
+            }
+
+            @Override
+            public void onItemAddNoEmptyFieldsAllowed() {
+                Toast.makeText(ActivityHome.this, "Erreur! Veuillez remplir tous les champs SVP.", Toast.LENGTH_SHORT).show();
             }
 
             @Override

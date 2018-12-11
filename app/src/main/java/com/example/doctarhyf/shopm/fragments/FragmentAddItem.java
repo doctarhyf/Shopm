@@ -71,14 +71,14 @@ public class FragmentAddItem extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_add_item, container, false);
+        final View rootView =  inflater.inflate(R.layout.fragment_add_item, container, false);
 
         Button btnAddItem = rootView.findViewById(R.id.btnAddItem);
 
-        String itemName = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemName));
-        String itemPrice = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemPrice));
-        String itemInitStock = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemInitStock));
-        String itemDesc = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemDesc));
+        final String itemName = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemName));
+        final String itemPrice = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemPrice));
+        final String itemInitStock = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemInitStock));
+        final String itemDesc = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemDesc));
 
         final Bundle itemData = new Bundle();
         itemData.putString(Item.KEY_ITEM_NAME, itemName);
@@ -87,10 +87,18 @@ public class FragmentAddItem extends Fragment {
         itemData.putString(Item.KEY_ITEM_DESC, itemDesc);
 
 
+
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onAddItemListener(itemData);
+
+                Log.e(Utils.TAG, "onClick: data to add -> " + itemData.toString() );
+
+                if(itemName.equals("") || itemPrice.equals("") || itemInitStock.equals("") || itemDesc.equals("")){
+                    mListener.onItemAddNoEmptyFieldsAllowed();
+                }else {
+                    mListener.addItemToStock(itemData);
+                }
             }
         });
 
@@ -144,9 +152,11 @@ public class FragmentAddItem extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentAddItemInteractionListener {
-        void onAddItemListener(Bundle itemData);
+        void addItemToStock(Bundle itemData);
 
         void takeItemPic(ImageView ivItemPic);
+
+        void onItemAddNoEmptyFieldsAllowed();
         // TODO: Update argument type and name
         //void onFragmentInteraction(Uri uri);
     }
