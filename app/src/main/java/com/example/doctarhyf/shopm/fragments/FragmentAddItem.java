@@ -27,14 +27,15 @@ import com.example.doctarhyf.shopm.utils.Utils;
 public class FragmentAddItem extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_ITEM_TO_EDIT = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String mItemToEdit;
     private String mParam2;
 
     private OnFragmentAddItemInteractionListener mListener;
+    private boolean editing = false;
 
     public FragmentAddItem() {
         // Required empty public constructor
@@ -44,16 +45,19 @@ public class FragmentAddItem extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param itemToEdit Parameter 2.
      * @return A new instance of fragment FragmentAddItem.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentAddItem newInstance(String param1, String param2) {
+    public static FragmentAddItem newInstance(Item itemToEdit) {
         FragmentAddItem fragment = new FragmentAddItem();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
+        if(itemToEdit != null) {
+            args.putString(ARG_ITEM_TO_EDIT, itemToEdit.toJSON());
+           // editing = true;
+        }
+        //args.putString(ARG_PARAM2, itemToEdit);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,8 +66,10 @@ public class FragmentAddItem extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mItemToEdit = getArguments().getString(ARG_ITEM_TO_EDIT);
+            if(mItemToEdit != null){
+                editing = true;
+            }
         }
     }
 
@@ -75,8 +81,13 @@ public class FragmentAddItem extends Fragment {
 
         Button btnAddItem = rootView.findViewById(R.id.btnAddItem);
 
+        if(editing) btnAddItem.setText(getResources().getString(R.string.btnUpdateItem));
 
-
+        final Item item = Item.FromJSON(mItemToEdit);
+        Utils.SetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemName), item.getItem_name());
+        Utils.SetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemPrice), item.getItem_price());
+        Utils.SetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemInitStock), item.getItem_stock_count());
+        Utils.SetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemDesc), item.getItem_desc());
 
 
         btnAddItem.setOnClickListener(new View.OnClickListener() {
@@ -96,10 +107,20 @@ public class FragmentAddItem extends Fragment {
 
                 //Log.e(Utils.TAG, "onClick: data to add -> " + itemData.toString() );
 
+                item.setItem_name(itemName);
+                item.setItem_price(itemPrice);
+                item.setItem_stock_count(itemInitStock);
+                item.setItem_desc(itemDesc);
+
                 if(itemName.equals("") || itemPrice.equals("") || itemInitStock.equals("") || itemDesc.equals("")){
                     mListener.onItemAddNoEmptyFieldsAllowed();
                 }else {
-                    mListener.addItemToStock(itemData);
+
+                    if(editing){
+                        mListener.updateItem(item);
+                    }else {
+                        mListener.addItemToStock(itemData);
+                    }
                 }
             }
         });
@@ -159,6 +180,8 @@ public class FragmentAddItem extends Fragment {
         void takeItemPic(ImageView ivItemPic);
 
         void onItemAddNoEmptyFieldsAllowed();
+
+        void updateItem(Item item);
         // TODO: Update argument type and name
         //void onFragmentInteraction(Uri uri);
     }

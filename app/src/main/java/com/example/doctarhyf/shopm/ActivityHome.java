@@ -386,7 +386,7 @@ public class ActivityHome extends AppCompatActivity implements
         }
 
         if(id == R.id.action_add_item){
-            replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance("",""));
+            replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance(null));
             return true;
         }
 
@@ -538,6 +538,11 @@ public class ActivityHome extends AppCompatActivity implements
             }
 
             @Override
+            public void updateItem(Item item) {
+                Log.e(TAG, "updateItem: id -> " + item.getItem_id() );
+            }
+
+            @Override
             public void refreshStockList() {
                 initHome();
             }
@@ -550,6 +555,6 @@ public class ActivityHome extends AppCompatActivity implements
             @Override
             public void editItem(Item item) {
                 Log.e(TAG, "editItem: id -> " + item.getItem_id() );
-                replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance("", ""));
+                replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance(item));
             }
         }

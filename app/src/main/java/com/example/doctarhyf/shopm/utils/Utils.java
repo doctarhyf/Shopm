@@ -21,5 +21,9 @@ public class Utils {
         return et.getText().toString();
     }
 
+    public static void SetEditTextValue(Context context, EditText et, String val){
+         et.setText(val);
+    }
+
 
 }

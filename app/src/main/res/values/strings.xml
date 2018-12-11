@@ -42,4 +42,5 @@
     <string name="strAllFieldsMedatory">Tous les champs sont obligatoires apart la photo.</string>
     <string name="btnEditItem">MODIFIEr ARTICLE</string>
     <string name="btnDeleteItem">SUPPRIMER ARTICLE</string>
+    <string name="btnUpdateItem">METTRE A JOUR</string>
 </resources>
