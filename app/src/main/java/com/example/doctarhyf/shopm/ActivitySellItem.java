@@ -2,6 +2,7 @@ package com.example.doctarhyf.shopm;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -148,29 +149,55 @@ public class ActivitySellItem extends AppCompatActivity {
     public void sellItem(View view){
         //Log.e(TAG, "sellItem: " );
 
-        ShopmApi api = ShopmApplication.GI().getApi();
+        final ShopmApi api = ShopmApplication.GI().getApi();
 
-        String item_id = item.getItem_id();
-        String item_qty = "" + mQty;
-        String exch_rate = api.GSV(ShopmApi.SV_EXCH_RATE, ShopmApi.SV_DEF_EXCH_RATE);
-        String rem_stock = (Integer.parseInt(item.getItem_stock_count()) - mQty) + "";
+        final String item_id = item.getItem_id();
+        final String item_qty = "" + mQty;
+        final String exch_rate = api.GSV(ShopmApi.SV_EXCH_RATE, ShopmApi.SV_DEF_EXCH_RATE);
+        final String rem_stock = (Integer.parseInt(item.getItem_stock_count()) - mQty) + "";
 
-        api.sellItem(new ShopmApi.CallbacksSellItem() {
-            @Override
-            public void onItemSellError(String errorMessage) {
-                Toast.makeText(ActivitySellItem.this, "Error selling item.\nError : " + errorMessage, Toast.LENGTH_SHORT).show();
-            }
+        String title = "Confirmer vente " + item.getItem_name();
+        String message = "Article : " + item.getItem_name() + "\n" +
+                "Prix Un. : " + item.getItem_price() + " FC\n" +
+                "Qunantite : " + item_qty + "\n" +
+                "--------------------------\n" +
+                "Total : " + (Integer.parseInt(item_qty) * Integer.parseInt(item.getItem_price()) + " FC");
 
-            @Override
-            public void onItemSellSuccess(String itemJson) {
+         Utils.GetAlertDialogWithTitleAndMessage(this,
+                new Utils.ListernerAlertDialogWithTitleMessage() {
+                    @Override
+                    public void onPositiveButton() {
 
-                Intent intent = new Intent(ActivitySellItem.this, ActivityHome.class);
-                intent.putExtra(Utils.ITEM_JSON, itemJson);
-                intent.putExtra(Utils.ITEM_SOLD, true);
-                startActivity(intent);
+                        api.sellItem(new ShopmApi.CallbacksSellItem() {
+                            @Override
+                            public void onItemSellError(String errorMessage) {
+                                Toast.makeText(ActivitySellItem.this, "Error selling item.\nError : " + errorMessage, Toast.LENGTH_SHORT).show();
+                            }
 
-            }
-        },item_id, item_qty, exch_rate, rem_stock);
+                            @Override
+                            public void onItemSellSuccess(String itemJson) {
+
+                                Intent intent = new Intent(ActivitySellItem.this, ActivityHome.class);
+                                intent.putExtra(Utils.ITEM_JSON, itemJson);
+                                intent.putExtra(Utils.ITEM_SOLD, true);
+                                startActivity(intent);
+
+                            }
+                        },item_id, item_qty, exch_rate, rem_stock);
+
+                    }
+
+                    @Override
+                    public void onNegativeButton() {
+
+                    }
+                },title,message, true);
+
+
+
+
+
+
 
 
     }
