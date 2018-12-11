@@ -79,11 +79,13 @@ public class FragmentViewItem extends Fragment {
             TextView tvItemPrice = rootView.findViewById(R.id.tvItemPrice);
             TextView tvStockCount = rootView.findViewById(R.id.tvStockCount);
             TextView tvItemDesc = rootView.findViewById(R.id.tvItemDesc);
+            TextView tvLastStockUpdate = rootView.findViewById(R.id.tvLastStockUpdate);
 
             tvItemName.setText(item.getItem_name());
             tvItemPrice.setText(item.getItem_price() + " FC");
             tvStockCount.setText(Utils.STR_STOCK_PREFIX  + item.getItem_stock_count());
             tvItemDesc.setText(item.getItem_desc());
+            tvLastStockUpdate.setText(Utils.STR_STOCK_LAST_UPD__PREFIX + item.getItem_last_stock_upd());
 
 
             String url = ShopmApplication.GI().getApi().GetServerAddress() + Utils.ROOT_FOLDER + "/" + Utils.IMG_FOLDER_NAME +
@@ -106,6 +108,14 @@ public class FragmentViewItem extends Fragment {
 
             Button btnDelete = rootView.findViewById(R.id.btnDeleteItem);
             Button btnEdit = rootView.findViewById(R.id.btnEditItem);
+            Button btnStockHistory = rootView.findViewById(R.id.btnStockHistory);
+
+            btnStockHistory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.e(Utils.TAG, "onClick: show historique " );
+                }
+            });
 
             btnEdit.setOnClickListener(new View.OnClickListener() {
                 @Override

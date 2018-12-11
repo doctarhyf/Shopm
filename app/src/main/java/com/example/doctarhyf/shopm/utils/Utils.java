@@ -24,6 +24,7 @@ public class Utils {
     public static final String ITEM_DELETED = "itemDeleted";
     public static final String ITEM_ADDED = "itemAdded";
     public static final String ITEM_UPDATED = "itemUpdated";
+    public static final String STR_STOCK_LAST_UPD__PREFIX = "Dernier Renfluement : ";
 
     public static String GetEditTextValue(Context context, EditText et){
         return et.getText().toString();

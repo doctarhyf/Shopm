@@ -8,5 +8,6 @@
         android:icon="@drawable/ic_menu_send"
         android:orderInCategory="100"
         android:title="@string/action_scan_item"
+        android:visible="false"
         app:showAsAction="always" />
 </menu>

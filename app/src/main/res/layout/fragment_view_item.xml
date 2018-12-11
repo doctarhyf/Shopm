@@ -48,16 +48,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-        <TextView
-            android:text="This is the description ..."
-            android:id="@+id/tvItemDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:text="Dernier Refluement : 0000-00-00 00:00:00"
+                android:id="@+id/tvLastStockUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:text="@string/strStockHistory"
+                android:textSize="10sp"
+                android:id="@+id/btnStockHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
 
             <com.jjoe64.graphview.GraphView
                 android:layout_width="match_parent"
                 android:layout_height="240dip"
                 android:id="@+id/graphItemView" />
+
+            <TextView
+                android:text="This is the description ..."
+                android:id="@+id/tvItemDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
 
