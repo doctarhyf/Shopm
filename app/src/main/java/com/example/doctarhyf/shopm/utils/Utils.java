@@ -62,6 +62,8 @@ public class Utils {
 
         AlertDialog alertDialog = builder.create();
 
+
+
         if(show) alertDialog.show();
 
         return alertDialog;

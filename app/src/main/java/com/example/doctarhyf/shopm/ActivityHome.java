@@ -181,6 +181,7 @@ public class ActivityHome extends AppCompatActivity implements
                     setItemsListVisible(false);
                     //menuItemSearch.setVisible(true);
                     replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""), null, null);
+                    //toggleMenuItems(new boolean[]{false}, new int[] {R.id.action_connect_via_qr});
                 }else{
                     String msg = getResources().getString(R.string.msgNoConnection);
                     fragmentManager.beginTransaction().add(R.id.fragCont, FragnentErrorMessage.newInstance(msg,"")).commit();
@@ -474,9 +475,46 @@ public class ActivityHome extends AppCompatActivity implements
         }
 
 
-        if(id == R.id.action_connect_via_qr){
+        /*if(id == R.id.action_connect_via_qr){
             //Log.e(TAG, "onOptionsItemSelected: connect via qr" );
             scanBarCode();
+            return true;
+        }*/
+
+        if(id == R.id.action_about){
+
+
+            String message = getString(R.string.msgAbout);
+
+            AlertDialog alertDialog = Utils.GetAlertDialogWithTitleAndMessage(this, new Utils.ListernerAlertDialogWithTitleMessage() {
+                @Override
+                public void onPositiveButton() {
+
+                }
+
+                @Override
+                public void onNegativeButton() {
+
+                }
+            }, "A propos", message, false);
+
+
+            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+
+            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+
+            alertDialog.show();
+
             return true;
         }
 
@@ -577,6 +615,14 @@ public class ActivityHome extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
+                toggleMenuItems(showMenusItems, menuIds);
+
+
+
+
+            }
+
+            private void toggleMenuItems(boolean[] showMenusItems, int[] menuIds) {
                 if(mMenu != null && showMenusItems != null && menuIds != null) {
                     //mMenu.findItem(R.id.action_search).setVisible(false);
                     for(int i = 0 ; i < showMenusItems.length; i++ ){
@@ -584,10 +630,6 @@ public class ActivityHome extends AppCompatActivity implements
                         menuItem.setVisible(showMenusItems[i]);
                     }
                 }
-
-
-
-
             }
 
             private void showAllMenuItems() {
@@ -702,8 +744,9 @@ public class ActivityHome extends AppCompatActivity implements
             }
 
             @Override
-            public void refreshStockList() {
-                initHome();
+            public void scanServerQR() {
+                //initHome();
+                scanBarCode();
             }
 
             @Override

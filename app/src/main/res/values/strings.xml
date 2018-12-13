@@ -38,7 +38,7 @@
     <string name="btnAddItem">Ajouter Article</string>
     <string name="chosePick">Choisir photo</string>
     <string name="strStock">Stock</string>
-    <string name="btnRetry">REESSAYER</string>
+    <string name="btnRetry">SCANNER QR SERVEUR</string>
     <string name="strAllFieldsMedatory">Tous les champs sont obligatoires apart la photo.</string>
     <string name="btnEditItem">MODIFIEr ARTICLE</string>
     <string name="btnDeleteItem">SUPPRIMER ARTICLE</string>
@@ -50,4 +50,6 @@
     <string name="strSureUpdateMessage">Etes-vous sur de vouloir mettre a jour l\'article ci-dessus?\nL\'operation est irreversible.</string>
     <string name="lblStockNewStock">Nouveau Stock</string>
     <string name="strStockHistory">HISTORIQUE DE STOCK</string>
+    <string name="strAbout">A propos</string>
+    <string name="msgAbout">Shopm Version 1.0\nDeveloped by @DoctaRhyf\nCopyright(c) 2019. All rights reserved</string>
 </resources>

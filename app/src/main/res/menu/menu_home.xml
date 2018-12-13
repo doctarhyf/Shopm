@@ -17,12 +17,19 @@
         android:orderInCategory="101"
         app:showAsAction="always"/>
 
-    <item
+    <!--<item
+
         android:id="@+id/action_connect_via_qr"
         android:icon="@android:drawable/ic_menu_compass"
         android:title="@string/connectToServerViaQR"
         android:orderInCategory="98"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/>-->
+
+    <item android:id="@+id/action_about"
+    android:icon="@android:drawable/ic_menu_compass"
+    android:title="@string/strAbout"
+    android:orderInCategory="120"
+    app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_settings"
