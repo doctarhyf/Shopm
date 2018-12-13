@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.common.images.Size;
 
@@ -47,6 +48,9 @@ public class CameraSourcePreview extends ViewGroup {
         mSurfaceView = new SurfaceView(context);
         mSurfaceView.getHolder().addCallback(new SurfaceCallback());
         addView(mSurfaceView);
+
+
+
     }
 
     @RequiresPermission(Manifest.permission.CAMERA)

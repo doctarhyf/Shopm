@@ -35,12 +35,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.R;
 import com.example.doctarhyf.shopm.camera.CameraSource;
 
 import com.example.doctarhyf.shopm.camera.CameraSourcePreview;
+import com.example.doctarhyf.shopm.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -75,7 +77,15 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
         super.onCreate(icicle);
         setContentView(R.layout.barcode_capture);
 
+        //Intent intent = getIntent();
+        //String hint = intent.getStringExtra(Utils.HINT_QR_SCAN);
 
+        //Log.e(TAG, "onCreate: qr scan hint -> " + hint );
+
+        //TextView tvHint = findViewById(R.id.tvScanHint);
+        //tvHint.setText(hint);
+
+        setTitle("QR SCANNER");
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
 

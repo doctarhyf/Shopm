@@ -99,6 +99,7 @@ public class ActivityHome extends AppCompatActivity implements
 
 
         initHome();
+                setItemsListVisible(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +108,7 @@ public class ActivityHome extends AppCompatActivity implements
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         //.setAction("Action", null).show();
 
-                scanBarCode();
+                scanBarCode("Veuillez scanner le QR d'un article SVP ou du ");
 
             }
         });
@@ -220,10 +221,12 @@ public class ActivityHome extends AppCompatActivity implements
                 }
             }
 
-            private void scanBarCode() {
+            private void scanBarCode(String hint) {
                 Log.e(TAG, "scanBarCode: " );
 
                 Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+
+                intent.putExtra(Utils.HINT_QR_SCAN, hint);
                 startActivityForResult(intent, Utils.BARCODE_READER_REQUEST_CODE);
             }
 
@@ -746,7 +749,8 @@ public class ActivityHome extends AppCompatActivity implements
             @Override
             public void scanServerQR() {
                 //initHome();
-                scanBarCode();
+                String msg = "Veuillez scanner le QR du serveur sur votre PC.";
+                scanBarCode(msg);
             }
 
             @Override

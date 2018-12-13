@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/topLayout"
     android:orientation="vertical"
@@ -10,7 +10,17 @@
     <com.example.doctarhyf.shopm.camera.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    </com.example.doctarhyf.shopm.camera.CameraSourcePreview>
-</LinearLayout>
+        android:layout_height="match_parent"
+        />
+
+    <TextView
+        android:layout_gravity="bottom"
+        android:id="@+id/tvScanHint"
+        android:layout_width="match_parent"
+        android:background="#99333333"
+        android:textColor="@color/white"
+        android:text="Veuillez scanner le QR d'un article ou du serveur sur votre PC SVP."
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_height="wrap_content" />
+</FrameLayout>

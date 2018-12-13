@@ -25,6 +25,7 @@ public class Utils {
     public static final String ITEM_ADDED = "itemAdded";
     public static final String ITEM_UPDATED = "itemUpdated";
     public static final String STR_STOCK_LAST_UPD__PREFIX = "Dernier Renfluement : ";
+    public static final String HINT_QR_SCAN = "hintQrScan";
 
     public static String GetEditTextValue(Context context, EditText et){
         return et.getText().toString();
