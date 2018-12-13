@@ -145,7 +145,16 @@ public class ActivityHome extends AppCompatActivity implements
         });*/
     }
 
-            /*private void addItem() {
+            @Override
+            protected void onResume() {
+                super.onResume();
+
+                //Log.e(TAG, "onResume: " );
+                //initHome();
+            }
+
+
+    /*private void addItem() {
 
 
                 String itemName = GetEditTextValue((EditText)findViewById(R.id.etItemName));
@@ -273,7 +282,14 @@ public class ActivityHome extends AppCompatActivity implements
 
                             //mResultTextView.setText(barcode.displayValue);
                             barcodeMessage = barcode.displayValue;
-                            showItemFromBarcode(barcodeMessage);
+
+                            Log.e(TAG, "onActivityResult: da br msg : " + barcodeMessage );
+                            if(barcodeMessage.indexOf("ip_") != -1) {
+                                String ip = barcodeMessage.replace("ip_", "");
+                                connectToServer(ip);
+                            }else{
+                                showItemFromBarcode(barcodeMessage);
+                            }
 
                         } else {
                             //mResultTextView.setText(R.string.no_barcode_captured);
@@ -292,6 +308,25 @@ public class ActivityHome extends AppCompatActivity implements
                 } else {
                     super.onActivityResult(requestCode, resultCode, data);
                 }
+            }
+
+            private void connectToServer(String ip) {
+
+                ShopmApi api = ShopmApplication.GI().getApi();
+
+                api.SSV(ShopmApi.SV_SERVER_ADD, ip);
+                //initHome();
+
+                setItemsListVisible(true);
+                showAllMenuItems();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentHome.newInstance("","")).commitAllowingStateLoss();
+
+            }
+
+            @Override
+            protected void onSaveInstanceState(Bundle outState) {
+                outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
+                super.onSaveInstanceState(outState);
             }
 
             private void setPic() {
@@ -440,7 +475,8 @@ public class ActivityHome extends AppCompatActivity implements
 
 
         if(id == R.id.action_connect_via_qr){
-            Log.e(TAG, "onOptionsItemSelected: connect via qr" );
+            //Log.e(TAG, "onOptionsItemSelected: connect via qr" );
+            scanBarCode();
             return true;
         }
 
