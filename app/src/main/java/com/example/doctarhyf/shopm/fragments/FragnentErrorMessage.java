@@ -68,6 +68,7 @@ public class FragnentErrorMessage extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_error_message, container, false);
 
+        getActivity().setTitle("Shopm");
 
         //@string/msgNoConnection
         TextView tvErrorMessage = rootView.findViewById(R.id.tvErrorMessage);

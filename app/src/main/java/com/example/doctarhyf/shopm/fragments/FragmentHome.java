@@ -85,6 +85,8 @@ public class FragmentHome extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        getActivity().setTitle("Shopm");
+
         //TextView tvSearch = rootView.findViewById(R.id.tvSearch);
 
         /*tvSearch.setOnClickListener(new View.OnClickListener() {

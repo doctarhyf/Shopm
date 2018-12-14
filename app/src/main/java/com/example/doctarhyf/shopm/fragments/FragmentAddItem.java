@@ -80,6 +80,8 @@ public class FragmentAddItem extends Fragment {
         // Inflate the layout for this fragment
         final View rootView =  inflater.inflate(R.layout.fragment_add_item, container, false);
 
+        getActivity().setTitle("Ajouter Article");
+
         Button btnAddItem = rootView.findViewById(R.id.btnAddItem);
         TextView tvStockLabel = rootView.findViewById(R.id.tvStockLabel);
 

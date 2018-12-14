@@ -5,9 +5,9 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Parametres</string>
     <string name="strHome">Home</string>
-    <string name="strSettings">Settings</string>
+    <string name="strSettings">Parametres</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -20,7 +20,7 @@
     <string name="search_hint">Recherche</string>
     <string name="setTitleServerIP">Server IP</string>
     <string name="strSellItem">Sell Item</string>
-    <string name="strSells">Sells</string>
+    <string name="strSells">Ventes</string>
     <string name="setTitleExchRate">1 USD in CDF</string>
     <string name="action_scan_item">Scan Item</string>
     <string name="btn_confirm_sell">SELL ITEM!</string>
@@ -29,7 +29,7 @@
     <string name="msgItemSoldOutTitle">ITEM OUT SOLD OUT</string>
     <string name="msgNoConnection">Please check make sure your WIFI is turned on, and you are connected to the server.</string>
     <string name="errorLoadingItems">Error loading items : \"%1$s\".\nPlease check :\n\n1. Your connection to the server, deactivate mobile and turn on WiFi.\n2. Check for correct server IP address in your settings, current IP : %2$s, is it the same with the server IP?</string>
-    <string name="addItem">Add Item</string>
+    <string name="addItem">Ajouter Article</string>
     <string name="strItemName">Nom de l\'article</string>
     <string name="strItemPrice">Prix (FC)</string>
     <string name="strItemInitStock">Stock Initial</string>
@@ -37,7 +37,7 @@
     <string name="strItemPic">Photo</string>
     <string name="btnAddItem">Ajouter Article</string>
     <string name="chosePick">Choisir photo</string>
-    <string name="strStock">Stock</string>
+    <string name="strStock">Mon stoque</string>
     <string name="btnRetry">SCANNER QR SERVEUR</string>
     <string name="strAllFieldsMedatory">Tous les champs sont obligatoires apart la photo.</string>
     <string name="btnEditItem">MODIFIEr ARTICLE</string>

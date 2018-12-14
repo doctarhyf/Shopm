@@ -70,6 +70,8 @@ public class FragmentSells extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_sells, container, false);
 
+        getActivity().setTitle("Ventes");
+
         GraphView graph = (GraphView) rootView.findViewById(R.id.graph);
         DataPoint[] points = new DataPoint[100];
         for (int i = 0; i < points.length; i++) {

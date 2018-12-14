@@ -74,6 +74,9 @@ public class FragmentViewItem extends Fragment {
 
             final Item item = Item.FromJSON(mItemJson);
 
+            //Item item = Item.FromJSON(mItemJson);
+            getActivity().setTitle(item.getItem_name());
+
             ImageView ivItemPic = rootView.findViewById(R.id.ivItemPic);
             TextView tvItemName = rootView.findViewById(R.id.tvItemName);
             TextView tvItemPrice = rootView.findViewById(R.id.tvItemPrice);
@@ -164,6 +167,8 @@ public class FragmentViewItem extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentViewItemInteractionListener) {
             mListener = (OnFragmentViewItemInteractionListener) context;
+
+
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentViewItemInteractionListener");

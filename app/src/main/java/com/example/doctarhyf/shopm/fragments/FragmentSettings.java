@@ -75,6 +75,8 @@ public class FragmentSettings extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        getActivity().setTitle("Parametres");
+
         final EditText etServerIP = rootView.findViewById(R.id.etServerIP);
         final EditText etExchRate = rootView.findViewById(R.id.etExchRate);
         final EditText etMaxSellableItems = rootView.findViewById(R.id.etMaxSellableItems);
