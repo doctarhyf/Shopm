@@ -292,7 +292,7 @@ public class ActivityHome extends AppCompatActivity implements
                                 String ip = barcodeMessage.replace("ip_", "");
                                 connectToServer(ip);
                             }else{
-                                showItemFromBarcode(barcodeMessage);
+                                showItemFromUniqueName(barcodeMessage);
                             }
 
                         } else {
@@ -357,8 +357,8 @@ public class ActivityHome extends AppCompatActivity implements
                 mImageView.setImageBitmap(bitmap);
             }
 
-            private void showItemFromBarcode(final String barcodeMessage) {
-                //Log.e(TAG, "showItemFromBarcode: showing -> " + barcodeMessage );
+            private void showItemFromUniqueName(final String barcodeMessage) {
+                //Log.e(TAG, "showItemFromUniqueName: showing -> " + barcodeMessage );
 
                 //replaceFragWithBackstack(R.id.fragCont, FragmentViewItem.newInstance(barcodeMessage,""));
 
@@ -797,5 +797,10 @@ public class ActivityHome extends AppCompatActivity implements
                 replaceFragWithBackstack(R.id.fragCont, FragmentAddItem.newInstance(item),
                         new boolean[]{false},
                         new int[]{R.id.action_search});
+            }
+
+            @Override
+            public void sellItem(Item item) {
+                showItemFromUniqueName(item.getItem_unique_name());
             }
         }

@@ -109,6 +109,16 @@ public class FragmentViewItem extends Fragment {
             Button btnDelete = rootView.findViewById(R.id.btnDeleteItem);
             Button btnEdit = rootView.findViewById(R.id.btnEditItem);
             Button btnStockHistory = rootView.findViewById(R.id.btnStockHistory);
+            Button btnSellItem = rootView.findViewById(R.id.btnSellItem);
+
+
+            btnSellItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.e(Utils.TAG, "onClick: selling" );
+                    mListener.sellItem(item);
+                }
+            });
 
             btnStockHistory.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -180,6 +190,8 @@ public class FragmentViewItem extends Fragment {
         void deleteItem(Item item);
 
         void editItem(Item item);
+
+        void sellItem(Item item);
         // TODO: Update argument type and name
        // void onFragmentViewIteInteraction(Uri uri);
     }
