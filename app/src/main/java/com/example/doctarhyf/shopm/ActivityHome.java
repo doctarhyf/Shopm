@@ -325,6 +325,8 @@ public class ActivityHome extends AppCompatActivity implements
                 showAllMenuItems();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentHome.newInstance("","")).commitAllowingStateLoss();
 
+                Snackbar.make( findViewById(R.id.fab), "Connection serveur reussie.IP : " + ip, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
             }
 
             @Override

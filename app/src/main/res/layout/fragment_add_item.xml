@@ -71,6 +71,7 @@
             android:id="@+id/etItemDesc"
             android:hint="ex:Tomates freches"
             android:lines="5"
+            android:text="[description]"
             android:gravity="top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
