@@ -155,6 +155,7 @@ public class ActivitySellItem extends AppCompatActivity {
         final String item_qty = "" + mQty;
         final String exch_rate = api.GSV(ShopmApi.SV_EXCH_RATE, ShopmApi.SV_DEF_EXCH_RATE);
         final String rem_stock = (Integer.parseInt(item.getItem_stock_count()) - mQty) + "";
+        final String item_cur_price = (Integer.parseInt(item.getItem_price())) + "";
 
         String title = "Confirmer vente " + item.getItem_name();
         String message = "Article : " + item.getItem_name() + "\n" +
@@ -183,7 +184,7 @@ public class ActivitySellItem extends AppCompatActivity {
                                 startActivity(intent);
 
                             }
-                        },item_id, item_qty, exch_rate, rem_stock);
+                        },item_id, item_qty, exch_rate, rem_stock, item_cur_price);
 
                     }
 

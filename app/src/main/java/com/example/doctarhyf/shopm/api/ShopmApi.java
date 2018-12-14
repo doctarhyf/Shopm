@@ -245,10 +245,10 @@ public class ShopmApi {
         void onItemSellSuccess(String itemJson);
     }
 
-    public void sellItem(final CallbacksSellItem callbacksSellItem, String item_id, String item_qty, String exch_rate, String rem_stock) {
+    public void sellItem(final CallbacksSellItem callbacksSellItem, String item_id, String item_qty, String exch_rate, String rem_stock, String item_cur_price) {
 
         String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_SELL_ITEM + "&item_id=" + item_id +
-                "&item_qty=" + item_qty + "&exch_rate=" + exch_rate + "&rem_stock=" + rem_stock;
+                "&item_qty=" + item_qty + "&exch_rate=" + exch_rate + "&rem_stock=" + rem_stock + "&sell_item_cur_price=" + item_cur_price;
 
         Log.e(TAG, "sellItem: url -> " + url );
 
