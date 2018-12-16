@@ -27,6 +27,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +88,9 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
         //tvHint.setText(hint);
 
         setTitle("QR SCANNER");
+
+        ImageView iv = findViewById(R.id.ivAnimScanner);
+        ((AnimationDrawable) iv.getBackground()).start();
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
 

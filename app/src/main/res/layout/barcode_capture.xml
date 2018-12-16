@@ -23,4 +23,18 @@
         android:gravity="center"
         android:padding="16dp"
         android:layout_height="wrap_content" />
+
+    <ImageView
+        android:src="@drawable/frame"
+        android:scaleType="fitCenter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/ivAnimScanner"
+
+        android:background="@drawable/animation_list_scanner"
+        android:scaleType="fitCenter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </FrameLayout>
