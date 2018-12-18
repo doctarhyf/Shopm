@@ -97,6 +97,7 @@ public class ActivityHome extends AppCompatActivity implements
         fragCont = findViewById(R.id.fragCont);
         pbCont = findViewById(R.id.pbCont);
 
+        //fragmentManager.beginTransaction().add(R.id.fragCont, FragmentSells.newInstance("","")).commit();
 
         initHome();
                 setItemsListVisible(true);
@@ -181,7 +182,11 @@ public class ActivityHome extends AppCompatActivity implements
                     //fragmentManager.beginTransaction().add(R.id.fragCont, FragmentHome.newInstance("", "")).commit();
                     setItemsListVisible(false);
                     //menuItemSearch.setVisible(true);
+                    // TODO: 12/16/2018 To uncomment after debuging sells views
                     replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""), null, null);
+
+                    //replaceFragWithBackstack(R.id.fragCont, FragmentSells.newInstance("",""), null, null);
+
                     //toggleMenuItems(new boolean[]{false}, new int[] {R.id.action_connect_via_qr});
                 }else{
                     String msg = getResources().getString(R.string.msgNoConnection);

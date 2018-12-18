@@ -1,17 +1,29 @@
 package com.example.doctarhyf.shopm.fragments;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.doctarhyf.shopm.R;
+import com.example.doctarhyf.shopm.utils.Utils;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +38,7 @@ public class FragmentSells extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = Utils.TAG;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,16 +77,94 @@ public class FragmentSells extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_sells, container, false);
-
         getActivity().setTitle("Ventes");
-
+        View rootView = inflater.inflate(R.layout.fragment_sells, container, false);
+        final View llSpinnersSelMonth = rootView.findViewById(R.id.llSpinnersSelMonth);
+        final EditText etDateTime = rootView.findViewById(R.id.etDateTime);
+        Spinner spSellsType = rootView.findViewById(R.id.spSellsType);
+        View dateView = getLayoutInflater().inflate(R.layout.layout_date_picker, null);
+        final DatePicker datePicker = (DatePicker) dateView.findViewById(R.id.dp);
         GraphView graph = (GraphView) rootView.findViewById(R.id.graph);
-        DataPoint[] points = new DataPoint[100];
+
+        spSellsType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.e(TAG, "onItemSelected: " + i );
+                if(i == 1) {
+                    llSpinnersSelMonth.setVisibility(View.VISIBLE);
+                    etDateTime.setVisibility(View.GONE);
+                }else{
+                    llSpinnersSelMonth.setVisibility(View.GONE);
+                    etDateTime.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+
+            @Override
+            public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                String date = year + "/" + month + "/" + dayOfMonth;
+                etDateTime.setText(date);
+
+            }
+        });
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                .setView(dateView)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //String date =
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+        final AlertDialog alertDialog = builder.create();
+
+
+        etDateTime.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    alertDialog.show();
+                }
+
+                return true;
+            }
+
+        });
+
+
+        DataPoint[] points = new DataPoint[4];
         for (int i = 0; i < points.length; i++) {
             points[i] = new DataPoint(i, Math.sin(i*0.5) * 20*(Math.random()*10+1));
         }

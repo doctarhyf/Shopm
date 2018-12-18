@@ -10,11 +10,60 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sells" />
+        android:text="Sells Type" />
+
+    <Spinner
+        android:id="@+id/spSellsType"
+        android:layout_width="match_parent"
+        android:entries="@array/array_sells_type"
+        android:layout_height="wrap_content"
+        android:padding="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose data/time" />
+
+    <EditText
+
+        android:id="@+id/etDateTime"
+        android:inputType="datetime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llSpinnersSelMonth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:id="@+id/spMonths"
+            android:entries="@array/array_months"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+        <Spinner
+            android:id="@+id/spYears"
+            android:entries="@array/array_years"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+
+    </LinearLayout>
+
+
 
     <com.jjoe64.graphview.GraphView
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/graph" />
+
+
 
 </LinearLayout>

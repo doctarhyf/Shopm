@@ -24,4 +24,44 @@
         <item>20</item>
 
     </string-array>
+    <string-array name="array_sells_type">
+        <item>@string/seelTypeDaily</item>
+        <item>@string/seelTypeMontly</item>
+
+    </string-array>
+    <string-array name="array_months">
+        <item>Janvier</item>
+        <item>Fevrier</item>
+        <item>Mars</item>
+        <item>Avril</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juillet</item>
+        <item>Aout</item>
+        <item>Septembre</item>
+        <item>Octobre</item>
+        <item>Novembre</item>
+        <item>Decembre</item>
+
+    </string-array>
+    <string-array name="array_years">
+
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+        <item>2028</item>
+        <item>2029</item>
+    </string-array>
+
+
+    <string name="seelTypeDaily">Journalier</string>
+    <string name="seelTypeMontly">Mensuel</string>
 </resources>
