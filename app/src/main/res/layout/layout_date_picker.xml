@@ -4,12 +4,42 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Choisissez une date"
+        android:id="@+id/tvDatePickerTitle"
+        android:text="Title"
         android:gravity="center"
         android:textAlignment="center"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+
+    <!--
+        </LinearLayout>-->
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/viewSpinnersSelMonth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:id="@+id/spMonths"
+            android:entries="@array/array_months"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+        <Spinner
+            android:id="@+id/spYears"
+            android:entries="@array/array_years"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+
+    </LinearLayout>
 
     <DatePicker
         android:id="@+id/dp"

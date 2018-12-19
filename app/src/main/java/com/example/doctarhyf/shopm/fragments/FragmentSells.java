@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.doctarhyf.shopm.R;
 import com.example.doctarhyf.shopm.utils.Utils;
@@ -84,53 +85,15 @@ public class FragmentSells extends Fragment {
         // Inflate the layout for this fragment
         getActivity().setTitle("Ventes");
         View rootView = inflater.inflate(R.layout.fragment_sells, container, false);
-        final View llSpinnersSelMonth = rootView.findViewById(R.id.llSpinnersSelMonth);
-        final EditText etDateTime = rootView.findViewById(R.id.etDateTime);
+        //final View llSpinnersSelMonth = rootView.findViewById(R.id.llSpinnersSelMonth);
+        //final EditText etDateTime = rootView.findViewById(R.id.etDateTime);
         Spinner spSellsType = rootView.findViewById(R.id.spSellsType);
         View dateView = getLayoutInflater().inflate(R.layout.layout_date_picker, null);
+        final TextView tvDatePickerTitle = dateView.findViewById(R.id.tvDatePickerTitle);
+        final View viewSpinnersSelMonth = dateView.findViewById(R.id.viewSpinnersSelMonth);
         final DatePicker datePicker = (DatePicker) dateView.findViewById(R.id.dp);
         GraphView graph = (GraphView) rootView.findViewById(R.id.graph);
-
-        spSellsType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.e(TAG, "onItemSelected: " + i );
-                if(i == 1) {
-                    llSpinnersSelMonth.setVisibility(View.VISIBLE);
-                    etDateTime.setVisibility(View.GONE);
-                }else{
-                    llSpinnersSelMonth.setVisibility(View.GONE);
-                    etDateTime.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
-
-            @Override
-            public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                String date = year + "/" + month + "/" + dayOfMonth;
-                etDateTime.setText(date);
-
-            }
-        });
-
+        final TextView tvSellsDate = rootView.findViewById(R.id.tvSellsDate);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                 .setView(dateView)
@@ -150,7 +113,55 @@ public class FragmentSells extends Fragment {
         final AlertDialog alertDialog = builder.create();
 
 
-        etDateTime.setOnTouchListener(new View.OnTouchListener() {
+
+        spSellsType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.e(TAG, "onItemSelected: " + i );
+                if(i == 0) {
+                    tvDatePickerTitle.setText("CHOISIR UN JOUR");
+                    datePicker.setVisibility(View.VISIBLE);
+                    viewSpinnersSelMonth.setVisibility(View.GONE);
+                }else{
+                    tvDatePickerTitle.setText("CHOISIR UN MOIS");
+                    datePicker.setVisibility(View.GONE);
+                    viewSpinnersSelMonth.setVisibility(View.VISIBLE);
+                }
+
+                alertDialog.show();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+
+            @Override
+            public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                String date = year + "/" + month + "/" + dayOfMonth;
+                tvSellsDate.setText(date);
+
+            }
+        });
+
+
+
+
+
+        /*etDateTime.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -161,7 +172,7 @@ public class FragmentSells extends Fragment {
                 return true;
             }
 
-        });
+        });*/
 
 
         DataPoint[] points = new DataPoint[4];
@@ -172,12 +183,12 @@ public class FragmentSells extends Fragment {
 
         // set manual X bounds
         graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(-150);
-        graph.getViewport().setMaxY(150);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(10);
 
         graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(4);
-        graph.getViewport().setMaxX(80);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(10);
 
         // enable scaling and scrolling
         graph.getViewport().setScalable(true);

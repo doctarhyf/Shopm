@@ -7,54 +7,78 @@
     tools:context=".fragments.FragmentSells">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sells Type" />
 
-    <Spinner
-        android:id="@+id/spSellsType"
+    <LinearLayout
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:background="@color/bgSellsHeader"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content">
+        <TextView
+            android:gravity="right"
+            android:textColor="@color/colorBlack"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="SELLS TYPE" />
+
+        <Spinner
+            android:gravity="left"
+            android:id="@+id/spSellsType"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:entries="@array/array_sells_type"
+            android:layout_height="wrap_content"
+            android:padding="8dp"/>
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/bgSellsHeader"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:padding="8dp"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:gravity="right"
+        android:textColor="@color/colorBlack"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="VENTE DE " />
+
+    <TextView
+
+        android:gravity="left"
+        android:id="@+id/tvSellsDate"
+        android:layout_weight="2"
+        android:layout_width="0dp"
         android:entries="@array/array_sells_type"
         android:layout_height="wrap_content"
         android:padding="8dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose data/time" />
+    </LinearLayout>
+    </LinearLayout>
 
-    <EditText
+
+
+    <!--<EditText
 
         android:id="@+id/etDateTime"
         android:inputType="datetime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/llSpinnersSelMonth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <Spinner
-            android:id="@+id/spMonths"
-            android:entries="@array/array_months"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-
-        </Spinner>
-        <Spinner
-            android:id="@+id/spYears"
-            android:entries="@array/array_years"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-
-        </Spinner>
-
-    </LinearLayout>
+-->
 
 
 

@@ -9,4 +9,5 @@
     <color name="colorSelected">#f00</color>
     <color name="colorDefault">#0fff</color>
     <color name="Blue">#3f3fce</color>
+    <color name="bgSellsHeader">#ececec</color>
 </resources>
