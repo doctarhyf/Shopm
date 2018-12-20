@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".fragments.FragmentSells">
 
     <!-- TODO: Update blank fragment layout -->
@@ -11,7 +12,7 @@
     <LinearLayout
         android:padding="8dp"
         android:orientation="vertical"
-        android:background="@color/bgSellsHeader"
+        android:background="@drawable/sell_bg_gradient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <LinearLayout
@@ -41,7 +42,7 @@
 
     </LinearLayout>
     <LinearLayout
-        android:background="@color/bgSellsHeader"
+
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:padding="8dp"
@@ -53,12 +54,15 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="VENTE DE " />
+        android:text="PERIODE " />
 
     <TextView
 
         android:gravity="left"
+        android:clickable="true"
         android:id="@+id/tvSellsDate"
+        android:textSize="30sp"
+        android:textColor="@color/colorBlack"
         android:layout_weight="2"
         android:layout_width="0dp"
         android:entries="@array/array_sells_type"
@@ -66,19 +70,74 @@
         android:padding="8dp"/>
 
     </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="FC"
+                android:gravity="right"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="248 500"
+                android:gravity="left"
+                android:textSize="48sp"
+                android:padding="8dp"
+                android:textColor="@color/colorBlack"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/viewDime"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="DIME"
+                android:gravity="right"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="24 850"
+                android:gravity="left"
+                android:textSize="42sp"
+                android:padding="8dp"
+                android:textColor="@color/colorBlack"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
     </LinearLayout>
 
 
 
-    <!--<EditText
 
-        android:id="@+id/etDateTime"
-        android:inputType="datetime"
+    <android.support.v7.widget.RecyclerView
+
+        android:id="@+id/rvSells"
+        android:paddingBottom="60dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
--->
+        android:layout_height="match_parent"/>
 
 
 

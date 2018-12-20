@@ -18,6 +18,8 @@ public class Item {
     public static final String KEY_ITEM_PRICE = "item_price";
     public static final String KEY_ITEM_INIT_STOCK = "item_stock_count";
     public static final String KEY_ITEM_DESC = "item_desc";
+    public static final String KEY_ITEM_JSON = "itemJson";
+    public static final String KEY_ITEM_ID = "item_id";
 
     //{"item_id":"3","item_name":"myitem","item_desc":"thedesc","item_price":"2000","item_unique_name":"abd3b9d1c3cfb968eda57808034072f167b181c8294375283bf8237d81cc30eb","item_stock_count":"100","item_last_stock_upd":"0000-00-00 00:00:00","item_added_date":"0000-00-00 00:00:00"}
 

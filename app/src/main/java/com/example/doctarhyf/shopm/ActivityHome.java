@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
+import com.example.doctarhyf.shopm.adapters.AdapterSellsItems;
 import com.example.doctarhyf.shopm.api.ShopmApi;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.barcode.BarcodeCaptureActivity;
@@ -46,6 +47,7 @@ import com.example.doctarhyf.shopm.fragments.FragmentSettings;
 import com.example.doctarhyf.shopm.fragments.FragmentViewItem;
 import com.example.doctarhyf.shopm.fragments.FragnentErrorMessage;
 import com.example.doctarhyf.shopm.objects.Item;
+import com.example.doctarhyf.shopm.objects.SellsItem;
 import com.example.doctarhyf.shopm.utils.Utils;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -64,7 +66,8 @@ public class ActivityHome extends AppCompatActivity implements
         FragmentViewItem.OnFragmentViewItemInteractionListener,
         FragmentSells.OnFragmentSellsInteractionListener,
         FragnentErrorMessage.OnFragmentErrorMessageInteractionListener,
-        FragmentAddItem.OnFragmentAddItemInteractionListener
+        FragmentAddItem.OnFragmentAddItemInteractionListener,
+        AdapterSellsItems.Callbacks
         {
 
 
@@ -659,6 +662,21 @@ public class ActivityHome extends AppCompatActivity implements
 
             }
 
+            @Override
+            public void onFragmentSellsItemsLoadSuccess() {
+                Log.e(TAG, "onFragmentSellsItemsLoadSuccess: " );
+            }
+
+            @Override
+            public void onFragmentSellsItemsLoadError(String errorMessage) {
+                Log.e(TAG, "onFragmentSellsItemsLoadError: -> " + errorMessage );
+            }
+
+            @Override
+            public void onFragmentSellsEmptyList() {
+                Log.e(TAG, "onFragmentSellsEmptyList: " );
+            }
+
 
             @Override
             public void addItemToStock(Bundle itemData) {
@@ -809,5 +827,10 @@ public class ActivityHome extends AppCompatActivity implements
             @Override
             public void sellItem(Item item) {
                 showItemFromUniqueName(item.getItem_unique_name());
+            }
+
+            @Override
+            public void onSellItemClicked(SellsItem sellsItem) {
+                Log.e(TAG, "onSellItemClicked: -> " + sellsItem.toString() );
             }
         }

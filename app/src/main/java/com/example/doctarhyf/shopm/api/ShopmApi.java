@@ -13,8 +13,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
+import com.example.doctarhyf.shopm.objects.SellsItem;
 import com.example.doctarhyf.shopm.utils.Utils;
 
 import org.json.JSONArray;
@@ -40,6 +42,8 @@ public class ShopmApi {
     private static final String ACTION_ADD_ITEM_TO_STOCK = "addItemToStock";
     private static final String ACTION_DEL_ITEM = "delItem";
     private static final String ACTION_UPDATE_ITEM = "updItem";
+    private static final String ACTION_GET_ITEM_DAILY_SELLS = "getItemDaillySells";
+    private static final String ACTION_GET_ITEM_MONTHLY_SELLS = "getItemMonthlySells";
     public static String API_URL = "shopm/api.php?";
     private final Context context;
     private final SharedPreferences.Editor editor;
@@ -339,15 +343,134 @@ public class ShopmApi {
 
     }
 
+    public interface CallbacksItemSells {
+        void onItemsLoaded(List<SellsItem> newSellsItems);
+
+        void onItemsLoadeError(String errorMessage);
+
+        void onEmptyList();
+    }
+
+    public void loadItemSells(final CallbacksItemSells callbacks, String sellsDataType, String periode){
+
+        String sellsAct = sellsDataType == Utils.SELL_DATA_TYPE_DAILY ? ShopmApi.ACTION_GET_ITEM_DAILY_SELLS : ShopmApi.ACTION_GET_ITEM_MONTHLY_SELLS;
+        String[] arrPeriode = periode.split("/");
+        String y = arrPeriode[0];
+        String m = arrPeriode[1];
+        String d = "";
+        if(arrPeriode.length == 3) d = arrPeriode[2];
+
+        String url = GSA() + API_URL + "act=" + sellsAct + "&y=" + y + "&m=" + m + "&d=" + d ;
+
+        Log.e(TAG, "loadItemSells: url -> "  + url );
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                url,
+
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray jsonArray) {
+
+                        Log.e(TAG, "onResponse: da sells data -> " + jsonArray.toString() );
+
+                        if(jsonArray.length() > 0){
+
+                            List<SellsItem> sellsItems = new ArrayList<>();
+
+                            for(int i = -1; i < jsonArray.length(); i++){
+                                Bundle data = new Bundle();
+
+                                SellsItem sellsItem = new SellsItem(data);
+                                try {
+
+                                    if(i == -1){
+                                        data.putString(SellsItem.KEY_ITEM_ID, i + "");
+                                        data.putString(SellsItem.KEY_ITEM_NAME, "No. Article");
+                                        data.putString(SellsItem.KEY_SELL_QTY, "Qte");
+                                        data.putString(SellsItem.KEY_ITEM_CUR_PRICE, "PU" );
+                                        data.putString(SellsItem.KEY_ITEM_TOTAL_SELLS, "PT");
+                                    }else {
+                                        JSONObject json = jsonArray.getJSONObject(i);
+
+                                        data.putString(Item.KEY_ITEM_JSON, json.toString());
+
+                                        String name = json.getString(SellsItem.KEY_ITEM_NAME);
+                                        String qty = json.getString(SellsItem.KEY_SELL_QTY);
+                                        String pu = json.getString(SellsItem.KEY_ITEM_CUR_PRICE);
+
+
+                                        data.putString(SellsItem.KEY_ITEM_ID, i + "");
+                                        data.putString(SellsItem.KEY_ITEM_NAME, (i + 1) + ". " + name);
+                                        data.putString(SellsItem.KEY_SELL_QTY, qty);
+                                        data.putString(SellsItem.KEY_ITEM_CUR_PRICE, pu);
+                                        data.putString(SellsItem.KEY_ITEM_TOTAL_SELLS, (Integer.parseInt(pu) * Integer.parseInt(qty)) + "");
+                                    }
+
+
+
+                                    sellsItems.add(sellsItem);
+
+                                    callbacks.onItemsLoaded(sellsItems);
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    callbacks.onItemsLoadeError(e.getMessage());
+                                }
+
+
+                            }
+
+                        }else if(jsonArray.length() == 0){
+                            callbacks.onEmptyList();
+                        }
+                        /*try {
+                            JSONArray data = jsonObject.getJSONArray("data");
+
+                            List<Item> items = new ArrayList<>();
+
+                            for(int i = 0; i < data.length(); i++){
+
+                                JSONObject jo = data.getJSONObject(i);
+
+                                Item item = Item.FromJSON(jo.toString());
+
+                                items.add(item);
+
+                                callbacks.onItemsLoaded(items);
+
+                                //Log.e(TAG, "onResponse: da item json -> " + item.toJSON() );
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }*/
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.e(TAG, "onErrorResponse: err -> \"" + volleyError.getMessage() + "\"" );
+
+                        callbacks.onItemsLoadeError(volleyError.getMessage());
+
+                    }
+                }
+
+        );
+
+
+
+        ShopmApplication.GI().addToRequestQueue(request);
+
+    }
+
     public interface CallbacksItems {
         void onItemsLoaded(List<Item> items);
 
         void onItemsLoadeError(String errorMessage);
-        //void onItemPublishResult(int code, String data);
-
-        //void onLoadAllItemsResult(int code, List<ProductMyProducts> products);
-
-        //void onLoadAllItemsNetworkError(String message);
     }
 
     public void loadAllItems(final CallbacksItems callbacks) {

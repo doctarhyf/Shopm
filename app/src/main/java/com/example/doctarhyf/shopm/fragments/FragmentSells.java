@@ -7,6 +7,10 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,12 +23,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.doctarhyf.shopm.R;
+import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
+import com.example.doctarhyf.shopm.adapters.AdapterSellsItems;
+import com.example.doctarhyf.shopm.api.ShopmApi;
+import com.example.doctarhyf.shopm.app.ShopmApplication;
+import com.example.doctarhyf.shopm.objects.Item;
+import com.example.doctarhyf.shopm.objects.SellsItem;
 import com.example.doctarhyf.shopm.utils.Utils;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,9 +53,13 @@ public class FragmentSells extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = Utils.TAG;
 
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private List<SellsItem> sellsItemList = new ArrayList<>();
+    private AdapterSellsItems adapterSellsItems;
+
 
     private OnFragmentSellsInteractionListener mListener;
 
@@ -83,11 +99,12 @@ public class FragmentSells extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        getActivity().setTitle("Ventes");
+        getActivity().setTitle("Details des Ventes");
         View rootView = inflater.inflate(R.layout.fragment_sells, container, false);
         //final View llSpinnersSelMonth = rootView.findViewById(R.id.llSpinnersSelMonth);
         //final EditText etDateTime = rootView.findViewById(R.id.etDateTime);
-        Spinner spSellsType = rootView.findViewById(R.id.spSellsType);
+        final View viewDime = rootView.findViewById(R.id.viewDime);
+        final Spinner spSellsType = rootView.findViewById(R.id.spSellsType);
         View dateView = getLayoutInflater().inflate(R.layout.layout_date_picker, null);
         final TextView tvDatePickerTitle = dateView.findViewById(R.id.tvDatePickerTitle);
         final View viewSpinnersSelMonth = dateView.findViewById(R.id.viewSpinnersSelMonth);
@@ -95,12 +112,57 @@ public class FragmentSells extends Fragment {
         GraphView graph = (GraphView) rootView.findViewById(R.id.graph);
         final TextView tvSellsDate = rootView.findViewById(R.id.tvSellsDate);
 
+
+
+        final Spinner spMonths = dateView.findViewById(R.id.spMonths);
+        final Spinner spYears = dateView.findViewById(R.id.spYears);
+        final String[] yearMonthSellArray = new String[2];
+        //final boolean[] monthlySellsSelected = new boolean[]{false};
+
+        spMonths.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                yearMonthSellArray[1] = (i+1) + "";
+                updateMonthSelection(tvSellsDate, yearMonthSellArray);
+                //calculateDime
+                //viewDime.setVisibility(View.VISIBLE);
+                //monthlySellsSelected[0] = true;
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spYears.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                yearMonthSellArray[0] = adapterView.getSelectedItem().toString();
+                updateMonthSelection(tvSellsDate, yearMonthSellArray);
+                //calculateDime
+                //viewDime.setVisibility(View.VISIBLE);
+                //monthlySellsSelected[0] = true;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                 .setView(dateView)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //String date =
+                        //viewDime.setVisibility(View.GONE);
+                        String sellsDataType = spSellsType.getSelectedItemPosition() == 0 ? Utils.SELL_DATA_TYPE_DAILY : Utils.SELL_DATA_TYPE_MONTHLY;
+                        String periode = tvSellsDate.getText().toString();
+
+                        getItemsData(sellsDataType, periode);
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -112,6 +174,13 @@ public class FragmentSells extends Fragment {
 
         final AlertDialog alertDialog = builder.create();
 
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                Log.e(TAG, "onDismiss: date picker" );
+            }
+        });
+
 
 
         spSellsType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -122,10 +191,12 @@ public class FragmentSells extends Fragment {
                     tvDatePickerTitle.setText("CHOISIR UN JOUR");
                     datePicker.setVisibility(View.VISIBLE);
                     viewSpinnersSelMonth.setVisibility(View.GONE);
+                    viewDime.setVisibility(View.GONE);
                 }else{
                     tvDatePickerTitle.setText("CHOISIR UN MOIS");
                     datePicker.setVisibility(View.GONE);
                     viewSpinnersSelMonth.setVisibility(View.VISIBLE);
+                    viewDime.setVisibility(View.VISIBLE);
                 }
 
                 alertDialog.show();
@@ -139,41 +210,17 @@ public class FragmentSells extends Fragment {
         });
 
 
-
-
-
-
-
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
 
             @Override
             public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                String date = year + "/" + month + "/" + dayOfMonth;
+                String date = year + "/" + (month+1) + "/" + dayOfMonth;
                 tvSellsDate.setText(date);
 
             }
         });
-
-
-
-
-
-        /*etDateTime.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-                    alertDialog.show();
-                }
-
-                return true;
-            }
-
-        });*/
-
 
         DataPoint[] points = new DataPoint[4];
         for (int i = 0; i < points.length; i++) {
@@ -181,7 +228,6 @@ public class FragmentSells extends Fragment {
         }
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(points);
 
-        // set manual X bounds
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(10);
@@ -196,7 +242,82 @@ public class FragmentSells extends Fragment {
 
         graph.addSeries(series);
 
+        setupHomeItems(rootView);
+        //setupHomeClothes(rootView);
+        //setupHomeTrendz(rootView);
+
+        String today = calendar.get(Calendar.YEAR ) + "/" + calendar.get(Calendar.MONTH ) + "/" + calendar.get(Calendar.DAY_OF_MONTH );
+        tvSellsDate.setText(today);
+        getItemsData(Utils.SELL_DATA_TYPE_DAILY, today );
+
+        tvSellsDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(alertDialog != null) alertDialog.show();
+            }
+        });
+
+
+
         return rootView;
+    }
+
+    private void getItemsData(String sellDataType, String periode) {
+
+        ShopmApplication.getInstance().getApi().loadItemSells(new ShopmApi.CallbacksItemSells() {
+            @Override
+            public void onItemsLoaded(List<SellsItem> newSellsItems) {
+
+                sellsItemList.clear();
+                sellsItemList.addAll(newSellsItems);
+
+                adapterSellsItems.notifyDataSetChanged();
+                mListener.onFragmentSellsItemsLoadSuccess();
+
+
+
+            }
+
+            @Override
+            public void onItemsLoadeError(String errorMessage) {
+                mListener.onFragmentSellsItemsLoadError(errorMessage);
+                sellsItemList.clear();
+                adapterSellsItems.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onEmptyList() {
+                mListener.onFragmentSellsEmptyList();
+                sellsItemList.clear();
+                adapterSellsItems.notifyDataSetChanged();
+            }
+        }, sellDataType, periode);
+
+
+
+    }
+
+
+    private void setupHomeItems(View rootView) {
+        RecyclerView rv = rootView.findViewById(R.id.rvSells);
+        adapterSellsItems = new AdapterSellsItems(getContext(), sellsItemList, (AdapterSellsItems.Callbacks) getActivity());
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        rv.setLayoutManager(layoutManager);
+        rv.setAdapter(adapterSellsItems);
+
+
+    }
+
+
+    private void updateMonthSelection(TextView tv, String[] yearMonthSellArray) {
+        Log.e(TAG, "updateMonthSelection: -> " + yearMonthSellArray );
+
+        tv.setText(yearMonthSellArray[0] + "/" + yearMonthSellArray[1]);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -236,5 +357,11 @@ public class FragmentSells extends Fragment {
     public interface OnFragmentSellsInteractionListener {
         // TODO: Update argument type and name
         void onFragmentSellsInteraction(Uri uri);
+
+        void onFragmentSellsItemsLoadSuccess();
+
+        void onFragmentSellsItemsLoadError(String errorMessage);
+
+        void onFragmentSellsEmptyList();
     }
 }
