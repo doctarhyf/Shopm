@@ -344,7 +344,7 @@ public class ShopmApi {
     }
 
     public interface CallbacksItemSells {
-        void onItemsLoaded(List<SellsItem> newSellsItems);
+        void onItemsLoaded(List<SellsItem> newSellsItems, String tot_qty, String tot_cash);
 
         void onItemsLoadeError(String errorMessage);
 
@@ -377,7 +377,7 @@ public class ShopmApi {
 
                             List<SellsItem> sellsItems = new ArrayList<>();
 
-                            for(int i = -1; i < jsonArray.length(); i++){
+                            for(int i = -1; i < jsonArray.length() - 1; i++){
                                 Bundle data = new Bundle();
 
                                 SellsItem sellsItem = new SellsItem(data);
@@ -410,7 +410,7 @@ public class ShopmApi {
 
                                     sellsItems.add(sellsItem);
 
-                                    callbacks.onItemsLoaded(sellsItems);
+
 
 
                                 } catch (JSONException e) {
@@ -420,6 +420,22 @@ public class ShopmApi {
 
 
                             }
+
+                            String tot_qty = "0";
+                            String tot_cash = "0";
+
+                            try {
+                                JSONObject tot = jsonArray.getJSONObject(jsonArray.length()-1);
+                                tot_qty = tot.getString(SellsItem.TOT_QTY);
+                                tot_cash = tot.getString(SellsItem.TOT_CASH);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                callbacks.onItemsLoadeError(e.getMessage());
+                            }
+
+
+                            callbacks.onItemsLoaded(sellsItems, tot_qty, tot_cash);
 
                         }else if(jsonArray.length() == 0){
                             callbacks.onEmptyList();

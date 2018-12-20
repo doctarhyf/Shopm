@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,8 @@ public class AdapterSellsItems extends RecyclerView.Adapter<AdapterSellsItems.Vi
         return viewHolder;
     }
 
+    //private static int spt = 0;
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final SellsItem item = sellsItems.get(position);
@@ -108,27 +111,8 @@ public class AdapterSellsItems extends RecyclerView.Adapter<AdapterSellsItems.Vi
         holder.tvQty.setText(qty);
         holder.tvPU.setText(pu);
         holder.tvPT.setText(pt);
-
-
-
-        /*
-        if(Integer.parseInt(item.getItem_stock_count()) == 0){
-            holder.tvItemStockCount.setTextColor(Color.WHITE);
-            holder.tvItemStockCount.setBackgroundColor(Color.RED);
-        }
-
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.e(TAG, "onClick: " + item.getItemCategory() );
-                callbacks.onHomeItemClicked(item);
-
-            }
-        });
-
-
-
-        */
+        //spt += Integer.parseInt(pt);
+        //Log.e(TAG, "onBindViewHolder: PT : " +  spt);
 
     }
 

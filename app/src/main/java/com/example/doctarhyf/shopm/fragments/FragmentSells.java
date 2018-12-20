@@ -62,6 +62,8 @@ public class FragmentSells extends Fragment {
 
 
     private OnFragmentSellsInteractionListener mListener;
+    private TextView tvTotCash = null;
+    private TextView tvDim = null;
 
     public FragmentSells() {
         // Required empty public constructor
@@ -101,6 +103,9 @@ public class FragmentSells extends Fragment {
         // Inflate the layout for this fragment
         getActivity().setTitle("Details des Ventes");
         View rootView = inflater.inflate(R.layout.fragment_sells, container, false);
+
+        tvTotCash = rootView.findViewById(R.id.tvTotCash);
+        tvDim = rootView.findViewById(R.id.tvDim);
         //final View llSpinnersSelMonth = rootView.findViewById(R.id.llSpinnersSelMonth);
         //final EditText etDateTime = rootView.findViewById(R.id.etDateTime);
         final View viewDime = rootView.findViewById(R.id.viewDime);
@@ -266,7 +271,7 @@ public class FragmentSells extends Fragment {
 
         ShopmApplication.getInstance().getApi().loadItemSells(new ShopmApi.CallbacksItemSells() {
             @Override
-            public void onItemsLoaded(List<SellsItem> newSellsItems) {
+            public void onItemsLoaded(List<SellsItem> newSellsItems, String tot_qty, String tot_price) {
 
                 sellsItemList.clear();
                 sellsItemList.addAll(newSellsItems);
@@ -274,6 +279,9 @@ public class FragmentSells extends Fragment {
                 adapterSellsItems.notifyDataSetChanged();
                 mListener.onFragmentSellsItemsLoadSuccess();
 
+
+                if(tvTotCash != null) tvTotCash.setText(tot_price + ".00");
+                if(tvDim != null) tvDim.setText((Integer.parseInt(tot_price) * .1) + "0");
 
 
             }

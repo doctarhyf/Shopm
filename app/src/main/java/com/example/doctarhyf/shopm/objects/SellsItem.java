@@ -9,6 +9,8 @@ public class SellsItem {
     public static final String KEY_ITEM_CUR_PRICE = "sell_item_cur_price";
     public static final String KEY_ITEM_TOTAL_SELLS = "sell_total";
     public static final String KEY_ITEM_ID = Item.KEY_ITEM_ID;
+    public static final String TOT_QTY = "tot_qty";
+    public static final String TOT_CASH = "tot_cash";
     private Bundle data = new Bundle();
 
     public SellsItem(){
