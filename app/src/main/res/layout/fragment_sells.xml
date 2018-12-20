@@ -9,7 +9,10 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+
+
     <LinearLayout
+        android:id="@+id/viewSellsHeader"
         android:padding="8dp"
         android:orientation="vertical"
         android:background="@drawable/sell_bg_gradient"
@@ -61,7 +64,7 @@
         android:gravity="left"
         android:clickable="true"
         android:id="@+id/tvSellsDate"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:textColor="@color/colorBlack"
         android:layout_weight="2"
         android:layout_width="0dp"
@@ -91,7 +94,7 @@
                 android:layout_weight="2"
                 android:text="00"
                 android:gravity="left"
-                android:textSize="48sp"
+                android:textSize="30sp"
                 android:padding="8dp"
                 android:textColor="@color/colorBlack"
                 android:layout_height="wrap_content" />
@@ -128,7 +131,11 @@
         </LinearLayout>
     </LinearLayout>
 
-
+    <Button
+        android:text="TOGGLE SELLS HEADER"
+        android:id="@+id/btnToggleSellsHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
     <android.support.v7.widget.RecyclerView

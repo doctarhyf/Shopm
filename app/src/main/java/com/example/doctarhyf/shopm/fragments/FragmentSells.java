@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -104,6 +105,8 @@ public class FragmentSells extends Fragment {
         getActivity().setTitle("Details des Ventes");
         View rootView = inflater.inflate(R.layout.fragment_sells, container, false);
 
+        Button btnToggleSellsHeader = rootView.findViewById(R.id.btnToggleSellsHeader);
+        final View viewSellsHeader = rootView.findViewById(R.id.viewSellsHeader);
         tvTotCash = rootView.findViewById(R.id.tvTotCash);
         tvDim = rootView.findViewById(R.id.tvDim);
         //final View llSpinnersSelMonth = rootView.findViewById(R.id.llSpinnersSelMonth);
@@ -262,7 +265,18 @@ public class FragmentSells extends Fragment {
             }
         });
 
+        btnToggleSellsHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                if(viewSellsHeader.getVisibility() == View.VISIBLE){
+                    viewSellsHeader.setVisibility(View.GONE);
+                }else{
+                    viewSellsHeader.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
 
         return rootView;
     }
