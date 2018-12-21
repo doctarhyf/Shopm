@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
 import com.example.doctarhyf.shopm.adapters.AdapterSellsItems;
+import com.example.doctarhyf.shopm.adapters.AdapterStockHistory;
 import com.example.doctarhyf.shopm.api.ShopmApi;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.barcode.BarcodeCaptureActivity;
@@ -44,6 +45,7 @@ import com.example.doctarhyf.shopm.fragments.FragmentHome;
 import com.example.doctarhyf.shopm.fragments.FragmentSellItem;
 import com.example.doctarhyf.shopm.fragments.FragmentSells;
 import com.example.doctarhyf.shopm.fragments.FragmentSettings;
+import com.example.doctarhyf.shopm.fragments.FragmentStockHistory;
 import com.example.doctarhyf.shopm.fragments.FragmentViewItem;
 import com.example.doctarhyf.shopm.fragments.FragnentErrorMessage;
 import com.example.doctarhyf.shopm.objects.Item;
@@ -67,7 +69,9 @@ public class ActivityHome extends AppCompatActivity implements
         FragmentSells.OnFragmentSellsInteractionListener,
         FragnentErrorMessage.OnFragmentErrorMessageInteractionListener,
         FragmentAddItem.OnFragmentAddItemInteractionListener,
-        AdapterSellsItems.Callbacks
+        AdapterSellsItems.Callbacks,
+        FragmentStockHistory.OnFragmentStockHistoryInteractionListener,
+        AdapterStockHistory.Callbacks
         {
 
 
@@ -136,7 +140,15 @@ public class ActivityHome extends AppCompatActivity implements
             Item item = Item.FromJSON(itemJson);
             //Toast.makeText(this, "Item : " + item.getItem_name() + ", sold!", Toast.LENGTH_SHORT).show();
             Snackbar.make(findViewById(R.id.fab),  "Item : " + item.getItem_name() + ", sold! Remaining in stock : " + item.getItem_stock_count(), Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+            .setAction("VENTES", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    replaceFragWithBackstack(R.id.fragCont, FragmentSells.newInstance("",""),
+                            new boolean[]{false},
+                            new int[]{R.id.action_search});
+
+                }
+            }).show();
         }
 
 
@@ -830,7 +842,25 @@ public class ActivityHome extends AppCompatActivity implements
             }
 
             @Override
+            public void showItemHistory(String mItemJson) {
+
+                replaceFragWithBackstack(R.id.fragCont, FragmentStockHistory.newInstance(mItemJson),
+                        new boolean[]{false, false},
+                        new int[]{R.id.action_search, R.id.action_add_item});
+            }
+
+            @Override
             public void onSellItemClicked(SellsItem sellsItem) {
                 Log.e(TAG, "onSellItemClicked: -> " + sellsItem.toString() );
+            }
+
+            @Override
+            public void onFragmentStockHistoryItemsLoadError(String errorMessage) {
+                Log.e(TAG, "onFragmentStockHistoryItemsLoadError: " );
+            }
+
+            @Override
+            public void onFragmentStockHistoryItemsLoadSuccess() {
+                Log.e(TAG, "onFragmentStockHistoryItemsLoadSuccess: " );
             }
         }

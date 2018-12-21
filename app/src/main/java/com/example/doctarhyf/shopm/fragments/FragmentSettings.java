@@ -79,11 +79,11 @@ public class FragmentSettings extends Fragment {
 
         final EditText etServerIP = rootView.findViewById(R.id.etServerIP);
         final EditText etExchRate = rootView.findViewById(R.id.etExchRate);
-        final EditText etMaxSellableItems = rootView.findViewById(R.id.etMaxSellableItems);
+        final EditText etEmail = rootView.findViewById(R.id.etEmail);
 
         initSettingsEditText(etServerIP, ShopmApi.SV_SERVER_ADD, ShopmApi.SV_DEF_SERVER_ADD);
         initSettingsEditText(etExchRate, ShopmApi.SV_EXCH_RATE, ShopmApi.SV_DEF_EXCH_RATE);
-        initSettingsEditText(etMaxSellableItems, ShopmApi.SV_MAX_SELLABLE_NUM, ShopmApi.SV_DEF_MAX_SELLABLE_NUM);
+        initSettingsEditText(etEmail, ShopmApi.SV_REPPORT_EMAIL, ShopmApi.SV_DEF_REPPORT_EMAIL);
 
 
         //etServerIP.setText(ShopmApplication.getInstance().getApi().GSV(ShopmApi.SV_SERVER_ADD));

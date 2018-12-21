@@ -127,6 +127,7 @@ public class FragmentViewItem extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Log.e(Utils.TAG, "onClick: show historique " );
+                    mListener.showItemHistory(mItemJson);
                 }
             });
 
@@ -197,6 +198,8 @@ public class FragmentViewItem extends Fragment {
         void editItem(Item item);
 
         void sellItem(Item item);
+
+        void showItemHistory(String mItemJson);
         // TODO: Update argument type and name
        // void onFragmentViewIteInteraction(Uri uri);
     }

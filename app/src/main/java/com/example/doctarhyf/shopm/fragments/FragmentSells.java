@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -65,6 +66,8 @@ public class FragmentSells extends Fragment {
     private OnFragmentSellsInteractionListener mListener;
     private TextView tvTotCash = null;
     private TextView tvDim = null;
+    private String mSellDataType = "";
+    private String mPeriode = "";
 
     public FragmentSells() {
         // Required empty public constructor
@@ -103,7 +106,9 @@ public class FragmentSells extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getActivity().setTitle("Details des Ventes");
-        View rootView = inflater.inflate(R.layout.fragment_sells, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_sells, container, false);
+
+
 
         Button btnToggleSellsHeader = rootView.findViewById(R.id.btnToggleSellsHeader);
         final View viewSellsHeader = rootView.findViewById(R.id.viewSellsHeader);
@@ -278,10 +283,27 @@ public class FragmentSells extends Fragment {
             }
         });
 
+        Button btnGenPDFRepport = rootView.findViewById(R.id.btnGenPDFRepport);
+
+        btnGenPDFRepport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Snackbar.make(rootView, "Will be emplemented", Snackbar.LENGTH_SHORT).show();
+
+                ShopmApplication.getInstance().getApi().generateReportPDF(new ShopmApi.CallbacksPDFRepport() {
+                }, mSellDataType, mPeriode);
+
+            }
+        });
+
         return rootView;
     }
 
     private void getItemsData(String sellDataType, String periode) {
+
+        mSellDataType = sellDataType;
+        mPeriode = periode;
 
         ShopmApplication.getInstance().getApi().loadItemSells(new ShopmApi.CallbacksItemSells() {
             @Override

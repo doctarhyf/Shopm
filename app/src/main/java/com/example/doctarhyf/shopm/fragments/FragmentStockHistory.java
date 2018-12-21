@@ -3,22 +3,19 @@ package com.example.doctarhyf.shopm.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
-import com.example.doctarhyf.shopm.api.ShopmApi;
-import com.example.doctarhyf.shopm.app.ShopmApplication;
-import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.R;
+import com.example.doctarhyf.shopm.adapters.AdapterStockHistory;
+import com.example.doctarhyf.shopm.objects.Item;
+import com.example.doctarhyf.shopm.objects.StockHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,28 +24,29 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnFragmentHomeInteractionListener} interface
+ * {@link OnFragmentStockHistoryInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentHome#newInstance} factory method to
+ * Use the {@link FragmentStockHistory#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentHome extends Fragment {
+public class FragmentStockHistory extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_ITEM_JSON = null;
+    //private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mItemJSON = null;
+    private Item item = null;
+    //private String mParam2;
 
-    private List<Item> items = new ArrayList<>();
-    private AdapterHomeItems adapterHomeItems;
-    private CallbacksFragmentHome callbacksFragmentHome;
+    private List<StockHistory> stockHistoryList = new ArrayList<>();
+    private AdapterStockHistory adapterStockHistory;
+    private CallbacksFragmentStockHistory callbacksFragmentStockHistory;
 
-    private OnFragmentHomeInteractionListener mListener;
+    private OnFragmentStockHistoryInteractionListener mListener;
 
-    public FragmentHome() {
+    public FragmentStockHistory() {
         // Required empty public constructor
     }
 
@@ -57,15 +55,15 @@ public class FragmentHome extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment FragmentHome.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentHome newInstance(String param1, String param2) {
-        FragmentHome fragment = new FragmentHome();
+    public static FragmentStockHistory newInstance(String param1) {
+        FragmentStockHistory fragment = new FragmentStockHistory();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_ITEM_JSON, param1);
+        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,8 +72,8 @@ public class FragmentHome extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mItemJSON = getArguments().getString(ARG_ITEM_JSON);
+            //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -83,9 +81,9 @@ public class FragmentHome extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_stock_history, container, false);
 
-        getActivity().setTitle("Shopm");
+        getActivity().setTitle("Historique de stock");
 
         //TextView tvSearch = rootView.findViewById(R.id.tvSearch);
 
@@ -100,23 +98,23 @@ public class FragmentHome extends Fragment {
         //setupHomeClothes(rootView);
         //setupHomeTrendz(rootView);
 
-        getItemsData();
+        loadDataFromServer();
 
 
 
         return rootView;
     }
 
-    private void getItemsData() {
+    private void loadDataFromServer() {
 
-        ShopmApplication.getInstance().getApi().loadAllItems(new ShopmApi.CallbacksItems() {
+        /*ShopmApplication.getInstance().getApi().loadAllItems(new ShopmApi.CallbacksItems() {
             @Override
             public void onItemsLoaded(List<Item> newItems) {
 
-                items.clear();
-                items.addAll(newItems);
+                stockHistoryList.clear();
+                stockHistoryList.addAll(newItems);
 
-                adapterHomeItems.notifyDataSetChanged();
+                adapterStockHistory.notifyDataSetChanged();
                 mListener.onFragmentHomeItemsLoadSuccess();
 
             }
@@ -125,15 +123,24 @@ public class FragmentHome extends Fragment {
             public void onItemsLoadeError(String errorMessage) {
                 mListener.onFragmentHomeItemsLoadError(errorMessage);
             }
-        });
+        });*/
 
-        /*for (int i = 0; i < 10; i ++){
-            items.add(new Item("" + i, "Item " + i, (i * 1324) + " $", "Tha desc goes here " + i, "UN",
-            2000 + "", "0000-00-00 00:00:00", "0000-00-00 00:00:00") );
-            //itemsListClothing.add(new Item(i+"", "Item " + i, "$" + (i*100) + ".00", "http://", Item.ITEM_CATEGORY_CLOTH) );
-            //itemsListTrends.add(new Item(i+"", "Item " + i, "$" + (i*100) + ".00", "http://", Item.ITEM_CATEGORY_TREND) );
+        stockHistoryList.clear();
+        for (int i = 0; i < 10; i ++){
 
-        }*/
+            Bundle data = new Bundle();
+
+            data.putString(StockHistory.KEY_DATE, "date");
+            data.putString(StockHistory.KEY_OLD_STOCK,"old");
+            data.putString(StockHistory.KEY_NEW_STOCK,"new");
+
+
+            stockHistoryList.add(new StockHistory(data));
+
+        }
+
+        adapterStockHistory.notifyDataSetChanged();
+
 
 
 
@@ -141,14 +148,14 @@ public class FragmentHome extends Fragment {
 
     private void setupHomeItems(View rootView) {
         RecyclerView rv = rootView.findViewById(R.id.rvHome);
-        adapterHomeItems = new AdapterHomeItems(getActivity(), items, (AdapterHomeItems.Callbacks) getActivity());
+        adapterStockHistory = new AdapterStockHistory(getActivity(), stockHistoryList, (AdapterStockHistory.Callbacks) getActivity());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
         rv.setItemAnimator(new DefaultItemAnimator());
         rv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rv.setLayoutManager(layoutManager);
-        rv.setAdapter(adapterHomeItems);
+        rv.setAdapter(adapterStockHistory);
 
 
     }
@@ -156,15 +163,15 @@ public class FragmentHome extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentHomeInteraction(uri);
+            //mListener.onFragmentHomeInteraction(uri);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentHomeInteractionListener) {
-            mListener = (OnFragmentHomeInteractionListener) context;
+        if (context instanceof OnFragmentStockHistoryInteractionListener) {
+            mListener = (OnFragmentStockHistoryInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentStockHistoryInteractionListener");
@@ -187,16 +194,16 @@ public class FragmentHome extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentHomeInteractionListener {
+    public interface OnFragmentStockHistoryInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentHomeInteraction(Uri uri);
+       // void onFragmentHomeInteraction(Uri uri);
 
-        void onFragmentHomeItemsLoadError(String errorMessage);
+        void onFragmentStockHistoryItemsLoadError(String errorMessage);
 
-        void onFragmentHomeItemsLoadSuccess();
+        void onFragmentStockHistoryItemsLoadSuccess();
     }
 
-    public interface CallbacksFragmentHome{
+    public interface CallbacksFragmentStockHistory {
 
         void onHomeItemClicked(Item item);
     }

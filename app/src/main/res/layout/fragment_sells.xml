@@ -137,6 +137,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:text="GENERER RAPPORT PDF"
+        android:id="@+id/btnGenPDFRepport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
     <android.support.v7.widget.RecyclerView
 
@@ -147,6 +153,8 @@
         android:paddingTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+
 
 
 

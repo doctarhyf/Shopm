@@ -44,6 +44,8 @@ public class ShopmApi {
     private static final String ACTION_UPDATE_ITEM = "updItem";
     private static final String ACTION_GET_ITEM_DAILY_SELLS = "getItemDaillySells";
     private static final String ACTION_GET_ITEM_MONTHLY_SELLS = "getItemMonthlySells";
+    public static final String SV_REPPORT_EMAIL = "repportEmail";
+    public static final String SV_DEF_REPPORT_EMAIL = "drrhyf@gmail.com";
     public static String API_URL = "shopm/api.php?";
     private final Context context;
     private final SharedPreferences.Editor editor;
@@ -156,6 +158,15 @@ public class ShopmApi {
         );
 
         ShopmApplication.GI().addToRequestQueue(request);
+    }
+
+    public interface CallbacksPDFRepport{
+
+    }
+
+    public void generateReportPDF(CallbacksPDFRepport callbacks, String mSellDataType, String mPeriode) {
+
+        Log.e(TAG, "generateReportPDF: " );
     }
 
     public interface CallbackAPIActionConfirmation {
@@ -353,7 +364,7 @@ public class ShopmApi {
 
     public void loadItemSells(final CallbacksItemSells callbacks, String sellsDataType, String periode){
 
-        String sellsAct = sellsDataType == Utils.SELL_DATA_TYPE_DAILY ? ShopmApi.ACTION_GET_ITEM_DAILY_SELLS : ShopmApi.ACTION_GET_ITEM_MONTHLY_SELLS;
+        final String sellsAct = sellsDataType == Utils.SELL_DATA_TYPE_DAILY ? ShopmApi.ACTION_GET_ITEM_DAILY_SELLS : ShopmApi.ACTION_GET_ITEM_MONTHLY_SELLS;
         String[] arrPeriode = periode.split("/");
         String y = arrPeriode[0];
         String m = arrPeriode[1];
@@ -428,6 +439,9 @@ public class ShopmApi {
                                 JSONObject tot = jsonArray.getJSONObject(jsonArray.length()-1);
                                 tot_qty = tot.getString(SellsItem.TOT_QTY);
                                 tot_cash = tot.getString(SellsItem.TOT_CASH);
+
+
+                                //sellsItems.add(new SellsItem())
 
                             } catch (JSONException e) {
                                 e.printStackTrace();

@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content" />
 
             <Button
+
                 android:text="@string/strStockHistory"
                 android:textSize="10sp"
                 android:id="@+id/btnStockHistory"
