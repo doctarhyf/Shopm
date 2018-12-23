@@ -219,6 +219,8 @@ public class FragmentSells extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+                Log.e(TAG, "onNothingSelected: " );
+
             }
         });
 
@@ -291,7 +293,16 @@ public class FragmentSells extends Fragment {
 
                 Snackbar.make(rootView, "Will be emplemented", Snackbar.LENGTH_SHORT).show();
 
-                ShopmApplication.getInstance().getApi().generateReportPDF(new ShopmApi.CallbacksPDFRepport() {
+                ShopmApplication.getInstance().getApi().generateReportPDF(new ShopmApi.CallbackAPIActionConfirmation() {
+                    @Override
+                    public void onActionSuccess(String actionName, String data) {
+                        Log.e(TAG, "onActionSuccess: actionName ; " + actionName + ", Data : " + data );
+                    }
+
+                    @Override
+                    public void onActionFailure(String actionName, String data) {
+                        Log.e(TAG, "onActionFailure: actionName : " + actionName + ", data : " + data );
+                    }
                 }, mSellDataType, mPeriode);
 
             }

@@ -46,6 +46,7 @@ public class ShopmApi {
     private static final String ACTION_GET_ITEM_MONTHLY_SELLS = "getItemMonthlySells";
     public static final String SV_REPPORT_EMAIL = "repportEmail";
     public static final String SV_DEF_REPPORT_EMAIL = "drrhyf@gmail.com";
+    private static final String ACTION_GEN_PDF_REPPORT = "genSellsPDFRepport";
     public static String API_URL = "shopm/api.php?";
     private final Context context;
     private final SharedPreferences.Editor editor;
@@ -160,13 +161,49 @@ public class ShopmApi {
         ShopmApplication.GI().addToRequestQueue(request);
     }
 
-    public interface CallbacksPDFRepport{
 
-    }
 
-    public void generateReportPDF(CallbacksPDFRepport callbacks, String mSellDataType, String mPeriode) {
+    public void generateReportPDF(final CallbackAPIActionConfirmation callback, String mSellDataType, String mPeriode) {
 
-        Log.e(TAG, "generateReportPDF: " );
+        Log.e(TAG, "mPeriode : " + mPeriode );
+
+        String[] dataComp = mPeriode.split("/"); //2018/12/20
+        String y = dataComp[0];
+        String m = dataComp[1];
+        String d = "";
+        d = dataComp.length > 2 ? dataComp[2] : "";
+
+        final String actName = ShopmApi.ACTION_GEN_PDF_REPPORT;
+        String url = GSA() + API_URL + "act=" + actName + "&sellsType=" + mSellDataType + "&y=" +  y + "&m=" + m + "&d=" + d + "&save";
+
+        Log.e(TAG, "generateReportPDF: url -> " + url );
+        //http://localhost/shopm/api.php?act=genSellsPDFRepport&sellsType=dailly&y=2018&m=12&d=20
+        //Log.e(TAG, "sellItem: url -> " + url );
+
+        StringRequest request = new StringRequest(
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        //Log.e(TAG, "onResponse: FAKREZ -> " + s );
+                        if(s.equals("false")){
+                            //Log.e(TAG, "onResponse: FAAKK" );
+                            callback.onActionFailure(actName, s);
+                        }else{
+                            callback.onActionSuccess(actName, s);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.e(TAG, "onErrorResponse: -> " + volleyError.getMessage() );
+                        callback.onActionFailure(actName, volleyError.getMessage());
+                    }
+                }
+        );
+
+        ShopmApplication.GI().addToRequestQueue(request);
     }
 
     public interface CallbackAPIActionConfirmation {
