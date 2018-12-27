@@ -16,6 +16,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:gravity="right"
             android:text="OLD"
             android:textStyle="bold"
             android:textColor="@color/red"
@@ -26,7 +27,7 @@
 
         <TextView
 
-
+            android:gravity="right"
             android:text="NEW"
             android:textColor="#126419"
             android:id="@+id/tvSHNew"

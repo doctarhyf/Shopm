@@ -17,6 +17,7 @@ import com.example.doctarhyf.shopm.adapters.AdapterHomeItems;
 import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.objects.SellsItem;
+import com.example.doctarhyf.shopm.objects.StockHistory;
 import com.example.doctarhyf.shopm.utils.Utils;
 
 import org.json.JSONArray;
@@ -47,6 +48,7 @@ public class ShopmApi {
     public static final String SV_REPPORT_EMAIL = "repportEmail";
     public static final String SV_DEF_REPPORT_EMAIL = "drrhyf@gmail.com";
     private static final String ACTION_GEN_PDF_REPPORT = "genSellsPDFRepport";
+    private static final String ACTION_LOAD_ITEM_STOCK_HISTORY = "loadItemStockHistory";
     public static String API_URL = "shopm/api.php?";
     private final Context context;
     private final SharedPreferences.Editor editor;
@@ -534,6 +536,8 @@ public class ShopmApi {
 
     }
 
+
+
     public interface CallbacksItems {
         void onItemsLoaded(List<Item> items);
 
@@ -573,6 +577,188 @@ public class ShopmApi {
 
                                 //Log.e(TAG, "onResponse: da item json -> " + item.toJSON() );
                             }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.e(TAG, "onErrorResponse: err -> \"" + volleyError.getMessage() + "\"" );
+
+                        callbacks.onItemsLoadeError(volleyError.getMessage());
+
+                    }
+                }
+
+        );
+
+
+
+        ShopmApplication.GI().addToRequestQueue(request);
+
+
+        /*StringRequest request = new StringRequest(
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+
+                        try {
+                            JSONObject res = new JSONObject(s);
+                            int code = res.getInt(NETWORK_RESULT_CODES.KEY_RESULT_CODE);
+                            List<ProductMyProducts> products = null;
+
+                            if (code == NETWORK_RESULT_CODES.RESULT_CODE_SUCCESS) {
+
+                                String data = res.getString(NETWORK_RESULT_CODES.KEY_RESULT_DATA);
+
+                                JSONArray items = new JSONArray(data);
+
+                                if (items.length() == 0) {
+                                    callbacks.onLoadAllItemsResult(NETWORK_RESULT_CODES.RESULT_CODE_EMPTY_LIST, null);
+                                } else {
+
+                                    products = new ArrayList<>();
+                                    for (int i = 0; i < items.length(); i++) {
+
+                                        JSONObject jo = items.getJSONObject(i);
+
+                                        ProductMyProducts pd = new ProductMyProducts(
+                                                jo.getString(Product.KEY_PD_NAME),
+                                                jo.getString(Product.KEY_PD_PRICE),
+                                                jo.getString(Product.KEY_PD_IMG) + KEY_ITEM_POST_FIX_MAIN_PIC,
+                                                jo.getString(Product.KEY_PD_CUR),
+                                                jo.getString(Product.KEY_PD_CAT),
+                                                jo.getString(Product.KEY_PD_QUAL),
+                                                jo.getString(Product.KEY_PD_DESC),
+                                                jo.getString(ProductWishList.KEY_DATE_ADDED));
+
+
+                                        //Log.e(TAG, "date -> " + dateJson );
+
+                                        Bundle b = new Bundle();
+                                        HelperMethods.PutAllJSONIntoBundle(jo, b);
+                                        b.putString(KEY_ITEM_ID, jo.getString(KEY_ITEM_ID));
+                                        b.putString(KEY_ITEM_ITEM_VIEWS_ACCOUNT, jo.getString(KEY_ITEM_ITEM_VIEWS_ACCOUNT));
+                                        b.putString(KEY_ITEM_UNIQUE_NAME, jo.getString(KEY_ITEM_UNIQUE_NAME));
+                                        b.putString(KEY_ACC_DATA_DISPLAY_NAME, jo.getString(KEY_ACC_DATA_DISPLAY_NAME));
+                                        b.putString(KEY_ACC_DATA_USER_ID, jo.getString(KEY_ACC_DATA_USER_ID));
+                                        b.putString(KEY_ACC_DATA_MOBILE, jo.getString(KEY_ACC_DATA_MOBILE));
+                                        b.putString(KEY_ACC_DATA_EMAIL, jo.getString(KEY_ACC_DATA_EMAIL));
+                                        String dateStart = jo.getString(Product.KEY_PD_DATE_ADDED);
+
+                                        //HelperDate.DateDiff dateDiff = HelperDate.dateDiff(dateStart, dateEnd );//new Date().toString());
+
+                                        String postedDate = HM.CLDTAS(context,
+                                                HelperDate.getLongDateFromDateStr(dateStart), HelperDate.getCurrentLondDate());//dateDiff.toSocialFormat();//HM.FD(dateDiff, dateStart);
+
+
+                                        b.putString(Product.KEY_PD_DATE_ADDED, postedDate);
+
+                                        pd.setDataBundle(b);
+
+
+                                        products.add(pd);
+
+
+                                    }
+
+                                }
+
+
+                            }
+
+                            callbacks.onLoadAllItemsResult(code, products);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+
+                        }
+
+                    }
+                },
+                new Response.ErrorListener(VolleyError) {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        callbacks.onLoadAllItemsNetworkError(volleyError.getMessage());
+                    }
+                }
+        );*/
+        //ShopmApplication.GI().addToRequestQueue(request);
+    }
+
+    public interface CallbacksStockHistoryItems {
+        void onItemsLoaded(List<StockHistory> items);
+
+        void onItemsLoadeError(String errorMessage);
+    }
+
+    public void loadItemStockHistory(final CallbacksStockHistoryItems callbacks, String itemID) {
+
+        String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_LOAD_ITEM_STOCK_HISTORY + "&item_id=" + itemID ;
+
+        Log.e(TAG, "load history : url -> "  + url );
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+
+                        //Log.e(TAG, "onResponse: DAOBJ -> " + jsonObject.toString() );
+
+                        try {
+                            JSONArray data = jsonObject.getJSONArray("data");
+
+                            List<StockHistory> items = new ArrayList<>();
+
+                            for(int i = -1; i < data.length(); i++){
+
+
+
+                                if(i == -1){
+
+                                    //jo = data.getJSONObject(i);
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString(StockHistory.KEY_ID, "-1");//jo.getString(StockHistory.KEY_ID));
+                                    bundle.putString(StockHistory.KEY_ITEM_ID, "id");// jo.getString(StockHistory.KEY_ITEM_ID));
+                                    bundle.putString(StockHistory.KEY_OLD_STOCK, "Encien");//jo.getString(StockHistory.KEY_OLD_STOCK));
+                                    bundle.putString(StockHistory.KEY_NEW_STOCK, "Nouveau");//jo.getString(StockHistory.KEY_NEW_STOCK));
+                                    bundle.putString(StockHistory.KEY_DATE, "Date");//jo.getString(StockHistory.KEY_DATE));
+
+                                    items.add(new StockHistory(bundle));
+
+                                }else {
+                                    JSONObject jo = data.getJSONObject(i);
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString(StockHistory.KEY_ID, jo.getString(StockHistory.KEY_ID));
+                                    bundle.putString(StockHistory.KEY_ITEM_ID, jo.getString(StockHistory.KEY_ITEM_ID));
+                                    bundle.putString(StockHistory.KEY_OLD_STOCK, jo.getString(StockHistory.KEY_OLD_STOCK));
+                                    bundle.putString(StockHistory.KEY_NEW_STOCK, jo.getString(StockHistory.KEY_NEW_STOCK));
+                                    bundle.putString(StockHistory.KEY_DATE, jo.getString(StockHistory.KEY_DATE));
+
+                                    items.add(new StockHistory(bundle));//StockHistory.FromJSON(jo.toString());
+
+                                }
+                                //(item);
+
+
+
+                                //Log.e(TAG, "onResponse: da item json -> " + item.toJSON() );
+                            }
+
+                            callbacks.onItemsLoaded(items);
 
                         } catch (JSONException e) {
                             e.printStackTrace();

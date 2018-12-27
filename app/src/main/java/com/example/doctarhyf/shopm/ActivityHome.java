@@ -854,13 +854,5 @@ public class ActivityHome extends AppCompatActivity implements
                 Log.e(TAG, "onSellItemClicked: -> " + sellsItem.toString() );
             }
 
-            @Override
-            public void onFragmentStockHistoryItemsLoadError(String errorMessage) {
-                Log.e(TAG, "onFragmentStockHistoryItemsLoadError: " );
-            }
 
-            @Override
-            public void onFragmentStockHistoryItemsLoadSuccess() {
-                Log.e(TAG, "onFragmentStockHistoryItemsLoadSuccess: " );
-            }
         }
