@@ -8,14 +8,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.doctarhyf.shopm.R;
 import com.example.doctarhyf.shopm.adapters.AdapterStockHistory;
+import com.example.doctarhyf.shopm.api.ShopmApi;
+import com.example.doctarhyf.shopm.app.ShopmApplication;
 import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.objects.StockHistory;
+import com.example.doctarhyf.shopm.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,9 +111,11 @@ public class FragmentStockHistory extends Fragment {
 
     private void loadDataFromServer() {
 
-        /*ShopmApplication.getInstance().getApi().loadAllItems(new ShopmApi.CallbacksItems() {
+        Log.e(Utils.TAG, "dbg : " + mItemJSON);
+
+        ShopmApplication.getInstance().getApi().loadItemStockHistory(new ShopmApi.CallbacksStockHistoryItems() {
             @Override
-            public void onItemsLoaded(List<Item> newItems) {
+            public void onItemsLoaded(List<StockHistory> newItems) {
 
                 stockHistoryList.clear();
                 stockHistoryList.addAll(newItems);
@@ -123,8 +129,9 @@ public class FragmentStockHistory extends Fragment {
             public void onItemsLoadeError(String errorMessage) {
                 mListener.onFragmentHomeItemsLoadError(errorMessage);
             }
-        });*/
+        }, Item.FromJSON(mItemJSON).getItem_id());
 
+        /*
         stockHistoryList.clear();
         for (int i = 0; i < 10; i ++){
 
@@ -139,7 +146,7 @@ public class FragmentStockHistory extends Fragment {
 
         }
 
-        adapterStockHistory.notifyDataSetChanged();
+        adapterStockHistory.notifyDataSetChanged();*/
 
 
 
@@ -147,7 +154,7 @@ public class FragmentStockHistory extends Fragment {
     }
 
     private void setupHomeItems(View rootView) {
-        RecyclerView rv = rootView.findViewById(R.id.rvHome);
+        RecyclerView rv = rootView.findViewById(R.id.rvStockHistory);
         adapterStockHistory = new AdapterStockHistory(getActivity(), stockHistoryList, (AdapterStockHistory.Callbacks) getActivity());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -198,9 +205,13 @@ public class FragmentStockHistory extends Fragment {
         // TODO: Update argument type and name
        // void onFragmentHomeInteraction(Uri uri);
 
-        void onFragmentStockHistoryItemsLoadError(String errorMessage);
+        /*void onFragmentStockHistoryItemsLoadError(String errorMessage);
 
-        void onFragmentStockHistoryItemsLoadSuccess();
+        void onFragmentStockHistoryItemsLoadSuccess();*/
+
+        void onFragmentHomeItemsLoadSuccess();
+
+        void onFragmentHomeItemsLoadError(String errorMessage);
     }
 
     public interface CallbacksFragmentStockHistory {
