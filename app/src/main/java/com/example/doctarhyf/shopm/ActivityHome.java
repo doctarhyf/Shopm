@@ -53,6 +53,7 @@ import com.example.doctarhyf.shopm.objects.SellsItem;
 import com.example.doctarhyf.shopm.utils.Utils;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,6 +99,7 @@ public class ActivityHome extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
 
+        new IntentIntegrator(this).setPrompt("Scanner QR").setBeepEnabled(false).setOrientationLocked(true).initiateScan();
         //btnAddItem = findViewById(R.id.btnAddItem);
         fragmentManager = getSupportFragmentManager();
 
