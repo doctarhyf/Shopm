@@ -54,6 +54,7 @@ import com.example.doctarhyf.shopm.utils.Utils;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,6 +77,7 @@ public class ActivityHome extends AppCompatActivity implements
         {
 
 
+            private IntentIntegrator intentIntegrator = null;
             private static final String TAG = Utils.TAG;
             private static final int REQUEST_IMAGE_CAPTURE = 100;
             private static final int REQUEST_TAKE_PHOTO = 101;
@@ -99,7 +101,15 @@ public class ActivityHome extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
 
-        new IntentIntegrator(this).setPrompt("Scanner QR").setBeepEnabled(false).setOrientationLocked(true).initiateScan();
+        intentIntegrator = new IntentIntegrator(this);
+        intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        intentIntegrator.setPrompt("Scanner QR");
+        intentIntegrator.setBeepEnabled(false);
+        intentIntegrator.setOrientationLocked(false);
+
+
+
+
         //btnAddItem = findViewById(R.id.btnAddItem);
         fragmentManager = getSupportFragmentManager();
 
@@ -244,12 +254,13 @@ public class ActivityHome extends AppCompatActivity implements
             }
 
             private void scanBarCode(String hint) {
-                Log.e(TAG, "scanBarCode: " );
+                //Log.e(TAG, "scanBarCode: " );
 
-                Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+                /*Intent intent = new Intent(this, BarcodeCaptureActivity.class);
 
                 intent.putExtra(Utils.HINT_QR_SCAN, hint);
-                startActivityForResult(intent, Utils.BARCODE_READER_REQUEST_CODE);
+                startActivityForResult(intent, Utils.BARCODE_READER_REQUEST_CODE);*/
+                intentIntegrator.initiateScan();
             }
 
 
@@ -279,6 +290,10 @@ public class ActivityHome extends AppCompatActivity implements
 
                 //Log.e(TAG, "onActivityResult: DA RESCODE -> " + resultCode );
 
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(IntentIntegrator.REQUEST_CODE, resultCode, data);
+
+
+
         if (requestCode == REQUEST_TAKE_PHOTO ) {
 
             if(resultCode == RESULT_OK) {
@@ -293,7 +308,31 @@ public class ActivityHome extends AppCompatActivity implements
                 Log.e(TAG, "onActivityResult: CAPTURE FAILED" );
 
             }
-        }else if (requestCode == Utils.BARCODE_READER_REQUEST_CODE) {
+        }else if(requestCode == IntentIntegrator.REQUEST_CODE){
+
+
+
+            if(scanResult != null){
+                Intent dt = data;
+                //Log.e(TAG, "DARAQ: " + dt.getExtras() );
+                String kSCAN_RES = "SCAN_RESULT";
+                barcodeMessage = dt.getStringExtra(kSCAN_RES);
+                //Log.e(TAG, "THA IP : " + barcodeMessage );
+
+                if(barcodeMessage.indexOf("ip_") != -1) {
+                    String ip = barcodeMessage.replace("ip_", "");
+                    connectToServer(ip);
+                }else{
+                    showItemFromUniqueName(barcodeMessage);
+                }
+            }else {
+                barcodeMessage = getString(R.string.no_barcode_captured);
+                showBarcodeErrorMessage(barcodeMessage);
+            }
+
+
+
+        } /*else if (requestCode == Utils.BARCODE_READER_REQUEST_CODE) {
                     if (resultCode == CommonStatusCodes.SUCCESS) {
                         if (data != null) {
 
@@ -331,7 +370,7 @@ public class ActivityHome extends AppCompatActivity implements
                         //CommonStatusCodes.getStatusCodeString(resultCode)))
                         showBarcodeErrorMessage(barcodeMessage);
                     }
-                } else {
+                }*/ else {
                     super.onActivityResult(requestCode, resultCode, data);
                 }
             }

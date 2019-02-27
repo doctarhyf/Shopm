@@ -548,7 +548,7 @@ public class ShopmApi {
 
         String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_LOAD_ALL_ITEMS ;
 
-        //Log.e(TAG, "loadAllItems: url -> "  + url );
+        Log.e(TAG, "LDFEKZ: url -> "  + url );
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
