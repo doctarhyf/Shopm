@@ -291,7 +291,7 @@ public class FragmentSells extends Fragment {
             @Override
             public void onClick(View view) {
 
-                //Snackbar.make(rootView, "Will be emplemented", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(rootView, "RAPPORT ENREGISTRE SUR LE PC!", Snackbar.LENGTH_SHORT).show();
                 Log.e(TAG, "DAGEN: " );
 
                 ShopmApplication.getInstance().getApi().generateReportPDF(new ShopmApi.CallbackAPIActionConfirmation() {

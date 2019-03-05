@@ -229,7 +229,7 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (item.getItem_name().toLowerCase().contains(charString.toLowerCase()) || item.getItem_desc().toLowerCase().contains(charSequence)) {
+                        if (item.getItem_name().toLowerCase().contains(charString.toLowerCase())) {
                            filteredList.add(item);
 
                             Log.e(TAG, "performFiltering: item found -> " + item.getItem_name() );

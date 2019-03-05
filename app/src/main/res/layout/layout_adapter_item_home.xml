@@ -8,7 +8,7 @@
 
 
     <ImageView
-
+        android:visibility="gone"
         android:src="@drawable/no_img_found"
         android:id="@+id/ivItemPic"
         android:scaleType="centerCrop"
