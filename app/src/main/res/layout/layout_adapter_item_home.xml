@@ -52,5 +52,11 @@
 
     </LinearLayout>
 
+    <Button
+        android:text="VENDRE"
+        android:id="@+id/btnVendre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
 </LinearLayout>

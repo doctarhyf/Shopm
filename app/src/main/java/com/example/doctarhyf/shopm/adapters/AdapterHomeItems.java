@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -40,6 +42,7 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
         public TextView tvItemName, tvItemPrice, tvItemStockCount;
         public ImageView ivItemPic;
         public View layout;
+        public Button btnSell;
 
         public ViewHolder(View view){
             super(view);
@@ -48,6 +51,7 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
             tvItemPrice = layout.findViewById(R.id.tvItemPrice);
             ivItemPic = layout.findViewById(R.id.ivItemPic);
             tvItemStockCount = layout.findViewById(R.id.tvItemStockCount);
+            btnSell = layout.findViewById(R.id.btnVendre);
 
 
         }
@@ -64,6 +68,7 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
 
         this.context = context;
         this.items = items;
+        this.itemsFiltered = items;
         this.callbacks = callbacks;
         //this.sosApi = SOSApplication.getInstance().getSosApi();
     }
@@ -90,12 +95,14 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
             }
         });
 
+
+
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final Item item = items.get(position);
+        final Item item = itemsFiltered.get(position);
 
 
 
@@ -120,7 +127,13 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
             }
         });
 
-
+        holder.btnSell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e(TAG, "onClick: selling -> " + holder.tvItemName.getText().toString() );
+                callbacks.onBtnSellClicked(item);
+            }
+        });
 
         String url = ShopmApplication.GI().getApi().GetServerAddress() + Utils.ROOT_FOLDER + "/" + Utils.IMG_FOLDER_NAME +
                 "/" + item.getItem_unique_name() + ".jpg";
@@ -210,17 +223,25 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
                 if (charString.isEmpty()) {
                     itemsFiltered = items;
                 } else {
+                    //items.clear();
                     List<Item> filteredList = new ArrayList<>();
                     for (Item item : items) {
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (item.getItem_name().toLowerCase().contains(charString.toLowerCase()) || item.getItem_desc().contains(charSequence)) {
-                            filteredList.add(item);
+                        if (item.getItem_name().toLowerCase().contains(charString.toLowerCase()) || item.getItem_desc().toLowerCase().contains(charSequence)) {
+                           filteredList.add(item);
+
+                            Log.e(TAG, "performFiltering: item found -> " + item.getItem_name() );
                         }
+
+
                     }
 
                     itemsFiltered = filteredList;
+
+                    Log.e(TAG, "performFiltering: filtered count -> " + itemsFiltered.size() );
+                    Log.e(TAG, "performFiltering: filtered total count -> " + items.size() );
                 }
 
                 FilterResults filterResults = new FilterResults();
@@ -231,6 +252,7 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 itemsFiltered = (ArrayList<Item>) filterResults.values;
+                //items = itemsFiltered;
                 notifyDataSetChanged();
             }
         };
@@ -240,11 +262,12 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return itemsFiltered.size();
     }
 
     public  interface Callbacks {
         void onHomeItemClicked(Item item);
+        void onBtnSellClicked(Item item);
 
 
 

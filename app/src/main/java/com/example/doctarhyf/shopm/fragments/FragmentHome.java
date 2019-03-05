@@ -107,6 +107,10 @@ public class FragmentHome extends Fragment {
         return rootView;
     }
 
+    public AdapterHomeItems getAdapterHomeItems(){
+        return adapterHomeItems;
+    }
+
     private void getItemsData() {
 
         ShopmApplication.getInstance().getApi().loadAllItems(new ShopmApi.CallbacksItems() {

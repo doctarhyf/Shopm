@@ -89,6 +89,7 @@ public class ActivityHome extends AppCompatActivity implements
             private ImageView mImageView;
             private String mCurrentPhotoPath;
             private Menu mMenu;
+            private FragmentHome fragHomeRef = null;
             //private Button btnAddItem;
             //private MenuItem searchView;
 
@@ -210,7 +211,8 @@ public class ActivityHome extends AppCompatActivity implements
                     setItemsListVisible(false);
                     //menuItemSearch.setVisible(true);
                     // TODO: 12/16/2018 To uncomment after debuging sells views
-                    replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""), null, null);
+                    fragHomeRef = FragmentHome.newInstance("","");
+                    replaceFragWithBackstack(R.id.fragCont, fragHomeRef, null, null);
 
                     //replaceFragWithBackstack(R.id.fragCont, FragmentSells.newInstance("",""), null, null);
 
@@ -500,14 +502,18 @@ public class ActivityHome extends AppCompatActivity implements
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
-                //mAdapter.getFilter().filter(query);
+                if(fragHomeRef != null) {
+                    fragHomeRef.getAdapterHomeItems().getFilter().filter(query);
+                }
+                //Log.e(TAG, "onQueryTextChange: text -> " + query );
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
-                // filter recycler view when text is changed
-                //mAdapter.getFilter().filter(query);
+                if(fragHomeRef != null) {
+                    fragHomeRef.getAdapterHomeItems().getFilter().filter(query);
+                }
                 return false;
             }
         });
@@ -670,7 +676,12 @@ public class ActivityHome extends AppCompatActivity implements
 
             }
 
-    private void replaceFragWithBackstack(int fragCont, Fragment frag, boolean showMenusItems[], int menuIds[]) {
+            @Override
+            public void onBtnSellClicked(Item item) {
+                sellItem(item);
+            }
+
+            private void replaceFragWithBackstack(int fragCont, Fragment frag, boolean showMenusItems[], int menuIds[]) {
 
                 showAllMenuItems();
 
