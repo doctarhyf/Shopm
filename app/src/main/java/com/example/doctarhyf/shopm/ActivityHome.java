@@ -77,6 +77,10 @@ public class ActivityHome extends AppCompatActivity implements
         {
 
 
+
+            //private static final int REQUEST_ID = 0;
+            //private static final long DEFAULT_TIMEOUT = 5 * 60 * 1000;
+
             private IntentIntegrator intentIntegrator = null;
             private static final String TAG = Utils.TAG;
             private static final int REQUEST_IMAGE_CAPTURE = 100;
@@ -101,6 +105,8 @@ public class ActivityHome extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //RuntimeMAXBean = new RunimeMxBean )
+
 
         intentIntegrator = new IntentIntegrator(this);
         intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
@@ -109,7 +115,7 @@ public class ActivityHome extends AppCompatActivity implements
         intentIntegrator.setOrientationLocked(false);
 
 
-
+        //
 
         //btnAddItem = findViewById(R.id.btnAddItem);
         fragmentManager = getSupportFragmentManager();
@@ -609,6 +615,8 @@ public class ActivityHome extends AppCompatActivity implements
             setItemsListVisible(false);
             //menuItemSearch.setVisible(true);
             replaceFragWithBackstack(R.id.fragCont, FragmentHome.newInstance("",""), null, null);
+
+            initHome();
         } else if (id == R.id.nav_sells) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragCont, FragmentSellItem.newInstance("","")).commit();
             //scanBarCode();
