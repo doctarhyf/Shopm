@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.SearchView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -31,6 +32,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -75,7 +77,7 @@ public class ActivityHome extends AppCompatActivity implements
         FragmentStockHistory.OnFragmentStockHistoryInteractionListener,
         AdapterStockHistory.Callbacks
         {
-
+            public static final String PWD_SHOPM_2019 = "JENOESP";
 
 
             //private static final int REQUEST_ID = 0;
@@ -94,6 +96,7 @@ public class ActivityHome extends AppCompatActivity implements
             private String mCurrentPhotoPath;
             private Menu mMenu;
             private FragmentHome fragHomeRef = null;
+            private String m_Text;
             //private Button btnAddItem;
             //private MenuItem searchView;
 
@@ -808,39 +811,69 @@ public class ActivityHome extends AppCompatActivity implements
 
             @Override
             public void updateItem(final Item item) {
-                //Log.e(TAG, "updateItem: id -> " + item.getItem_id() );
-
-                String title = getString(R.string.strSureUpdateTitle) + " " + item.getItem_name() + " ?";
-                String message = getResources().getString(R.string.strSureUpdateMessage);
 
 
-                AlertDialog alertDialog = Utils.GetAlertDialogWithTitleAndMessage(this, new Utils.ListernerAlertDialogWithTitleMessage() {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Mot de passe modification stock SVP???");
+
+// Set up the input
+                final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                builder.setView(input);
+
+
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onPositiveButton() {
-                        ShopmApi api = ShopmApplication.GI().getApi();
+                    public void onClick(DialogInterface dialog, int which) {
+                        m_Text = input.getText().toString();
 
-                        api.updateItem(new ShopmApi.CallbackAPIActionConfirmation() {
-                            @Override
-                            public void onActionSuccess(String actionName, String data) {
+                        if (m_Text.equals("1234")){//PWD_SHOPM_2019)){
 
-                                ShopmApi api = ShopmApplication.GI().getApi();
-                                api.SSV(Utils.ITEM_UPDATED, data);
-                                initHome();
-                            }
 
-                            @Override
-                            public void onActionFailure(String actionName, String data) {
-                                Toast.makeText(ActivityHome.this, "Erreur -> " + data, Toast.LENGTH_SHORT).show();
-                            }
-                        }, item);
-                        //Log.e(TAG, "onPositiveButton: deleting -> id : " + item.getItem_id() );
+                            Log.e(TAG, "already clicked!!! ");
+
+
+
+                            final ShopmApi api = ShopmApplication.GI().getApi();
+
+                            api.updateItem(new ShopmApi.CallbackAPIActionConfirmation() {
+                                @Override
+                                public void onActionSuccess(String actionName, String data) {
+
+                                    //ShopmApi api = ShopmApplication.GI().getApi();
+                                    api.SSV(Utils.ITEM_UPDATED, data);
+                                    initHome();
+                                }
+
+                                @Override
+                                public void onActionFailure(String actionName, String data) {
+                                    Toast.makeText(ActivityHome.this, "Contenu de l'erreur -> " + data, Toast.LENGTH_SHORT).show();
+                                }
+                            }, item);
+
+                            initHome();
+
+                        }else{
+
+                            Log.e(TAG, "onClick: FAKYALLLL" );
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityHome.this);
+                            builder.setTitle("Mot de passe incorect");
+                            builder.setMessage("Le mot de passe modification stock est incorect");
+                            builder.setPositiveButton("OK", null);
+
+                            builder.show();
+
+                        }
                     }
+                });
 
-                    @Override
-                    public void onNegativeButton() {
 
-                    }
-                },title, message, true);
+                builder.show();
+
             }
 
             @Override

@@ -135,7 +135,7 @@ public class ShopmApi {
         String url = GSA() + API_URL + "act=" + actName + "&item_name=" + item_name + "&item_id=" + item_id +
                 "&item_price=" + item_price + "&item_stock_count=" + item_stock_count + "&item_desc=" + item_desc;
 
-        //Log.e(TAG, "sellItem: url -> " + url );
+        Log.e(TAG, "sellItem: url -> " + url );
 
         StringRequest request = new StringRequest(
                 url,
@@ -349,7 +349,7 @@ public class ShopmApi {
         String url = GSA() + API_URL + "act=" + ShopmApi.ACTION_LOAD_ITEM + "&item_unique_name=" + barcodeMessage ;
 
        // Log.e(TAG, "loadAllItems: url -> "  + url );
-        //Log.e(TAG, "loadItemByUniqueID: url -> " + url );
+        Log.e(TAG, "loadItemByUniqueID: url -> " + url );
 
         JsonArrayRequest request = new JsonArrayRequest(
 
