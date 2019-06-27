@@ -96,7 +96,14 @@ public class FragmentAddItem extends Fragment {
             Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemName), item.getItem_name());
             Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemPrice), item.getItem_price());
             Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemInitStock), item.getItem_stock_count());
-            Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemDesc), item.getItem_desc());
+
+            String itemDesc = item.getItem_desc();
+
+            if(itemDesc.isEmpty()){
+                itemDesc = "[Description]";
+            }
+
+            Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemDesc), itemDesc);
         }
 
 

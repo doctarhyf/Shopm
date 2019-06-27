@@ -111,12 +111,13 @@ public class AdapterHomeItems extends RecyclerView.Adapter<AdapterHomeItems.View
         holder.tvItemStockCount.setText("En stock : " + item.getItem_stock_count());
 
 
+        /*if(Integer.parseInt(item.getItem_stock_count()) == 0){
 
-
-        if(Integer.parseInt(item.getItem_stock_count()) == 0){
             holder.tvItemStockCount.setTextColor(Color.WHITE);
             holder.tvItemStockCount.setBackgroundColor(Color.RED);
-        }
+
+        }*/
+
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
