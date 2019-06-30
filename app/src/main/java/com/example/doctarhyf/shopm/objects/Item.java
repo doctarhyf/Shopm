@@ -16,6 +16,7 @@ public class Item {
     private static final String TAG = Utils.TAG;
     public static final String KEY_ITEM_NAME = "item_name";
     public static final String KEY_ITEM_PRICE = "item_price";
+    public static final String KEY_ITEM_ORIGIN_PRICE = "item_origin_price";
     public static final String KEY_ITEM_INIT_STOCK = "item_stock_count";
     public static final String KEY_ITEM_DESC = "item_desc";
     public static final String KEY_ITEM_JSON = "itemJson";
@@ -32,6 +33,7 @@ public class Item {
     private String item_stock_count = "";
     private String item_last_stock_upd = "";
     private String item_added_date ="";
+    private String item_origin_price = "$00.00";
     //private String itemCategory;
 
     //public static final String ITEM_CATEGORY_ELEC = "catElec";
@@ -47,17 +49,24 @@ public class Item {
     }
 
     public Item(String item_id, String item_name, String item_price, String item_desc, String item_unique_name, String item_stock_count,
-                String item_last_stock_upd, String item_added_date){
+                String item_last_stock_upd, String item_added_date, String item_origin_price){
         this.setItem_id(item_id);
         this.setItem_name(item_name);
         this.setItem_price(item_price);
         this.setItem_desc(item_desc);
         this.setItem_unique_name(item_unique_name);
         this.setItem_stock_count(item_stock_count);
+        this.setItem_origin_price(item_origin_price);
         //this.setItemCategory(itemCategory);
     }
 
+    public void setItem_origin_price(String item_origin_price) {
+        this.item_origin_price = item_origin_price;
+    }
 
+    public String getItem_origin_price(){
+        return item_origin_price;
+    }
 
 
     public static Item FromJSON(String jsonData){

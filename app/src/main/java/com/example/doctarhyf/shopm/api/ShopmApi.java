@@ -131,9 +131,10 @@ public class ShopmApi {
         String item_price = newItem.getItem_price();
         String item_stock_count = newItem.getItem_stock_count();
         String item_desc = newItem.getItem_desc();
+        String item_origin_price = newItem.getItem_origin_price();
 
         String url = GSA() + API_URL + "act=" + actName + "&item_name=" + item_name + "&item_id=" + item_id +
-                "&item_price=" + item_price + "&item_stock_count=" + item_stock_count + "&item_desc=" + item_desc;
+                "&item_price=" + item_price + "&item_stock_count=" + item_stock_count + "&item_desc=" + item_desc + "&item_origin_price=" + item_origin_price;
 
         Log.e(TAG, "sellItem: url -> " + url );
 

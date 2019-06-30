@@ -35,6 +35,19 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:text="@string/labelOriginPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <EditText
+            android:id="@+id/etOriginPrice"
+            android:inputType="number"
+            android:hint="ex:20000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
             android:text="@string/strItemPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

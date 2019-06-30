@@ -31,7 +31,7 @@
     <string name="errorLoadingItems">Error loading sellsItems : \"%1$s\".\nPlease check :\n\n1. Your connection to the server, deactivate mobile and turn on WiFi.\n2. Check for correct server IP address in your settings, current IP : %2$s, is it the same with the server IP?</string>
     <string name="addItem">Ajouter Article</string>
     <string name="strItemName">Nom de l\'article</string>
-    <string name="strItemPrice">Prix (FC)</string>
+    <string name="strItemPrice">Prix de vente</string>
     <string name="strItemInitStock">Stock Initial</string>
     <string name="strItemDesc">Description</string>
     <string name="strItemPic">Photo</string>
@@ -53,4 +53,5 @@
     <string name="strAbout">A propos</string>
     <string name="msgAbout">Shopm Version 1.0\nDeveloped by @DoctaRhyf\nCopyright(c) 2019. All rights reserved</string>
     <string name="setTitleEmailReport">Email pour reception rapports</string>
+    <string name="labelOriginPrice">Prix d achat</string>
 </resources>

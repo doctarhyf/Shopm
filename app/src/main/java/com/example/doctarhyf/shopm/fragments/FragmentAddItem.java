@@ -96,7 +96,7 @@ public class FragmentAddItem extends Fragment {
             Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemName), item.getItem_name());
             Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemPrice), item.getItem_price());
             Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etItemInitStock), item.getItem_stock_count());
-
+            Utils.SetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etOriginPrice), item.getItem_origin_price());
             String itemDesc = item.getItem_desc();
 
             if(itemDesc.isEmpty()){
@@ -116,12 +116,14 @@ public class FragmentAddItem extends Fragment {
                 final String itemPrice = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemPrice));
                 final String itemInitStock = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemInitStock));
                 final String itemDesc = Utils.GetEditTextValue(getContext(), (EditText)rootView.findViewById(R.id.etItemDesc));
+                final String itemOriginPrice = Utils.GetEditTextValue(getContext(), (EditText) rootView.findViewById(R.id.etOriginPrice));
 
                 final Bundle itemData = new Bundle();
                 itemData.putString(Item.KEY_ITEM_NAME, itemName);
                 itemData.putString(Item.KEY_ITEM_PRICE, itemPrice);
                 itemData.putString(Item.KEY_ITEM_INIT_STOCK, itemInitStock);
                 itemData.putString(Item.KEY_ITEM_DESC, itemDesc);
+                itemData.putString(Item.KEY_ITEM_ORIGIN_PRICE, itemOriginPrice);
 
                 //Log.e(Utils.TAG, "onClick: data to add -> " + itemData.toString() );
 
@@ -132,6 +134,7 @@ public class FragmentAddItem extends Fragment {
                     curItem.setItem_price(itemPrice);
                     curItem.setItem_stock_count(itemInitStock);
                     curItem.setItem_desc(itemDesc);
+                    curItem.setItem_origin_price(itemOriginPrice);
                 }
 
                 if(itemName.equals("") || itemPrice.equals("") || itemInitStock.equals("") || itemDesc.equals("")){
