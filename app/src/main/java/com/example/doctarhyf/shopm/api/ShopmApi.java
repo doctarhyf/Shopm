@@ -123,6 +123,9 @@ public class ShopmApi {
     }
 
     public void updateItem(final CallbackAPIActionConfirmation callback, Item newItem) {
+
+        //added item origin price
+
         final String actName = ShopmApi.ACTION_UPDATE_ITEM;
         //String url = GSA() + API_URL + "act=" + actName + "&item_id=" + item_id;
 
