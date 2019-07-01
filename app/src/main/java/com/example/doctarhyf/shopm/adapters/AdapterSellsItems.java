@@ -1,9 +1,6 @@
 package com.example.doctarhyf.shopm.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +10,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.doctarhyf.shopm.R;
-import com.example.doctarhyf.shopm.app.ShopmApplication;
-import com.example.doctarhyf.shopm.objects.Item;
 import com.example.doctarhyf.shopm.objects.SellsItem;
-import com.example.doctarhyf.shopm.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +32,7 @@ public class AdapterSellsItems extends RecyclerView.Adapter<AdapterSellsItems.Vi
 
     public static  class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvItemNumAndName, tvQty, tvPU, tvPT;
+        public TextView tvItemNumAndName, tvQty, tvPA, tvPV, tvB;
         public View layout;
 
         public ViewHolder(View view){
@@ -47,8 +40,9 @@ public class AdapterSellsItems extends RecyclerView.Adapter<AdapterSellsItems.Vi
             layout = view;
             tvItemNumAndName = layout.findViewById(R.id.tvItemNumAndName);
             tvQty = layout.findViewById(R.id.tvQty);
-            tvPU = layout.findViewById(R.id.tvPU);
-            tvPT = layout.findViewById(R.id.tvPT);
+            tvPA = layout.findViewById(R.id.tvPA);
+            tvPV = layout.findViewById(R.id.tvPV);
+            tvB = layout.findViewById(R.id.tvB);
 
 
         }
@@ -104,13 +98,17 @@ public class AdapterSellsItems extends RecyclerView.Adapter<AdapterSellsItems.Vi
         String numAndName = item.getDataValue(SellsItem.KEY_ITEM_NAME);
 
         String qty = item.getDataValue(SellsItem.KEY_SELL_QTY);
-        String pu = item.getDataValue(SellsItem.KEY_ITEM_CUR_PRICE);
-        String pt = item.getDataValue(SellsItem.KEY_ITEM_TOTAL_SELLS);
+        String pa = item.getDataValue(SellsItem.KEY_ITEM_PA);
+        String pv = item.getDataValue(SellsItem.KEY_ITEM_PV);
+        String b = item.getDataValue(SellsItem.KEY_ITEM_B);
+
+        Log.e(TAG, "DIK: -> " + item.toString() );
 
         holder.tvItemNumAndName.setText(numAndName);
         holder.tvQty.setText(qty);
-        holder.tvPU.setText(pu);
-        holder.tvPT.setText(pt);
+        holder.tvPA.setText(pa);
+        holder.tvPV.setText(pv);
+        holder.tvB.setText(b);
         //spt += Integer.parseInt(pt);
         //Log.e(TAG, "onBindViewHolder: PT : " +  spt);
 

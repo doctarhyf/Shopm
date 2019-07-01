@@ -441,8 +441,9 @@ public class ShopmApi {
                                         data.putString(SellsItem.KEY_ITEM_ID, i + "");
                                         data.putString(SellsItem.KEY_ITEM_NAME, "No. Article");
                                         data.putString(SellsItem.KEY_SELL_QTY, "Qte");
-                                        data.putString(SellsItem.KEY_ITEM_CUR_PRICE, "PU" );
-                                        data.putString(SellsItem.KEY_ITEM_TOTAL_SELLS, "PT");
+                                        data.putString(SellsItem.KEY_ITEM_PA, "PA" );
+                                        data.putString(SellsItem.KEY_ITEM_PV, "PV");
+                                        data.putString(SellsItem.KEY_ITEM_B, "B");
                                     }else {
                                         JSONObject json = jsonArray.getJSONObject(i);
 
@@ -450,14 +451,18 @@ public class ShopmApi {
 
                                         String name = json.getString(SellsItem.KEY_ITEM_NAME);
                                         String qty = json.getString(SellsItem.KEY_SELL_QTY);
-                                        String pu = json.getString(SellsItem.KEY_ITEM_CUR_PRICE);
+                                        String pa = json.getString(SellsItem.KEY_ITEM_PA);
+                                        String pv = json.getString(SellsItem.KEY_ITEM_PV);
+                                        String b = json.getString(SellsItem.KEY_ITEM_B);
 
 
                                         data.putString(SellsItem.KEY_ITEM_ID, i + "");
                                         data.putString(SellsItem.KEY_ITEM_NAME, (i + 1) + ". " + name);
                                         data.putString(SellsItem.KEY_SELL_QTY, qty);
-                                        data.putString(SellsItem.KEY_ITEM_CUR_PRICE, pu);
-                                        data.putString(SellsItem.KEY_ITEM_TOTAL_SELLS, (Integer.parseInt(pu) * Integer.parseInt(qty)) + "");
+                                        data.putString(SellsItem.KEY_ITEM_PA, pa);
+                                        data.putString(SellsItem.KEY_ITEM_PV, pv);
+
+                                        data.putString(SellsItem.KEY_ITEM_B, ((Integer.parseInt(pv) - Integer.parseInt(pa) ) * Integer.parseInt(qty)) + "");
                                     }
 
 

@@ -11,6 +11,9 @@ public class SellsItem {
     public static final String KEY_ITEM_ID = Item.KEY_ITEM_ID;
     public static final String TOT_QTY = "tot_qty";
     public static final String TOT_CASH = "tot_cash";
+    public static final String KEY_ITEM_PA = "PA";
+    public static final String KEY_ITEM_PV = "PV" ;
+    public static final String KEY_ITEM_B = "B";
     private Bundle data = new Bundle();
 
     public SellsItem(){

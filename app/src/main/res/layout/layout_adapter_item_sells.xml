@@ -20,10 +20,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
-    <TextView
+    <!--<TextView
         android:gravity="right"
         android:text="20"
-        android:id="@+id/tvPU"
+        android:id="@+id/tvPA"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
@@ -31,7 +31,31 @@
     <TextView
         android:gravity="right"
         android:text="20"
-        android:id="@+id/tvPT"
+        android:id="@+id/tvPV"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />-->
+
+    <TextView
+        android:gravity="right"
+        android:text="20"
+        android:id="@+id/tvPA"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:gravity="right"
+        android:text="20"
+        android:id="@+id/tvPV"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:gravity="right"
+        android:text="20"
+        android:id="@+id/tvB"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
