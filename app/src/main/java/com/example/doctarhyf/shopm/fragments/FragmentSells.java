@@ -18,9 +18,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -210,6 +212,23 @@ public class FragmentSells extends Fragment {
                     datePicker.setVisibility(View.GONE);
                     viewSpinnersSelMonth.setVisibility(View.VISIBLE);
                     viewDime.setVisibility(View.VISIBLE);
+
+                    Calendar c = Calendar.getInstance();
+                    int year = c.get(Calendar.YEAR);
+                    int month = c.get(Calendar.MONTH);
+
+                    Spinner spMonths = viewSpinnersSelMonth.findViewById(R.id.spMonths);
+                    Spinner spYears = viewSpinnersSelMonth.findViewById(R.id.spYears);
+
+                    selectedSpinnerItemByValue(spMonths, month);
+                    selectedSpinnerItemByValue(spYears, year);
+
+
+                    Log.e(TAG, "DAYM -> " + year + " , " + month );
+
+
+
+                    //viewSpinnersSelMonth.selecte
                 }
 
                 alertDialog.show();
@@ -310,6 +329,16 @@ public class FragmentSells extends Fragment {
         });
 
         return rootView;
+    }
+
+    public static  void selectedSpinnerItemByValue(Spinner spinner, long value){
+        ArrayAdapter adapter = (ArrayAdapter) spinner.getAdapter();
+        for(int position = 0; position < adapter.getCount(); position++){
+            if(adapter.getItemId(position) == value){
+                spinner.setSelection(position);
+                return;
+            }
+        }
     }
 
     private void getItemsData(String sellDataType, String periode) {
