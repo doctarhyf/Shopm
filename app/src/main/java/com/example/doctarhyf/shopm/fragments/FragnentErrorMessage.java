@@ -83,7 +83,7 @@ public class FragnentErrorMessage extends Fragment {
                 "    4. Lancer l’application mobile sur le téléphone\n" +
                 "    5. Connecter l’application mobile au serveur, de deux manières suivantes :\n" +
                 "       * Soit par scan QR Code du sur l’application PC SHOPM\n" +
-                "       * Soit par paramétrage manuel de l’application mobile, en entrant manuellement l’adresse IP du PC, comme dans les images ci-dessous :");
+                "       * Soit par paramétrage manuel de l’application mobile, en entrant manuellement l’adresse IP du PC dans les parametres.");
 
 
         Button btnRetry = rootView.findViewById(R.id.btnRetry);

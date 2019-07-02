@@ -632,11 +632,11 @@ public class ActivityHome extends AppCompatActivity implements
             replaceFragWithBackstack(R.id.fragCont, FragmentSettings.newInstance("",""),
                     new boolean[]{false, false},
                     new int[]{R.id.action_settings, R.id.action_search});
-        } else if (id == R.id.nav_share) {
+        } //else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        //} else if (id == R.id.nav_send) {
 
-        }
+        //}
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
