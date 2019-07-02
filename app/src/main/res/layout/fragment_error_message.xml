@@ -5,19 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/red"
+    android:background="@drawable/smarket_bg"
+
     tools:context=".fragments.FragnentErrorMessage">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:src="@drawable/warning"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+
     <TextView
+        android:background="#CCFFFFFF"
         android:id="@+id/tvErrorMessage"
         android:padding="16dp"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:gravity="center"
 
-        android:textColor="@color/white"
+        android:textColor="#000"
 
         android:text="Error message" />
 

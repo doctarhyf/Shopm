@@ -73,7 +73,17 @@ public class FragnentErrorMessage extends Fragment {
         //@string/msgNoConnection
         TextView tvErrorMessage = rootView.findViewById(R.id.tvErrorMessage);
 
-        tvErrorMessage.setText(mErrorMessage);
+        tvErrorMessage.setText("SHOPM CHECKLIST\n" +
+                "\n" +
+                "    1. Connecter le téléphone et le PC au même réseau WIFI des deux manières suivantes : \n" +
+                "       * Soit en connectant le PC au WIFI partage par le téléphone\n" +
+                "       * Soit en utilisant un modem WIFI ( Méga non nécessaire )\n" +
+                "    2. Démarrer le serveur ( xampp )\n" +
+                "    3. Démarrer l’application serveur ( SHOPM )\n" +
+                "    4. Lancer l’application mobile sur le téléphone\n" +
+                "    5. Connecter l’application mobile au serveur, de deux manières suivantes :\n" +
+                "       * Soit par scan QR Code du sur l’application PC SHOPM\n" +
+                "       * Soit par paramétrage manuel de l’application mobile, en entrant manuellement l’adresse IP du PC, comme dans les images ci-dessous :");
 
 
         Button btnRetry = rootView.findViewById(R.id.btnRetry);
